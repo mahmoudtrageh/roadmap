@@ -1495,10 +1495,4 @@ For questions, issues, or contributions, please contact the project maintainer.
 
 16 - companies page
 
-## bugs
-
-checklist added before when seed are gone 
-
-
-
-# roadmap
+17 - discussions page

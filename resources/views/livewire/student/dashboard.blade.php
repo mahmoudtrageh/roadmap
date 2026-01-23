@@ -38,92 +38,6 @@
             </div>
         </div>
 
-        <!-- Study Tips for New Users -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
-            <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
-                </svg>
-                Study Tips for Success
-            </h3>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="flex gap-3">
-                    <div class="text-2xl">⏰</div>
-                    <div>
-                        <h4 class="font-semibold text-gray-800 mb-1">Set a Daily Schedule</h4>
-                        <p class="text-sm text-gray-600">Dedicate specific time each day for learning. Consistency is key!</p>
-                    </div>
-                </div>
-                <div class="flex gap-3">
-                    <div class="text-2xl">🎯</div>
-                    <div>
-                        <h4 class="font-semibold text-gray-800 mb-1">Focus on Understanding</h4>
-                        <p class="text-sm text-gray-600">Don't rush. Take time to truly understand each concept before moving on.</p>
-                    </div>
-                </div>
-                <div class="flex gap-3">
-                    <div class="text-2xl">💪</div>
-                    <div>
-                        <h4 class="font-semibold text-gray-800 mb-1">Practice, Practice, Practice</h4>
-                        <p class="text-sm text-gray-600">Hands-on coding is essential. Type out examples instead of copying.</p>
-                    </div>
-                </div>
-                <div class="flex gap-3">
-                    <div class="text-2xl">❓</div>
-                    <div>
-                        <h4 class="font-semibold text-gray-800 mb-1">Use the Help Features</h4>
-                        <p class="text-sm text-gray-600">Stuck? Use hints, ask questions, and review resources.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Platform Features Guide -->
-        <div class="bg-gradient-to-br from-purple-50 to-indigo-50 dark:from-purple-900/20 dark:to-indigo-900/20 rounded-lg border border-purple-200 dark:border-purple-800 p-6 mb-6">
-            <h3 class="text-xl font-bold text-gray-800 dark:text-gray-200 mb-4 flex items-center gap-2">
-                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                How to Use This Platform
-            </h3>
-            <div class="space-y-3">
-                <div class="flex gap-3 items-start">
-                    <div class="flex-shrink-0 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm">✓</div>
-                    <div>
-                        <h4 class="font-semibold text-gray-800 dark:text-gray-200">Interactive Checklists</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Each task has a step-by-step checklist to guide you through completion</p>
-                    </div>
-                </div>
-                <div class="flex gap-3 items-start">
-                    <div class="flex-shrink-0 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm">?</div>
-                    <div>
-                        <h4 class="font-semibold text-gray-800 dark:text-gray-200">Self-Assessment Quizzes</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Test your understanding with quizzes and get instant feedback</p>
-                    </div>
-                </div>
-                <div class="flex gap-3 items-start">
-                    <div class="flex-shrink-0 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm">💻</div>
-                    <div>
-                        <h4 class="font-semibold text-gray-800 dark:text-gray-200">Code Examples</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Learn from progressive examples (beginner to advanced) with one-click copy</p>
-                    </div>
-                </div>
-                <div class="flex gap-3 items-start">
-                    <div class="flex-shrink-0 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm">💡</div>
-                    <div>
-                        <h4 class="font-semibold text-gray-800 dark:text-gray-200">Progressive Hints</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">If you're stuck, reveal hints one at a time or ask a question for help</p>
-                    </div>
-                </div>
-                <div class="flex gap-3 items-start">
-                    <div class="flex-shrink-0 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-sm">⭐</div>
-                    <div>
-                        <h4 class="font-semibold text-gray-800 dark:text-gray-200">Rate Resources</h4>
-                        <p class="text-sm text-gray-600 dark:text-gray-400">Help others by rating learning resources - highly rated ones are highlighted</p>
-                    </div>
-                </div>
-            </div>
-        </div>
         @endif
 
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
@@ -250,17 +164,48 @@
                         ->orderBy('order')
                         ->first();
 
-                    // Get tasks started but not completed (in progress)
-                    $inProgressTasks = \App\Models\Task::where('roadmap_id', $activeEnrollment->roadmap->id)
-                        ->whereHas('taskCompletions', function($q) use ($activeEnrollment) {
-                            $q->where('student_id', auth()->id())
-                              ->where('enrollment_id', $activeEnrollment->id)
-                              ->where('status', 'in_progress');
-                        })
+                    // Get all completed task IDs
+                    $completedTaskIds = \App\Models\TaskCompletion::where('student_id', auth()->id())
+                        ->where('enrollment_id', $activeEnrollment->id)
+                        ->whereIn('status', ['completed', 'skipped'])
+                        ->pluck('task_id')
+                        ->toArray();
+
+                    // Get all tasks in order
+                    $allTasksInOrder = \App\Models\Task::where('roadmap_id', $activeEnrollment->roadmap->id)
                         ->orderBy('day_number')
                         ->orderBy('order')
-                        ->limit(3)
                         ->get();
+
+                    // Find the first locked (incomplete) task
+                    $firstLockedTask = null;
+                    foreach ($allTasksInOrder as $task) {
+                        if (!in_array($task->id, $completedTaskIds)) {
+                            $firstLockedTask = $task;
+                            break;
+                        }
+                    }
+
+                    // The "in progress" task is the one right before the first locked task
+                    $inProgressTasks = collect();
+                    if ($firstLockedTask) {
+                        // Find the index of the first locked task
+                        $lockedIndex = $allTasksInOrder->search(function($t) use ($firstLockedTask) {
+                            return $t->id === $firstLockedTask->id;
+                        });
+
+                        // If there's a task before it, that's the "in progress" task
+                        if ($lockedIndex > 0) {
+                            $taskBeforeLocked = $allTasksInOrder[$lockedIndex - 1];
+                            // Only show it as in progress if it's actually completed
+                            if (in_array($taskBeforeLocked->id, $completedTaskIds)) {
+                                $inProgressTasks = collect([$firstLockedTask]);
+                            }
+                        } else {
+                            // First task is locked, show it as the task to work on
+                            $inProgressTasks = collect([$firstLockedTask]);
+                        }
+                    }
                 @endphp
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
@@ -390,14 +335,42 @@
                 @endphp
 
                 @if($currentMessage)
-                <div class="bg-gradient-to-r from-{{ $currentMessage['color'] }}-50 to-{{ $currentMessage['color'] }}-100 dark:from-{{ $currentMessage['color'] }}-900/20 dark:to-{{ $currentMessage['color'] }}-800/20 border border-{{ $currentMessage['color'] }}-200 dark:border-{{ $currentMessage['color'] }}-800 rounded-lg p-6 mb-8">
+                @php
+                    $bgClasses = match($currentMessage['color']) {
+                        'blue' => 'bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/20 border-blue-200 dark:border-blue-800',
+                        'green' => 'bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20 border-green-200 dark:border-green-800',
+                        'orange' => 'bg-gradient-to-r from-orange-50 to-orange-100 dark:from-orange-900/20 dark:to-orange-800/20 border-orange-200 dark:border-orange-800',
+                        'purple' => 'bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20 border-purple-200 dark:border-purple-800',
+                        'yellow' => 'bg-gradient-to-r from-yellow-50 to-yellow-100 dark:from-yellow-900/20 dark:to-yellow-800/20 border-yellow-200 dark:border-yellow-800',
+                        default => 'bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-900/20 dark:to-gray-800/20 border-gray-200 dark:border-gray-800',
+                    };
+
+                    $titleClasses = match($currentMessage['color']) {
+                        'blue' => 'text-blue-900 dark:text-blue-100',
+                        'green' => 'text-green-900 dark:text-green-100',
+                        'orange' => 'text-orange-900 dark:text-orange-100',
+                        'purple' => 'text-purple-900 dark:text-purple-100',
+                        'yellow' => 'text-yellow-900 dark:text-yellow-100',
+                        default => 'text-gray-900 dark:text-gray-100',
+                    };
+
+                    $messageClasses = match($currentMessage['color']) {
+                        'blue' => 'text-blue-800 dark:text-blue-100',
+                        'green' => 'text-green-800 dark:text-green-100',
+                        'orange' => 'text-orange-800 dark:text-orange-100',
+                        'purple' => 'text-purple-800 dark:text-purple-100',
+                        'yellow' => 'text-yellow-800 dark:text-yellow-100',
+                        default => 'text-gray-800 dark:text-gray-100',
+                    };
+                @endphp
+                <div class="{{ $bgClasses }} border rounded-lg p-6 mb-8">
                     <div class="flex items-start gap-4">
                         <div class="text-5xl">{{ $currentMessage['icon'] }}</div>
                         <div class="flex-1">
-                            <h3 class="text-xl font-bold text-{{ $currentMessage['color'] }}-900 dark:text-{{ $currentMessage['color'] }}-300 mb-2">
+                            <h3 class="text-xl font-bold {{ $titleClasses }} mb-2">
                                 {{ $currentMessage['title'] }}
                             </h3>
-                            <p class="text-{{ $currentMessage['color'] }}-800 dark:text-{{ $currentMessage['color'] }}-200">
+                            <p class="{{ $messageClasses }}">
                                 {{ $currentMessage['message'] }}
                             </p>
                         </div>

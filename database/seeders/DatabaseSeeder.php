@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             FullStackRoadmapSeeder::class,
             CompanySeeder::class,
             EnhancedTaskDataSeeder::class,
+            YouTubeResourcesSeeder::class,
         ]);
     }
 }

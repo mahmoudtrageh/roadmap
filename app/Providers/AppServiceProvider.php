@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\TaskCompletion;
 use App\Observers\TaskCompletionObserver;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -21,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Fix for cPanel MySQL index key length limitation
+        Schema::defaultStringLength(191);
+
         // Register observers
         TaskCompletion::observe(TaskCompletionObserver::class);
     }

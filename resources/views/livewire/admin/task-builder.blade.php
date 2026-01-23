@@ -93,9 +93,10 @@
                             @error('order') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                         </div>
 
-                        <!-- Resource Links -->
+                        <!-- Resource Links (Legacy - for backward compatibility) -->
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Resource Links</label>
+                            <label class="block text-sm font-medium text-gray-700">Resource Links (Legacy)</label>
+                            <p class="text-xs text-gray-500 mb-2">Use "Enhanced Resources" below for language-specific resources</p>
                             <div class="mt-2 space-y-2">
                                 @foreach($resources_links as $index => $link)
                                     <div class="flex gap-2">
@@ -106,6 +107,87 @@
                                 <div class="flex gap-2">
                                     <input type="text" wire:model="resourceLink" placeholder="Enter resource link" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" />
                                     <button type="button" wire:click="addResourceLink" class="px-3 py-2 bg-green-500 text-white rounded-md hover:bg-green-600">Add</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Enhanced Resources with Language Support -->
+                        <div class="border-t border-gray-200 pt-4">
+                            <div class="flex items-center justify-between mb-3">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Enhanced Resources (with Language)</label>
+                                    <p class="text-xs text-gray-500">Add resources with language, title, and type</p>
+                                </div>
+                            </div>
+
+                            <!-- Existing Resources -->
+                            @if(count($resources) > 0)
+                            <div class="space-y-2 mb-4">
+                                @foreach($resources as $index => $resource)
+                                <div class="border border-gray-200 rounded-lg p-3 bg-gray-50">
+                                    <div class="flex items-start justify-between gap-3">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-2 mb-1">
+                                                <span class="px-2 py-0.5 bg-{{ $resource['language'] === 'ar' ? 'green' : 'blue' }}-100 text-{{ $resource['language'] === 'ar' ? 'green' : 'blue' }}-700 text-xs font-semibold rounded">
+                                                    {{ $resource['language'] === 'ar' ? 'العربية' : 'English' }}
+                                                </span>
+                                                <span class="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-semibold rounded">
+                                                    {{ ucfirst($resource['type'] ?? 'article') }}
+                                                </span>
+                                            </div>
+                                            @if(!empty($resource['title']))
+                                            <p class="text-sm font-medium text-gray-900 mb-1">{{ $resource['title'] }}</p>
+                                            @endif
+                                            <p class="text-xs text-gray-600 break-all">{{ $resource['url'] }}</p>
+                                        </div>
+                                        <button type="button" wire:click="removeResource({{ $index }})" class="px-3 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600">
+                                            Remove
+                                        </button>
+                                    </div>
+                                </div>
+                                @endforeach
+                            </div>
+                            @endif
+
+                            <!-- Add New Resource Form -->
+                            <div class="border border-gray-300 rounded-lg p-4 bg-white">
+                                <div class="space-y-3">
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-700 mb-1">Resource URL *</label>
+                                        <input type="url" wire:model="resourceLink" placeholder="https://example.com/resource" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" />
+                                    </div>
+
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-700 mb-1">Resource Title (Optional)</label>
+                                        <input type="text" wire:model="resourceTitle" placeholder="e.g., Introduction to HTML" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm" />
+                                    </div>
+
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-700 mb-1">Language *</label>
+                                            <select wire:model="resourceLanguage" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                                <option value="en">English</option>
+                                                <option value="ar">Arabic (العربية)</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-700 mb-1">Type *</label>
+                                            <select wire:model="resourceType" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                                <option value="article">Article</option>
+                                                <option value="video">Video</option>
+                                                <option value="tutorial">Tutorial</option>
+                                                <option value="documentation">Documentation</option>
+                                                <option value="course">Course</option>
+                                                <option value="blog">Blog Post</option>
+                                                <option value="youtube">YouTube Channel</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" wire:click="addResource" class="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 font-medium text-sm">
+                                        + Add Resource
+                                    </button>
                                 </div>
                             </div>
                         </div>

@@ -180,42 +180,6 @@
                                 </div>
                                 @endif
 
-                                <!-- Quick Start Checklist -->
-                                @if(!$task['is_locked'])
-                                    <livewire:student.checklist-box
-                                        :taskId="$task['id']"
-                                        :enrollmentId="$activeEnrollment->id"
-                                        :isLocked="$task['is_locked']"
-                                        :key="'checklist-box-' . $task['id']"
-                                    />
-                                @endif
-
-                                <!-- Self-Assessment Quiz -->
-                                @if(!$task['is_locked'])
-                                    <livewire:student.quiz-box
-                                        :taskId="$task['id']"
-                                        :enrollmentId="$activeEnrollment->id"
-                                        :isLocked="$task['is_locked']"
-                                        :key="'quiz-box-' . $task['id']"
-                                    />
-                                @endif
-
-                                <!-- Code Examples -->
-                                @if(!$task['is_locked'])
-                                    <livewire:student.code-example-box
-                                        :taskId="$task['id']"
-                                        :key="'code-example-box-' . $task['id']"
-                                    />
-                                @endif
-
-                                <!-- Hints & Help -->
-                                @if(!$task['is_locked'])
-                                    <livewire:student.hint-box
-                                        :taskId="$task['id']"
-                                        :enrollmentId="$activeEnrollment->id"
-                                        :key="'hint-box-' . $task['id']"
-                                    />
-                                @endif
 
                                 <!-- Task Meta Information -->
                                 <div class="flex flex-wrap gap-4 text-sm text-gray-500 mb-3">
@@ -272,6 +236,92 @@
                                     @endif
                                 </div>
 
+                                <!-- Task Quality Ratings -->
+                                @if($task['has_quality_rating'])
+                                <div class="mb-3 bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <div class="flex items-center gap-2 mb-2">
+                                                <svg class="w-5 h-5 text-yellow-600 dark:text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                </svg>
+                                                <h5 class="text-sm font-semibold text-gray-800 dark:text-gray-200">Task Quality Ratings</h5>
+                                            </div>
+
+                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                <!-- Average Rating from All Students -->
+                                                @if($task['avg_quality_rating'])
+                                                <div class="flex items-center gap-2">
+                                                    <div class="flex items-center gap-1">
+                                                        <span class="text-2xl font-bold text-yellow-600 dark:text-yellow-400">{{ $task['avg_quality_rating'] }}</span>
+                                                        <span class="text-sm text-gray-600 dark:text-gray-400">/10</span>
+                                                    </div>
+                                                    <div class="flex flex-col">
+                                                        <div class="flex items-center gap-1">
+                                                            @for($i = 1; $i <= 5; $i++)
+                                                                @if($i <= round($task['avg_quality_rating'] / 2))
+                                                                    <svg class="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                                    </svg>
+                                                                @else
+                                                                    <svg class="w-4 h-4 text-gray-300 dark:text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                                    </svg>
+                                                                @endif
+                                                            @endfor
+                                                        </div>
+                                                        <span class="text-xs text-gray-600 dark:text-gray-400">
+                                                            Based on {{ $task['rating_count'] }} {{ $task['rating_count'] === 1 ? 'rating' : 'ratings' }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                @else
+                                                <div class="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                    </svg>
+                                                    <span class="text-sm">No ratings yet</span>
+                                                </div>
+                                                @endif
+
+                                                <!-- User's Own Rating -->
+                                                @if($task['quality_rating'])
+                                                <div class="flex items-center gap-2 pl-3 border-l-2 border-blue-300 dark:border-blue-700">
+                                                    <div class="flex items-center gap-1">
+                                                        <span class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ $task['quality_rating'] }}</span>
+                                                        <span class="text-sm text-gray-600 dark:text-gray-400">/10</span>
+                                                    </div>
+                                                    <div class="flex flex-col">
+                                                        <div class="flex items-center gap-1">
+                                                            @for($i = 1; $i <= 5; $i++)
+                                                                @if($i <= round($task['quality_rating'] / 2))
+                                                                    <svg class="w-4 h-4 text-blue-500" fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                                    </svg>
+                                                                @else
+                                                                    <svg class="w-4 h-4 text-gray-300 dark:text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                                    </svg>
+                                                                @endif
+                                                            @endfor
+                                                        </div>
+                                                        <span class="text-xs text-gray-600 dark:text-gray-400">Your rating</span>
+                                                    </div>
+                                                </div>
+                                                @elseif($task['status'] === 'completed')
+                                                <div class="flex items-center gap-2 pl-3 border-l-2 border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                                    </svg>
+                                                    <span class="text-sm">You haven't rated this task yet</span>
+                                                </div>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @endif
+
                                 <!-- Code Submission Required Badge -->
                                 @if($task['has_code_submission'])
                                 <div class="mb-3">
@@ -294,9 +344,141 @@
                                 @endif
 
                                 <!-- Resources -->
-                                @if($task['resources_links'] && is_array($task['resources_links']) && count($task['resources_links']) > 0)
+                                @php
+                                    // Get new structured resources with language support
+                                    $newResources = $task['resources'] ?? [];
+                                    $legacyResources = $task['resources_links'] ?? [];
+
+                                    // Group new resources by language
+                                    $englishResources = [];
+                                    $arabicResources = [];
+
+                                    if (is_array($newResources) && count($newResources) > 0) {
+                                        foreach ($newResources as $resource) {
+                                            if (isset($resource['language'])) {
+                                                if ($resource['language'] === 'ar') {
+                                                    $arabicResources[] = $resource;
+                                                } else {
+                                                    $englishResources[] = $resource;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    $hasAnyResources = count($englishResources) > 0 || count($arabicResources) > 0 || count($legacyResources) > 0;
+                                @endphp
+
+                                @if($hasAnyResources)
                                 <div class="mb-3">
-                                    <p class="text-sm font-medium text-gray-700 mb-2">📚 Learning Resources:</p>
+                                    <p class="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+                                        📚 Learning Resources
+                                        @if(count($englishResources) > 0 && count($arabicResources) > 0)
+                                        <span class="text-xs text-gray-500">({{ count($englishResources) }} English, {{ count($arabicResources) }} Arabic)</span>
+                                        @endif
+                                    </p>
+
+                                    <!-- English Resources Section -->
+                                    @if(count($englishResources) > 0)
+                                    <div class="mb-4">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <span class="px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded">
+                                                🇬🇧 English
+                                            </span>
+                                            <span class="text-xs text-gray-500">{{ count($englishResources) }} resource(s)</span>
+                                        </div>
+                                        <div class="space-y-2 pl-3 border-l-2 border-blue-200 dark:border-blue-800">
+                                            @foreach($englishResources as $index => $resource)
+                                            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 hover:shadow-sm transition-shadow">
+                                                <a href="{{ $resource['url'] }}" target="_blank" class="flex items-start gap-2 group">
+                                                    <span class="text-lg flex-shrink-0">
+                                                        @if($resource['type'] === 'youtube')
+                                                            🎥
+                                                        @elseif($resource['type'] === 'video')
+                                                            📹
+                                                        @elseif($resource['type'] === 'documentation')
+                                                            📘
+                                                        @elseif($resource['type'] === 'tutorial')
+                                                            📝
+                                                        @elseif($resource['type'] === 'course')
+                                                            🎓
+                                                        @elseif($resource['type'] === 'blog')
+                                                            ✍️
+                                                        @else
+                                                            📖
+                                                        @endif
+                                                    </span>
+                                                    <div class="flex-1 min-w-0">
+                                                        <p class="text-sm font-medium text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 group-hover:underline">
+                                                            {{ $resource['title'] ?: 'Learning Resource' }}
+                                                        </p>
+                                                        @if(!empty($resource['title']))
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">
+                                                            {{ $resource['url'] }}
+                                                        </p>
+                                                        @endif
+                                                    </div>
+                                                    <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                    <!-- Arabic Resources Section -->
+                                    @if(count($arabicResources) > 0)
+                                    <div class="mb-4">
+                                        <div class="flex items-center gap-2 mb-2">
+                                            <span class="px-2 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold rounded">
+                                                🇸🇦 العربية
+                                            </span>
+                                            <span class="text-xs text-gray-500">{{ count($arabicResources) }} مصدر</span>
+                                        </div>
+                                        <div class="space-y-2 pl-3 border-l-2 border-green-200 dark:border-green-800">
+                                            @foreach($arabicResources as $index => $resource)
+                                            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 hover:shadow-sm transition-shadow">
+                                                <a href="{{ $resource['url'] }}" target="_blank" class="flex items-start gap-2 group" dir="rtl">
+                                                    <svg class="w-4 h-4 text-gray-400 group-hover:text-green-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                                    </svg>
+                                                    <div class="flex-1 min-w-0">
+                                                        <p class="text-sm font-medium text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 group-hover:underline">
+                                                            {{ $resource['title'] ?: 'مصدر تعليمي' }}
+                                                        </p>
+                                                        @if(!empty($resource['title']))
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5" dir="ltr">
+                                                            {{ $resource['url'] }}
+                                                        </p>
+                                                        @endif
+                                                    </div>
+                                                    <span class="text-lg flex-shrink-0">
+                                                        @if($resource['type'] === 'youtube')
+                                                            🎥
+                                                        @elseif($resource['type'] === 'video')
+                                                            📹
+                                                        @elseif($resource['type'] === 'documentation')
+                                                            📘
+                                                        @elseif($resource['type'] === 'tutorial')
+                                                            📝
+                                                        @elseif($resource['type'] === 'course')
+                                                            🎓
+                                                        @elseif($resource['type'] === 'blog')
+                                                            ✍️
+                                                        @else
+                                                            📖
+                                                        @endif
+                                                    </span>
+                                                </a>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                    @endif
+
+                                    <!-- Legacy Resources (Old Format) -->
+                                    @if(is_array($legacyResources) && count($legacyResources) > 0)
                                     <div class="flex flex-col gap-1.5">
                                         @php
                                             $sortedResources = collect($task['resources_links'])->map(function($resource) {
@@ -485,7 +667,20 @@
                                         </div>
                                         @endif
                                     </div>
+                                    @endif
+                                    <!-- End Legacy Resources -->
+
                                 </div>
+                                @endif
+                                <!-- End All Resources -->
+
+                                <!-- Ask Question -->
+                                @if(!$task['is_locked'])
+                                    <livewire:student.question-box
+                                        :taskId="$task['id']"
+                                        :enrollmentId="$activeEnrollment->id"
+                                        :key="'question-box-' . $task['id']"
+                                    />
                                 @endif
 
                                 <!-- Quick Tips -->
@@ -514,13 +709,6 @@
                                 </div>
                                 @endif
 
-                                <!-- Quality Rating Display -->
-                                @if($task['quality_rating'])
-                                <div class="mb-3">
-                                    <span class="text-sm font-medium text-gray-700">Quality Rating: </span>
-                                    <span class="text-yellow-600 font-semibold">{{ $task['quality_rating'] }}/10</span>
-                                </div>
-                                @endif
 
                                 <!-- Self Notes Display -->
                                 @if($task['self_notes'])

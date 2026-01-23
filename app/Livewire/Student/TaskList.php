@@ -158,6 +158,17 @@ class TaskList extends Component
                 $codeSubmitted = \App\Models\CodeSubmission::where('task_completion_id', $completion->id)->exists();
             }
 
+            // Get task rating statistics
+            $ratingStats = \App\Models\TaskCompletion::where('task_id', $task->id)
+                ->whereNotNull('quality_rating')
+                ->selectRaw('AVG(quality_rating) as avg_rating, COUNT(*) as rating_count')
+                ->first();
+
+            $avgRating = $ratingStats && $ratingStats->rating_count > 0
+                ? round($ratingStats->avg_rating, 1)
+                : null;
+            $ratingCount = $ratingStats ? $ratingStats->rating_count : 0;
+
             return [
                 'id' => $task->id,
                 'title' => $task->title,
@@ -176,6 +187,9 @@ class TaskList extends Component
                 'time_spent_minutes' => $completion?->time_spent_minutes,
                 'self_notes' => $completion?->self_notes,
                 'is_locked' => $isLocked,
+                // Rating statistics
+                'avg_quality_rating' => $avgRating,
+                'rating_count' => $ratingCount,
                 // Phase 1 enhancements
                 'learning_objectives' => $task->learning_objectives,
                 'skills_gained' => $task->skills_gained,

@@ -26,6 +26,7 @@ class Task extends Model
         'category',
         'order',
         'resources_links',
+        'resources', // New structured resources with language support
         'has_code_submission',
         'has_quality_rating',
         // Enhanced fields for task splitting
@@ -63,6 +64,7 @@ class Task extends Model
             'estimated_time_minutes' => 'integer',
             'order' => 'integer',
             'resources_links' => 'array',
+            'resources' => 'array', // Structured resources with language support
             'has_code_submission' => 'boolean',
             'has_quality_rating' => 'boolean',
             // Task splitting fields
@@ -142,21 +144,6 @@ class Task extends Model
         return $this->hasOne(TaskChecklist::class)->where('is_active', true);
     }
 
-    /**
-     * Get the quizzes for this task.
-     */
-    public function quizzes(): HasMany
-    {
-        return $this->hasMany(TaskQuiz::class);
-    }
-
-    /**
-     * Get the active quiz for this task.
-     */
-    public function activeQuiz()
-    {
-        return $this->hasOne(TaskQuiz::class)->where('is_active', true);
-    }
 
     /**
      * Get the code examples for this task.
@@ -343,5 +330,71 @@ class Task extends Model
         return Task::where('roadmap_id', $this->roadmap_id)
             ->whereJsonContains('recommended_tasks', $this->id)
             ->get();
+    }
+
+    /**
+     * Get resources filtered by language.
+     *
+     * @param string $language Language code ('en', 'ar', 'both')
+     * @return array
+     */
+    public function getResourcesByLanguage(string $language = 'both'): array
+    {
+        if (!$this->resources || !is_array($this->resources)) {
+            return [];
+        }
+
+        if ($language === 'both') {
+            return $this->resources;
+        }
+
+        return array_filter($this->resources, function($resource) use ($language) {
+            return isset($resource['language']) && $resource['language'] === $language;
+        });
+    }
+
+    /**
+     * Get resources grouped by language.
+     *
+     * @return array ['en' => [], 'ar' => []]
+     */
+    public function getResourcesGroupedByLanguage(): array
+    {
+        if (!$this->resources || !is_array($this->resources)) {
+            return ['en' => [], 'ar' => []];
+        }
+
+        $grouped = ['en' => [], 'ar' => []];
+
+        foreach ($this->resources as $resource) {
+            $lang = $resource['language'] ?? 'en';
+            if (!isset($grouped[$lang])) {
+                $grouped[$lang] = [];
+            }
+            $grouped[$lang][] = $resource;
+        }
+
+        return $grouped;
+    }
+
+    /**
+     * Check if task has resources in a specific language.
+     *
+     * @param string $language Language code ('en' or 'ar')
+     * @return bool
+     */
+    public function hasResourcesInLanguage(string $language): bool
+    {
+        if (!$this->resources || !is_array($this->resources)) {
+            return false;
+        }
+
+        foreach ($this->resources as $resource) {
+            if (isset($resource['language']) && $resource['language'] === $language) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

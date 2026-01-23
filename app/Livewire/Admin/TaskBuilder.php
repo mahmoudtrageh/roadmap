@@ -42,7 +42,13 @@ class TaskBuilder extends Component
     #[Validate('nullable|array')]
     public $resources_links = [];
 
+    #[Validate('nullable|array')]
+    public $resources = [];
+
     public $resourceLink = '';
+    public $resourceTitle = '';
+    public $resourceLanguage = 'en';
+    public $resourceType = 'article';
 
     #[Validate('boolean')]
     public $has_code_submission = false;
@@ -96,7 +102,7 @@ class TaskBuilder extends Component
 
     public function createNew(): void
     {
-        $this->reset(['title', 'description', 'day_number', 'estimated_time_minutes', 'task_type', 'category', 'order', 'resources_links', 'resourceLink', 'has_code_submission', 'has_quality_rating', 'taskId', 'isEditing']);
+        $this->reset(['title', 'description', 'day_number', 'estimated_time_minutes', 'task_type', 'category', 'order', 'resources_links', 'resources', 'resourceLink', 'resourceTitle', 'resourceLanguage', 'resourceType', 'has_code_submission', 'has_quality_rating', 'taskId', 'isEditing']);
 
         // Set default order to be after the last task
         $lastTask = Task::where('roadmap_id', $this->roadmapId)->orderBy('order', 'desc')->first();
@@ -118,6 +124,7 @@ class TaskBuilder extends Component
         $this->category = $task->category;
         $this->order = $task->order;
         $this->resources_links = $task->resources_links ?? [];
+        $this->resources = $task->resources ?? [];
         $this->has_code_submission = $task->has_code_submission;
         $this->has_quality_rating = $task->has_quality_rating;
         $this->isEditing = true;
@@ -138,6 +145,30 @@ class TaskBuilder extends Component
         $this->resources_links = array_values($this->resources_links);
     }
 
+    public function addResource(): void
+    {
+        if (!empty($this->resourceLink)) {
+            $this->resources[] = [
+                'url' => $this->resourceLink,
+                'title' => $this->resourceTitle,
+                'language' => $this->resourceLanguage,
+                'type' => $this->resourceType,
+            ];
+
+            // Reset form fields
+            $this->resourceLink = '';
+            $this->resourceTitle = '';
+            $this->resourceLanguage = 'en';
+            $this->resourceType = 'article';
+        }
+    }
+
+    public function removeResource($index): void
+    {
+        unset($this->resources[$index]);
+        $this->resources = array_values($this->resources);
+    }
+
     public function save(): void
     {
         $this->validate();
@@ -153,6 +184,7 @@ class TaskBuilder extends Component
                 'category' => $this->category,
                 'order' => $this->order,
                 'resources_links' => $this->resources_links,
+                'resources' => $this->resources,
                 'has_code_submission' => $this->has_code_submission,
                 'has_quality_rating' => $this->has_quality_rating,
             ];
@@ -166,7 +198,7 @@ class TaskBuilder extends Component
                 session()->flash('message', 'Task created successfully.');
             }
 
-            $this->reset(['title', 'description', 'day_number', 'estimated_time_minutes', 'task_type', 'category', 'order', 'resources_links', 'resourceLink', 'has_code_submission', 'has_quality_rating', 'taskId', 'isEditing', 'showForm']);
+            $this->reset(['title', 'description', 'day_number', 'estimated_time_minutes', 'task_type', 'category', 'order', 'resources_links', 'resources', 'resourceLink', 'resourceTitle', 'resourceLanguage', 'resourceType', 'has_code_submission', 'has_quality_rating', 'taskId', 'isEditing', 'showForm']);
             $this->roadmap = Roadmap::with('tasks')->findOrFail($this->roadmapId);
             $this->resetPage();
         } catch (\Exception $e) {
@@ -176,7 +208,7 @@ class TaskBuilder extends Component
 
     public function cancelEdit(): void
     {
-        $this->reset(['title', 'description', 'day_number', 'estimated_time_minutes', 'task_type', 'category', 'order', 'resources_links', 'resourceLink', 'has_code_submission', 'has_quality_rating', 'taskId', 'isEditing', 'showForm']);
+        $this->reset(['title', 'description', 'day_number', 'estimated_time_minutes', 'task_type', 'category', 'order', 'resources_links', 'resources', 'resourceLink', 'resourceTitle', 'resourceLanguage', 'resourceType', 'has_code_submission', 'has_quality_rating', 'taskId', 'isEditing', 'showForm']);
     }
 
     public function delete($taskId): void
