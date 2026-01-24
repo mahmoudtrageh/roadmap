@@ -25,10 +25,17 @@ class User extends Authenticatable
         'password',
         'role',
         'avatar',
+        'learning_style',
         'current_streak',
         'longest_streak',
         'last_activity_date',
         'daily_study_hours',
+        'total_points',
+        'current_level',
+        'level_title',
+        'theme_preference',
+        'show_on_leaderboard',
+        'leaderboard_display_name',
     ];
 
     /**

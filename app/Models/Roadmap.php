@@ -24,6 +24,8 @@ class Roadmap extends Model
         'image_path',
         'order',
         'prerequisite_roadmap_id',
+        'average_rating',
+        'rating_count',
     ];
 
     protected $casts = [
@@ -56,6 +58,11 @@ class Roadmap extends Model
     public function enrollments(): HasMany
     {
         return $this->hasMany(RoadmapEnrollment::class);
+    }
+
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(RoadmapRating::class);
     }
 
     public function notes(): HasMany

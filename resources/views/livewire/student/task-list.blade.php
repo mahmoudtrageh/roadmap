@@ -7,12 +7,41 @@
         @endif
 
         @if($activeEnrollment)
+        <!-- Completed Roadmap Banner -->
+        @if($activeEnrollment->status === 'completed')
+        <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg p-6 mb-6 text-white">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="text-3xl">🎉</span>
+                        <h3 class="text-xl font-bold">Roadmap Completed!</h3>
+                    </div>
+                    <p class="text-green-100">You've successfully completed {{ $activeEnrollment->roadmap->title }}</p>
+                </div>
+                <div class="flex gap-3">
+                    <a href="{{ route('student.certificates') }}" class="px-4 py-2 bg-white text-green-600 hover:bg-green-50 font-semibold rounded-lg transition-colors">
+                        View Certificate
+                    </a>
+                    <a href="{{ route('student.roadmaps') }}" class="px-4 py-2 bg-green-700 hover:bg-green-800 text-white font-semibold rounded-lg transition-colors">
+                        Next Roadmap →
+                    </a>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6">
                 <!-- Header -->
                 <div class="mb-6">
                     <h2 class="text-2xl font-bold text-gray-800">{{ $activeEnrollment->roadmap->title }}</h2>
-                    <p class="text-gray-600 mt-1">Day {{ $currentDay }} of {{ $activeEnrollment->roadmap->duration_days }}</p>
+                    <p class="text-gray-600 mt-1">
+                        @if($activeEnrollment->status === 'completed')
+                            <span class="text-green-600 font-semibold">✓ Completed</span> - Viewing tasks
+                        @else
+                            Day {{ $currentDay }} of {{ $activeEnrollment->roadmap->duration_days }}
+                        @endif
+                    </p>
                 </div>
 
                 <!-- Day Navigation -->
@@ -370,12 +399,19 @@
 
                                 @if($hasAnyResources)
                                 <div class="mb-3">
-                                    <p class="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
-                                        📚 Learning Resources
-                                        @if(count($englishResources) > 0 && count($arabicResources) > 0)
-                                        <span class="text-xs text-gray-500">({{ count($englishResources) }} English, {{ count($arabicResources) }} Arabic)</span>
+                                    <div class="flex items-center justify-between mb-3">
+                                        <p class="text-sm font-medium text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                                            📚 Learning Resources
+                                            @if(count($englishResources) > 0 && count($arabicResources) > 0)
+                                            <span class="text-xs text-gray-500">({{ count($englishResources) }} English, {{ count($arabicResources) }} Arabic)</span>
+                                            @endif
+                                        </p>
+                                        @if(auth()->user()->learning_style)
+                                        <span class="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded-full font-medium">
+                                            ✨ Personalized for {{ ucfirst(str_replace('_', '/', auth()->user()->learning_style)) }}
+                                        </span>
                                         @endif
-                                    </p>
+                                    </div>
 
                                     <!-- English Resources Section -->
                                     @if(count($englishResources) > 0)
@@ -817,10 +853,12 @@
         </div>
         @else
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-6 text-center">
-                <p class="text-gray-600 text-lg mb-4">You don't have an active roadmap enrollment.</p>
-                <a href="{{ route('student.roadmaps') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium">
-                    Browse Roadmaps
+            <div class="p-12 text-center">
+                <div class="text-6xl mb-4">📚</div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-2">No Active Roadmap</h3>
+                <p class="text-gray-600 text-lg mb-6">Start your learning journey by enrolling in a roadmap!</p>
+                <a href="{{ route('student.roadmaps') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                    Browse Roadmaps →
                 </a>
             </div>
         </div>

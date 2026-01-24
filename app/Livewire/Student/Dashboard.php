@@ -3,6 +3,8 @@
 namespace App\Livewire\Student;
 
 use App\Services\ProgressService;
+use App\Services\PointsService;
+use App\Services\ScheduleService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
@@ -19,23 +21,40 @@ class Dashboard extends Component
     public int $totalTimeSpent = 0;
     public array $progressStats = [];
     public $recentJobs = [];
+    public int $pointsToNextLevel = 0;
+    public float $levelProgress = 0;
+    public bool $showPauseModal = false;
+    public string $pauseReason = '';
+    public array $scheduleAdherence = [];
 
     protected ProgressService $progressService;
+    protected PointsService $pointsService;
+    protected ScheduleService $scheduleService;
 
-    public function boot(ProgressService $progressService): void
+    public function boot(ProgressService $progressService, PointsService $pointsService, ScheduleService $scheduleService): void
     {
         $this->progressService = $progressService;
+        $this->pointsService = $pointsService;
+        $this->scheduleService = $scheduleService;
     }
 
     public function mount(): void
     {
         $user = Auth::user();
 
-        // Get active enrollment
+        // Get active enrollment (or most recent if none active)
         $this->activeEnrollment = $user->enrollments()
             ->with('roadmap')
             ->where('status', 'active')
             ->first();
+
+        // If no active enrollment, get the most recent completed one
+        if (!$this->activeEnrollment) {
+            $this->activeEnrollment = $user->enrollments()
+                ->with('roadmap')
+                ->latest('updated_at')
+                ->first();
+        }
 
         // Calculate tasks completed today
         $this->tasksCompletedToday = $user->taskCompletions()
@@ -72,6 +91,53 @@ class Dashboard extends Component
             ->take(3)
             ->get()
             ->toArray();
+
+        // Calculate level progress
+        $this->pointsToNextLevel = $this->pointsService->getPointsToNextLevel($user) ?? 0;
+        $this->levelProgress = $this->pointsService->getLevelProgress($user);
+
+        // Check schedule adherence if enrollment has auto_schedule
+        if ($this->activeEnrollment && $this->activeEnrollment->auto_schedule) {
+            $this->scheduleAdherence = $this->scheduleService->checkScheduleAdherence($this->activeEnrollment);
+        }
+    }
+
+    public function openPauseModal()
+    {
+        $this->showPauseModal = true;
+    }
+
+    public function closePauseModal()
+    {
+        $this->showPauseModal = false;
+        $this->pauseReason = '';
+    }
+
+    public function pauseEnrollment()
+    {
+        if (!$this->activeEnrollment) {
+            session()->flash('error', 'No active enrollment to pause.');
+            return;
+        }
+
+        $this->activeEnrollment->pause($this->pauseReason);
+
+        session()->flash('message', 'Enrollment paused successfully. You can resume anytime.');
+        $this->closePauseModal();
+        $this->mount(); // Reload data
+    }
+
+    public function resumeEnrollment()
+    {
+        if (!$this->activeEnrollment) {
+            session()->flash('error', 'No enrollment to resume.');
+            return;
+        }
+
+        $this->activeEnrollment->resume();
+
+        session()->flash('message', 'Welcome back! Your enrollment has been resumed.');
+        $this->mount(); // Reload data
     }
 
     public function render(): View

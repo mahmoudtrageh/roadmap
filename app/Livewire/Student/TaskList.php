@@ -4,7 +4,9 @@ namespace App\Livewire\Student;
 
 use App\Models\Task;
 use App\Models\TaskCompletion;
+use App\Services\PointsService;
 use App\Services\ProgressService;
+use App\Services\StreakService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
@@ -25,8 +27,11 @@ class TaskList extends Component
     public string $selfNotes = '';
     public ?int $timeSpentMinutes = null;
     public bool $showCompletionModal = false;
+    public bool $showCompleteAllModal = false;
 
     protected ProgressService $progressService;
+    protected PointsService $pointsService;
+    protected StreakService $streakService;
 
     protected $rules = [
         'status' => 'required|in:in_progress,completed,skipped',
@@ -35,9 +40,11 @@ class TaskList extends Component
         'timeSpentMinutes' => 'nullable|integer|min:0',
     ];
 
-    public function boot(ProgressService $progressService): void
+    public function boot(ProgressService $progressService, PointsService $pointsService, StreakService $streakService): void
     {
         $this->progressService = $progressService;
+        $this->pointsService = $pointsService;
+        $this->streakService = $streakService;
     }
 
     public function mount(): void
@@ -49,6 +56,14 @@ class TaskList extends Component
             ->with('roadmap.tasks')
             ->where('status', 'active')
             ->first();
+
+        // If no active enrollment, try to get most recent for viewing
+        if (!$this->activeEnrollment) {
+            $this->activeEnrollment = $user->enrollments()
+                ->with('roadmap.tasks')
+                ->latest('updated_at')
+                ->first();
+        }
 
         if ($this->activeEnrollment) {
             $this->currentDay = $this->activeEnrollment->current_day ?? 1;
@@ -169,6 +184,10 @@ class TaskList extends Component
                 : null;
             $ratingCount = $ratingStats ? $ratingStats->rating_count : 0;
 
+            // Filter resources by user's learning style (Phase 2 enhancement)
+            $learningStyle = Auth::user()->learning_style ?? null;
+            $filteredResources = $task->getResourcesByLearningStyle($learningStyle);
+
             return [
                 'id' => $task->id,
                 'title' => $task->title,
@@ -178,6 +197,7 @@ class TaskList extends Component
                 'category' => $task->category,
                 'order' => $task->order,
                 'resources_links' => $task->resources_links,
+                'resources' => $filteredResources, // Personalized by learning style
                 'has_code_submission' => $task->has_code_submission,
                 'code_submitted' => $codeSubmitted,
                 'has_quality_rating' => $task->has_quality_rating,
@@ -294,14 +314,37 @@ class TaskList extends Component
 
         $completion->save();
 
+        // Award points and update streak if task completed
+        if ($this->status === 'completed') {
+            $user = Auth::user();
+            $task = Task::find($this->selectedTaskId);
+
+            // Award points for task completion
+            $pointsEarned = $this->pointsService->awardTaskCompletion(
+                $user,
+                $task->estimated_time_category ?? 'moderate',
+                $this->qualityRating
+            );
+
+            // Update streak
+            $this->streakService->updateStreak($user);
+
+            // Award streak points if applicable
+            if ($user->current_streak > 0) {
+                $this->pointsService->awardStreakMaintenance($user, $user->current_streak);
+            }
+
+            session()->flash('message', 'Task completed! You earned ' . $pointsEarned . ' points!');
+        } else {
+            session()->flash('message', 'Task status updated successfully!');
+        }
+
         // Check if enrollment should be marked as complete
         $this->progressService->checkAndMarkComplete($this->activeEnrollment);
 
         // Reload tasks
         $this->loadTasksForCurrentDay();
         $this->closeCompletionModal();
-
-        session()->flash('message', 'Task status updated successfully!');
     }
 
     public function completeTask(int $taskId): void
@@ -334,6 +377,87 @@ class TaskList extends Component
         // All days are accessible for exploration
         // Tasks within days remain locked until previous tasks are completed
         return true;
+    }
+
+    public function openCompleteAllModal(): void
+    {
+        $this->showCompleteAllModal = true;
+    }
+
+    public function closeCompleteAllModal(): void
+    {
+        $this->showCompleteAllModal = false;
+    }
+
+    public function completeAllTasks(): void
+    {
+        if (!$this->activeEnrollment) {
+            session()->flash('error', 'No active enrollment found.');
+            return;
+        }
+
+        $user = Auth::user();
+        $roadmap = $this->activeEnrollment->roadmap;
+
+        // Get all tasks in the roadmap
+        $allTasks = $roadmap->tasks()->orderBy('day_number')->orderBy('order')->get();
+
+        $completedCount = 0;
+        $totalPointsEarned = 0;
+
+        foreach ($allTasks as $task) {
+            // Check if task is already completed
+            $existingCompletion = TaskCompletion::where('task_id', $task->id)
+                ->where('student_id', $user->id)
+                ->where('enrollment_id', $this->activeEnrollment->id)
+                ->first();
+
+            if ($existingCompletion && $existingCompletion->status === 'completed') {
+                continue; // Skip already completed tasks
+            }
+
+            // Create or update task completion
+            $completion = TaskCompletion::updateOrCreate(
+                [
+                    'task_id' => $task->id,
+                    'student_id' => $user->id,
+                    'enrollment_id' => $this->activeEnrollment->id,
+                ],
+                [
+                    'status' => 'completed',
+                    'completed_at' => now(),
+                    'started_at' => $existingCompletion->started_at ?? now(),
+                    'time_spent_minutes' => $existingCompletion->time_spent_minutes ?? 0,
+                    'quality_rating' => 7, // Default rating
+                ]
+            );
+
+            // Award points for task completion
+            $points = $this->pointsService->awardTaskCompletion(
+                $user,
+                $task->estimated_time_category ?? 'moderate',
+                7 // Default quality rating
+            );
+
+            $totalPointsEarned += $points;
+            $completedCount++;
+        }
+
+        // Update streak
+        $this->streakService->updateStreak($user);
+
+        // Award streak points
+        if ($user->current_streak > 0) {
+            $this->pointsService->awardStreakMaintenance($user, $user->current_streak);
+        }
+
+        // Check if roadmap should be marked as complete and generate certificate
+        $this->progressService->checkAndMarkComplete($this->activeEnrollment);
+
+        session()->flash('message', "🎉 Completed {$completedCount} tasks! You earned {$totalPointsEarned} points!");
+
+        $this->closeCompleteAllModal();
+        $this->mount(); // Reload all data
     }
 
     public function render(): View

@@ -397,4 +397,88 @@ class Task extends Model
 
         return false;
     }
+
+    /**
+     * Get resources filtered and sorted by learning style.
+     * Prioritizes resources matching the learning style, then shows others.
+     *
+     * @param string|null $learningStyle Learning style ('visual', 'auditory', 'reading_writing', 'kinesthetic')
+     * @return array
+     */
+    public function getResourcesByLearningStyle(?string $learningStyle = null): array
+    {
+        if (!$this->resources || !is_array($this->resources)) {
+            return [];
+        }
+
+        if (!$learningStyle) {
+            return $this->resources;
+        }
+
+        $typeMapping = [
+            'visual' => ['video', 'diagram', 'image', 'infographic', 'visualization'],
+            'auditory' => ['audio', 'podcast', 'discussion', 'lecture', 'voice'],
+            'reading_writing' => ['article', 'documentation', 'blog', 'book', 'text', 'tutorial'],
+            'kinesthetic' => ['interactive', 'practice', 'exercise', 'hands-on', 'lab', 'playground', 'coding'],
+        ];
+
+        $preferredTypes = $typeMapping[$learningStyle] ?? [];
+
+        $prioritized = [];
+        $others = [];
+
+        foreach ($this->resources as $resource) {
+            $resourceType = strtolower($resource['type'] ?? '');
+            $isPreferred = false;
+
+            foreach ($preferredTypes as $type) {
+                if (str_contains($resourceType, $type)) {
+                    $isPreferred = true;
+                    break;
+                }
+            }
+
+            if ($isPreferred) {
+                $prioritized[] = $resource;
+            } else {
+                $others[] = $resource;
+            }
+        }
+
+        return array_merge($prioritized, $others);
+    }
+
+    /**
+     * Get resources filtered strictly by learning style (only matching resources).
+     *
+     * @param string $learningStyle Learning style
+     * @return array
+     */
+    public function getResourcesForLearningStyleOnly(string $learningStyle): array
+    {
+        if (!$this->resources || !is_array($this->resources)) {
+            return [];
+        }
+
+        $typeMapping = [
+            'visual' => ['video', 'diagram', 'image', 'infographic', 'visualization'],
+            'auditory' => ['audio', 'podcast', 'discussion', 'lecture', 'voice'],
+            'reading_writing' => ['article', 'documentation', 'blog', 'book', 'text', 'tutorial'],
+            'kinesthetic' => ['interactive', 'practice', 'exercise', 'hands-on', 'lab', 'playground', 'coding'],
+        ];
+
+        $preferredTypes = $typeMapping[$learningStyle] ?? [];
+
+        return array_filter($this->resources, function($resource) use ($preferredTypes) {
+            $resourceType = strtolower($resource['type'] ?? '');
+
+            foreach ($preferredTypes as $type) {
+                if (str_contains($resourceType, $type)) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
+    }
 }

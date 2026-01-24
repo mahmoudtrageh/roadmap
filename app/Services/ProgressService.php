@@ -165,6 +165,15 @@ class ProgressService
             $enrollment->completed_at = now();
             $enrollment->save();
 
+            // Generate certificate - wrapped in try-catch to prevent failures from breaking completion
+            try {
+                $certificateService = app(CertificateService::class);
+                $certificateService->generateCertificate($enrollment->student, $enrollment->roadmap);
+            } catch (\Exception $e) {
+                // Log the error but don't prevent completion
+                \Log::error('Failed to generate certificate for enrollment ' . $enrollment->id . ': ' . $e->getMessage());
+            }
+
             return true;
         }
 

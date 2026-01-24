@@ -50,16 +50,40 @@
                                     {{ ucfirst($roadmap->difficulty_level) }}
                                 </span>
                             </div>
+                            @if($roadmap->rating_count > 0)
+                            <div class="flex items-center gap-2">
+                                <div class="flex items-center">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <svg class="w-5 h-5 {{ $i <= round($roadmap->average_rating) ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                        </svg>
+                                    @endfor
+                                </div>
+                                <span class="text-sm font-medium text-gray-700">{{ number_format($roadmap->average_rating, 1) }}</span>
+                                <span class="text-sm text-gray-500">({{ $roadmap->rating_count }})</span>
+                            </div>
+                            @endif
                         </div>
                     </div>
 
                     <div class="ml-6">
                         @if($isEnrolled)
-                            <div class="text-center">
-                                <span class="block mb-2 text-green-600 font-semibold">✓ Enrolled</span>
-                                <a href="{{ route('student.tasks') }}" class="block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium">
+                            <div class="flex flex-col gap-2">
+                                <span class="block text-green-600 font-semibold text-center">✓ Enrolled</span>
+                                <a href="{{ route('student.tasks') }}" class="block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium text-center">
                                     Go to My Tasks
                                 </a>
+                                @if($enrollment->status === 'completed')
+                                <button
+                                    wire:click="openRatingModal"
+                                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-lg font-medium flex items-center justify-center gap-2"
+                                >
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                    </svg>
+                                    {{ $existingRating ? 'Update Rating' : 'Rate Roadmap' }}
+                                </button>
+                                @endif
                             </div>
                         @elseif($isLocked)
                             <div class="text-center">
@@ -188,5 +212,110 @@
                 @endif
             </div>
         </div>
+
+        <!-- Student Reviews Section -->
+        @if($ratings->count() > 0)
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-6">
+            <div class="p-6">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Student Reviews</h3>
+                <div class="space-y-4">
+                    @foreach($ratings as $rating)
+                    <div class="border-b border-gray-200 pb-4 last:border-b-0">
+                        <div class="flex items-start gap-4">
+                            @if($rating->student->avatar)
+                                <img src="{{ Storage::url($rating->student->avatar) }}" alt="{{ $rating->student->name }}" class="w-10 h-10 rounded-full">
+                            @else
+                                <div class="w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">
+                                    {{ substr($rating->student->name, 0, 1) }}
+                                </div>
+                            @endif
+                            <div class="flex-1">
+                                <div class="flex items-center justify-between mb-1">
+                                    <h4 class="font-semibold text-gray-900">{{ $rating->student->name }}</h4>
+                                    <div class="flex items-center">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <svg class="w-4 h-4 {{ $i <= $rating->rating ? 'text-yellow-400' : 'text-gray-300' }}" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                                            </svg>
+                                        @endfor
+                                    </div>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-2">{{ $rating->created_at->diffForHumans() }}</p>
+                                <p class="text-gray-700">{{ $rating->review }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
+
+    <!-- Rating Modal -->
+    @if($showRatingModal)
+    <div class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+            <div class="bg-gradient-to-r from-yellow-500 to-orange-500 px-6 py-4 text-white rounded-t-lg">
+                <h2 class="text-xl font-bold">⭐ Rate This Roadmap</h2>
+            </div>
+
+            <form wire:submit.prevent="submitRating" class="p-6">
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                        How would you rate this roadmap?
+                    </label>
+                    <div class="flex items-center justify-center gap-2">
+                        @for($i = 1; $i <= 5; $i++)
+                        <button
+                            type="button"
+                            wire:click="$set('rating', {{ $i }})"
+                            class="transition-transform hover:scale-110"
+                        >
+                            <svg class="w-12 h-12 {{ $rating >= $i ? 'text-yellow-400' : 'text-gray-300' }} hover:text-yellow-400 cursor-pointer" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                            </svg>
+                        </button>
+                        @endfor
+                    </div>
+                    @error('rating')
+                        <p class="text-red-500 text-xs mt-2 text-center">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="mb-6">
+                    <label for="review" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Share your experience (optional)
+                    </label>
+                    <textarea
+                        wire:model="review"
+                        id="review"
+                        rows="4"
+                        class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="What did you like? What could be improved?"
+                    ></textarea>
+                    @error('review')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="flex justify-between gap-3">
+                    <button
+                        type="button"
+                        wire:click="closeRatingModal"
+                        class="flex-1 px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 font-medium border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        type="submit"
+                        class="flex-1 bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                    >
+                        Submit Rating
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    @endif
 </div>

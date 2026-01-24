@@ -19,6 +19,12 @@ class RoadmapView extends Component
     public $lockReason = '';
     public $hasActiveEnrollment = false;
 
+    // Rating properties
+    public bool $showRatingModal = false;
+    public int $rating = 0;
+    public string $review = '';
+    public $existingRating = null;
+
     public function mount($roadmapId): void
     {
         $this->roadmapId = $roadmapId;
@@ -35,6 +41,18 @@ class RoadmapView extends Component
 
         // Check if roadmap is locked
         $this->checkIfLocked();
+
+        // Load existing rating if user has completed this roadmap
+        if ($this->isEnrolled && $this->enrollment->status === 'completed') {
+            $this->existingRating = \App\Models\RoadmapRating::where('student_id', Auth::id())
+                ->where('roadmap_id', $roadmapId)
+                ->first();
+
+            if ($this->existingRating) {
+                $this->rating = $this->existingRating->rating;
+                $this->review = $this->existingRating->review ?? '';
+            }
+        }
     }
 
     private function checkIfLocked(): void
@@ -75,6 +93,24 @@ class RoadmapView extends Component
             return;
         }
 
+        // Check subscription requirement (first roadmap is free, 2nd+ requires subscription)
+        $completedRoadmapsCount = RoadmapEnrollment::where('student_id', Auth::id())
+            ->where('status', 'completed')
+            ->count();
+
+        // If user has completed at least one roadmap, they need an active subscription
+        if ($completedRoadmapsCount >= 1) {
+            $activeSubscription = \App\Models\Subscription::where('student_id', Auth::id())
+                ->where('status', 'active')
+                ->where('expires_at', '>', now())
+                ->first();
+
+            if (!$activeSubscription) {
+                session()->flash('error', 'You need an active subscription to enroll in additional roadmaps. The first roadmap is free!');
+                return redirect()->route('student.subscription');
+            }
+        }
+
         // Check if roadmap has prerequisite
         if ($this->roadmap->prerequisite_roadmap_id) {
             $prerequisiteCompleted = RoadmapEnrollment::where('student_id', Auth::id())
@@ -110,10 +146,57 @@ class RoadmapView extends Component
         return redirect()->route('student.tasks');
     }
 
+    public function openRatingModal()
+    {
+        $this->showRatingModal = true;
+    }
+
+    public function closeRatingModal()
+    {
+        $this->showRatingModal = false;
+    }
+
+    public function submitRating()
+    {
+        $this->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'review' => 'nullable|string|max:1000',
+        ]);
+
+        if (!$this->isEnrolled || $this->enrollment->status !== 'completed') {
+            session()->flash('error', 'You must complete this roadmap before rating it.');
+            return;
+        }
+
+        \App\Models\RoadmapRating::updateOrCreate(
+            [
+                'student_id' => Auth::id(),
+                'roadmap_id' => $this->roadmapId,
+            ],
+            [
+                'rating' => $this->rating,
+                'review' => $this->review,
+            ]
+        );
+
+        session()->flash('message', 'Thank you for your rating!');
+        $this->closeRatingModal();
+        $this->mount($this->roadmapId); // Reload data
+    }
+
     public function render()
     {
+        // Load ratings for display
+        $ratings = \App\Models\RoadmapRating::with('student')
+            ->where('roadmap_id', $this->roadmapId)
+            ->whereNotNull('review')
+            ->latest()
+            ->take(5)
+            ->get();
+
         return view('livewire.student.roadmap-view', [
             'tasksByDay' => $this->tasksByDay,
+            'ratings' => $ratings,
         ]);
     }
 }

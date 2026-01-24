@@ -47,6 +47,84 @@
             @endif
         </div>
 
+        @if($user->role === 'student')
+        <!-- Learning Style -->
+        <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+            <h3 class="text-base font-semibold text-gray-900 dark:text-gray-100 mb-4">Learning Preferences</h3>
+
+            <div class="mb-6">
+                <x-input-label for="learning_style" :value="__('Learning Style')" />
+                <select
+                    id="learning_style"
+                    name="learning_style"
+                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
+                >
+                    <option value="visual" {{ old('learning_style', $user->learning_style) === 'visual' ? 'selected' : '' }}>
+                        Visual (Videos, Diagrams, Images)
+                    </option>
+                    <option value="auditory" {{ old('learning_style', $user->learning_style) === 'auditory' ? 'selected' : '' }}>
+                        Auditory (Podcasts, Discussions, Audio)
+                    </option>
+                    <option value="reading_writing" {{ old('learning_style', $user->learning_style) === 'reading_writing' ? 'selected' : '' }}>
+                        Reading/Writing (Articles, Documentation, Text)
+                    </option>
+                    <option value="kinesthetic" {{ old('learning_style', $user->learning_style) === 'kinesthetic' ? 'selected' : '' }}>
+                        Kinesthetic (Hands-on, Interactive, Practice)
+                    </option>
+                </select>
+                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                    Choose your preferred learning style to personalize content recommendations
+                </p>
+                <x-input-error class="mt-2" :messages="$errors->get('learning_style')" />
+            </div>
+        </div>
+
+        <!-- Leaderboard Settings -->
+        <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+            <h3 class="text-base font-semibold text-gray-900 dark:text-gray-100 mb-4">Leaderboard Settings</h3>
+
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <div class="flex items-center h-5">
+                        <input
+                            id="show_on_leaderboard"
+                            name="show_on_leaderboard"
+                            type="checkbox"
+                            value="1"
+                            {{ old('show_on_leaderboard', $user->show_on_leaderboard) ? 'checked' : '' }}
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                        />
+                    </div>
+                    <div class="ml-3">
+                        <label for="show_on_leaderboard" class="font-medium text-gray-700 dark:text-gray-300">
+                            Show me on the leaderboard
+                        </label>
+                        <p class="text-sm text-gray-600 dark:text-gray-400">
+                            Appear in the public leaderboard rankings and compete with other students
+                        </p>
+                    </div>
+                </div>
+
+                <div>
+                    <x-input-label for="leaderboard_display_name" :value="__('Leaderboard Display Name (Optional)')" />
+                    <x-text-input
+                        id="leaderboard_display_name"
+                        name="leaderboard_display_name"
+                        type="text"
+                        class="mt-1 block w-full"
+                        :value="old('leaderboard_display_name', $user->leaderboard_display_name)"
+                        placeholder="Leave blank to use your real name"
+                        autocomplete="off"
+                    />
+                    <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                        Choose a custom name to appear on the leaderboard, or leave blank to use your real name
+                    </p>
+                    <x-input-error class="mt-2" :messages="$errors->get('leaderboard_display_name')" />
+                </div>
+            </div>
+        </div>
+        @endif
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

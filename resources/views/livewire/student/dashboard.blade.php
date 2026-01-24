@@ -1,5 +1,41 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <!-- Learning Style Prompt -->
+        @if(!auth()->user()->learning_style || auth()->user()->learning_style === 'reading_writing')
+        <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg p-6 mb-6 text-white">
+            <div class="flex items-start gap-4">
+                <div class="text-4xl">✨</div>
+                <div class="flex-1">
+                    <h3 class="text-xl font-bold mb-2">Personalize Your Learning Experience</h3>
+                    <p class="text-purple-100 mb-3">
+                        Everyone learns differently! Set your learning style to get personalized resource recommendations that match how you learn best.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+                        <div class="bg-white/10 backdrop-blur rounded-lg p-3">
+                            <div class="font-semibold mb-1">🎥 Visual</div>
+                            <p class="text-xs text-purple-100">Videos, diagrams, images</p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur rounded-lg p-3">
+                            <div class="font-semibold mb-1">🎧 Auditory</div>
+                            <p class="text-xs text-purple-100">Podcasts, discussions, audio</p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur rounded-lg p-3">
+                            <div class="font-semibold mb-1">📚 Reading/Writing</div>
+                            <p class="text-xs text-purple-100">Articles, docs, text</p>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur rounded-lg p-3">
+                            <div class="font-semibold mb-1">⚡ Kinesthetic</div>
+                            <p class="text-xs text-purple-100">Hands-on, interactive, practice</p>
+                        </div>
+                    </div>
+                    <a href="{{ route('profile.edit') }}" class="inline-block bg-white text-purple-600 hover:bg-purple-50 px-5 py-2 rounded-lg font-semibold shadow-md transition-colors text-sm">
+                        Set Your Learning Style →
+                    </a>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <!-- Welcome Section for First-Time Users -->
         @if($overallProgress == 0 && $totalTasks == 0)
         <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg shadow-lg p-8 mb-6 text-white">
@@ -44,6 +80,94 @@
             <div class="p-6">
                 <h2 class="text-2xl font-bold text-gray-800 mb-6">Student Dashboard</h2>
 
+                <!-- Level & Points Card -->
+                <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg p-6 text-white mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <p class="text-indigo-100 text-sm font-medium">Current Level</p>
+                            <p class="text-3xl font-bold mt-1">{{ auth()->user()->current_level }}</p>
+                            <p class="text-indigo-100 text-sm mt-1">{{ auth()->user()->level_title }}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-indigo-100 text-sm font-medium">Total Points</p>
+                            <p class="text-3xl font-bold mt-1">{{ number_format(auth()->user()->total_points) }}</p>
+                            @if($pointsToNextLevel > 0)
+                                <p class="text-indigo-100 text-sm mt-1">{{ number_format($pointsToNextLevel) }} to next level</p>
+                            @else
+                                <p class="text-indigo-100 text-sm mt-1">Max Level!</p>
+                            @endif
+                        </div>
+                    </div>
+                    @if($pointsToNextLevel > 0)
+                        <div class="mt-4">
+                            <div class="flex items-center justify-between text-sm mb-1">
+                                <span class="text-indigo-100">Level Progress</span>
+                                <span class="text-white font-semibold">{{ number_format($levelProgress, 1) }}%</span>
+                            </div>
+                            <div class="w-full bg-indigo-800/50 rounded-full h-3">
+                                <div class="bg-white h-3 rounded-full transition-all duration-500" style="width: {{ $levelProgress }}%"></div>
+                            </div>
+                        </div>
+                    @endif
+                </div>
+
+                <!-- Schedule Adherence & Pace Controls -->
+                @if($activeEnrollment && $activeEnrollment->weekly_hours)
+                <div class="bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg p-6 text-white mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold mb-1">📅 Your Learning Pace</h3>
+                            <p class="text-cyan-100 text-sm">{{ $activeEnrollment->weekly_hours }} hours per week</p>
+                        </div>
+                        <div class="flex gap-2">
+                            @if($activeEnrollment->isPaused())
+                                <button
+                                    wire:click="resumeEnrollment"
+                                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
+                                >
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                    Resume
+                                </button>
+                                <div class="bg-yellow-500/20 border border-yellow-300 rounded-lg px-4 py-2">
+                                    <span class="text-yellow-100 text-sm font-medium">⏸ Paused {{ $activeEnrollment->getDaysPaused() }} days ago</span>
+                                </div>
+                            @else
+                                <button
+                                    wire:click="openPauseModal"
+                                    class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                                >
+                                    ⏸ Pause
+                                </button>
+                            @endif
+                        </div>
+                    </div>
+
+                    @if(!empty($scheduleAdherence) && $scheduleAdherence['has_schedule'])
+                    <div class="grid grid-cols-3 gap-3 mb-4">
+                        <div class="bg-white/10 backdrop-blur rounded-lg p-3 text-center">
+                            <div class="text-2xl font-bold">{{ $scheduleAdherence['tasks_completed'] }}</div>
+                            <div class="text-xs text-cyan-100">Completed</div>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur rounded-lg p-3 text-center">
+                            <div class="text-2xl font-bold">{{ $scheduleAdherence['tasks_due'] }}</div>
+                            <div class="text-xs text-cyan-100">Due</div>
+                        </div>
+                        <div class="bg-white/10 backdrop-blur rounded-lg p-3 text-center">
+                            <div class="text-2xl font-bold">{{ $scheduleAdherence['adherence_percentage'] }}%</div>
+                            <div class="text-xs text-cyan-100">On Track</div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/10 backdrop-blur rounded-lg p-3">
+                        <p class="text-sm text-center">{{ $scheduleAdherence['message'] }}</p>
+                    </div>
+                    @endif
+                </div>
+                @endif
+
                 <!-- Quick Stats Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <!-- Tasks Completed Today -->
@@ -83,42 +207,75 @@
                     </div>
                 </div>
 
-                <!-- Active Enrollment -->
+                <!-- Roadmap Status -->
                 @if($activeEnrollment && $activeEnrollment->roadmap)
-                <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-8">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Active Roadmap</h3>
-                    <div class="flex items-start justify-between">
-                        <div>
-                            <a href="{{ route('student.roadmap.view', ['roadmapId' => $activeEnrollment->roadmap->id]) }}" class="text-xl font-bold text-gray-900 dark:text-gray-100 hover:text-blue-600">
-                                {{ $activeEnrollment->roadmap->title }}
-                            </a>
-                            <p class="text-gray-600 dark:text-gray-400 mt-2">{{ $activeEnrollment->roadmap->description }}</p>
-                            <div class="flex items-center gap-4 mt-4">
-                                <span class="text-sm text-gray-600 dark:text-gray-400">
-                                    Day {{ $activeEnrollment->current_day ?? 1 }} of {{ $activeEnrollment->roadmap->duration_days }}
-                                </span>
-                                <span class="text-sm text-gray-600 dark:text-gray-400">•</span>
-                                <span class="text-sm text-gray-600 dark:text-gray-400">
-                                    {{ $progressStats['completed_tasks'] ?? 0 }} / {{ $progressStats['total_tasks'] ?? 0 }} tasks completed
-                                </span>
+                    @if($activeEnrollment->status === 'completed')
+                        <!-- Completed Roadmap Celebration -->
+                        <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg p-8 mb-8 text-white">
+                            <div class="text-center">
+                                <div class="text-6xl mb-4">🎉</div>
+                                <h3 class="text-3xl font-bold mb-2">Congratulations!</h3>
+                                <p class="text-green-100 text-lg mb-4">You completed {{ $activeEnrollment->roadmap->title }}!</p>
+
+                                <div class="flex items-center justify-center gap-4 mb-6">
+                                    <div class="bg-white/20 rounded-lg px-4 py-2">
+                                        <div class="text-sm text-green-100">Completed</div>
+                                        <div class="text-xl font-bold">{{ $progressStats['completed_tasks'] ?? $totalTasks }} tasks</div>
+                                    </div>
+                                    <div class="bg-white/20 rounded-lg px-4 py-2">
+                                        <div class="text-sm text-green-100">Time Spent</div>
+                                        <div class="text-xl font-bold">{{ floor($totalTimeSpent / 60) }} hours</div>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                                    <a href="{{ route('student.certificates') }}" class="inline-block px-6 py-3 bg-white text-green-600 hover:bg-green-50 font-semibold rounded-lg transition-colors">
+                                        View Certificate 🎓
+                                    </a>
+                                    <a href="{{ route('student.roadmaps') }}" class="inline-block px-6 py-3 bg-green-700 hover:bg-green-800 text-white font-semibold rounded-lg transition-colors">
+                                        Start Next Roadmap →
+                                    </a>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex gap-2">
-                            <a href="{{ route('student.roadmap.view', ['roadmapId' => $activeEnrollment->roadmap->id]) }}" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg text-sm font-medium">
-                                View Roadmap
-                            </a>
-                            <a href="{{ route('student.tasks') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
-                                View Tasks
-                            </a>
-                        </div>
-                    </div>
+                    @else
+                        <!-- Active Roadmap -->
+                        <div class="bg-gray-50 dark:bg-gray-800 rounded-lg p-6 mb-8">
+                            <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-4">Active Roadmap</h3>
+                            <div class="flex items-start justify-between">
+                                <div>
+                                    <a href="{{ route('student.roadmap.view', ['roadmapId' => $activeEnrollment->roadmap->id]) }}" class="text-xl font-bold text-gray-900 dark:text-gray-100 hover:text-blue-600">
+                                        {{ $activeEnrollment->roadmap->title }}
+                                    </a>
+                                    <p class="text-gray-600 dark:text-gray-400 mt-2">{{ $activeEnrollment->roadmap->description }}</p>
+                                    <div class="flex items-center gap-4 mt-4">
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">
+                                            Day {{ $activeEnrollment->current_day ?? 1 }} of {{ $activeEnrollment->roadmap->duration_days }}
+                                        </span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">•</span>
+                                        <span class="text-sm text-gray-600 dark:text-gray-400">
+                                            {{ $progressStats['completed_tasks'] ?? 0 }} / {{ $progressStats['total_tasks'] ?? 0 }} tasks completed
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="{{ route('student.roadmap.view', ['roadmapId' => $activeEnrollment->roadmap->id]) }}" class="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 px-4 py-2 rounded-lg text-sm font-medium">
+                                        View Roadmap
+                                    </a>
+                                    <a href="{{ route('student.tasks') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+                                        View Tasks
+                                    </a>
+                                </div>
+                            </div>
 
-                    <!-- Progress Bar -->
-                    <div class="mt-4">
-                        <div class="w-full bg-gray-200 rounded-full h-2.5">
-                            <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $overallProgress }}%"></div>
+                            <!-- Progress Bar -->
+                            <div class="mt-4">
+                                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                    <div class="bg-blue-600 h-2.5 rounded-full" style="width: {{ $overallProgress }}%"></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    @endif
 
                     <!-- What to Expect - Show for early progress (< 10%) -->
                     @if($overallProgress < 10 && $overallProgress > 0)
@@ -535,5 +692,105 @@
             </div>
         </div>
         @endif
+
+        <!-- Leaderboard Preview -->
+        @php
+            $topLeaders = \App\Models\User::where('role', 'student')
+                ->where('show_on_leaderboard', true)
+                ->orderBy('total_points', 'desc')
+                ->take(5)
+                ->get();
+        @endphp
+
+        @if($topLeaders->count() > 0)
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-6">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Top Learners</h3>
+                    <a href="{{ route('student.leaderboard') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">View All</a>
+                </div>
+
+                <div class="space-y-3">
+                    @foreach($topLeaders as $leader)
+                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg {{ $leader->id === auth()->id() ? 'ring-2 ring-blue-500' : '' }}">
+                        <div class="flex items-center gap-3">
+                            <span class="text-lg font-bold text-gray-500 dark:text-gray-400 w-6">{{ $loop->iteration }}</span>
+                            @if($leader->avatar)
+                                <img src="{{ Storage::url($leader->avatar) }}" alt="{{ $leader->name }}" class="w-8 h-8 rounded-full">
+                            @else
+                                <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
+                                    {{ substr($leader->name, 0, 1) }}
+                                </div>
+                            @endif
+                            <div>
+                                <div class="font-medium text-gray-900 dark:text-gray-100 text-sm">
+                                    {{ $leader->leaderboard_display_name ?: $leader->name }}
+                                    @if($leader->id === auth()->id())
+                                        <span class="text-xs text-blue-600 dark:text-blue-400">(You)</span>
+                                    @endif
+                                </div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Level {{ $leader->current_level }}</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($leader->total_points) }}</div>
+                            <div class="text-xs text-gray-500 dark:text-gray-400">points</div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        @endif
     </div>
+
+    <!-- Pause Modal -->
+    @if($showPauseModal)
+    <div class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+            <div class="bg-gradient-to-r from-yellow-500 to-orange-500 px-6 py-4 text-white rounded-t-lg">
+                <h2 class="text-xl font-bold">⏸ Pause Your Learning</h2>
+            </div>
+
+            <div class="p-6">
+                <p class="text-gray-700 dark:text-gray-300 mb-4">
+                    Taking a break? No problem! You can pause your enrollment without any penalty. Your progress will be saved.
+                </p>
+
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Reason (optional)
+                    </label>
+                    <textarea
+                        wire:model="pauseReason"
+                        rows="3"
+                        class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-lg"
+                        placeholder="e.g., Exams coming up, vacation, work overload..."
+                    ></textarea>
+                </div>
+
+                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4">
+                    <p class="text-sm text-blue-800 dark:text-blue-200">
+                        <strong>Note:</strong> Your schedule will be automatically adjusted when you resume. No rush!
+                    </p>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 rounded-b-lg flex items-center justify-between">
+                <button
+                    wire:click="closePauseModal"
+                    class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 font-medium"
+                >
+                    Cancel
+                </button>
+                <button
+                    wire:click="pauseEnrollment"
+                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium"
+                >
+                    Pause Enrollment
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
