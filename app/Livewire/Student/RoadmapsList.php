@@ -14,6 +14,34 @@ class RoadmapsList extends Component
     public $searchTerm = '';
     public $filterDifficulty = 'all';
 
+    public function skipRoadmap($roadmapId)
+    {
+        $user = Auth::user();
+
+        // Check if already enrolled
+        $existingEnrollment = RoadmapEnrollment::where('student_id', $user->id)
+            ->where('roadmap_id', $roadmapId)
+            ->first();
+
+        if ($existingEnrollment) {
+            session()->flash('error', 'You are already enrolled in this roadmap.');
+            return;
+        }
+
+        // Skipping is always FREE - no subscription required
+        // This allows students to skip roadmaps they don't need without paying
+
+        // Create skipped enrollment
+        RoadmapEnrollment::create([
+            'student_id' => $user->id,
+            'roadmap_id' => $roadmapId,
+            'started_at' => now(),
+            'status' => 'skipped',
+        ]);
+
+        session()->flash('message', 'Roadmap skipped successfully!');
+    }
+
     public function enroll($roadmapId)
     {
         $user = Auth::user();
@@ -28,20 +56,39 @@ class RoadmapsList extends Component
             return;
         }
 
+        // Check subscription requirement (first roadmap is free, 2nd+ requires subscription)
+        // Count only non-skipped enrollments
+        $totalEnrollmentsCount = RoadmapEnrollment::where('student_id', $user->id)
+            ->where('status', '!=', 'skipped')
+            ->count();
+
+        // If user already has at least one enrollment, they need an active subscription for additional roadmaps
+        if ($totalEnrollmentsCount >= 1) {
+            $activeSubscription = \App\Models\Subscription::where('student_id', $user->id)
+                ->where('status', 'active')
+                ->where('expires_at', '>', now())
+                ->first();
+
+            if (!$activeSubscription) {
+                session()->flash('error', 'You need an active subscription to enroll in additional roadmaps. The first roadmap is free!');
+                return redirect()->route('student.subscription');
+            }
+        }
+
         // Get the roadmap with prerequisite
         $roadmap = Roadmap::findOrFail($roadmapId);
 
         // Check if roadmap has prerequisite
         if ($roadmap->prerequisite_roadmap_id) {
-            // Check if user completed the prerequisite roadmap
-            $prerequisiteCompleted = RoadmapEnrollment::where('student_id', $user->id)
+            // Check if user completed or skipped the prerequisite roadmap
+            $prerequisiteSatisfied = RoadmapEnrollment::where('student_id', $user->id)
                 ->where('roadmap_id', $roadmap->prerequisite_roadmap_id)
-                ->where('status', 'completed')
+                ->whereIn('status', ['completed', 'skipped'])
                 ->exists();
 
-            if (!$prerequisiteCompleted) {
+            if (!$prerequisiteSatisfied) {
                 $prerequisiteRoadmap = Roadmap::find($roadmap->prerequisite_roadmap_id);
-                session()->flash('error', 'You must complete "' . $prerequisiteRoadmap->title . '" before enrolling in this roadmap.');
+                session()->flash('error', 'You must complete or skip "' . $prerequisiteRoadmap->title . '" before enrolling in this roadmap.');
                 return;
             }
         }
@@ -98,6 +145,12 @@ class RoadmapsList extends Component
             ->pluck('roadmap_id')
             ->toArray();
 
+        // Get user's completed OR skipped roadmap IDs (for prerequisite checking)
+        $completedOrSkippedRoadmapIds = RoadmapEnrollment::where('student_id', Auth::id())
+            ->whereIn('status', ['completed', 'skipped'])
+            ->pluck('roadmap_id')
+            ->toArray();
+
         // Check if user has active enrollment
         $hasActiveEnrollment = RoadmapEnrollment::where('student_id', Auth::id())
             ->where('status', 'active')
@@ -107,6 +160,7 @@ class RoadmapsList extends Component
             'roadmaps' => $roadmaps,
             'enrolledRoadmapIds' => $enrolledRoadmapIds,
             'completedRoadmapIds' => $completedRoadmapIds,
+            'completedOrSkippedRoadmapIds' => $completedOrSkippedRoadmapIds,
             'hasActiveEnrollment' => $hasActiveEnrollment,
         ]);
     }

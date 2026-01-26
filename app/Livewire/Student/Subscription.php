@@ -78,10 +78,10 @@ class Subscription extends Component
             'currency' => 'EGP',
             'status' => 'pending',
             'payment_method' => 'bank_transfer',
-            'payment_details' => json_encode([
+            'payment_details' => [
                 'receipt_path' => $receiptPath,
                 'uploaded_at' => now()->toDateTimeString(),
-            ]),
+            ],
             'notes' => $this->transactionNotes,
         ]);
 

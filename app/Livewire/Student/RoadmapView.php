@@ -57,16 +57,16 @@ class RoadmapView extends Component
 
     private function checkIfLocked(): void
     {
-        // Get user's completed roadmap IDs
-        $completedRoadmapIds = RoadmapEnrollment::where('student_id', Auth::id())
-            ->where('status', 'completed')
+        // Get user's completed or skipped roadmap IDs (skipped roadmaps satisfy prerequisites)
+        $completedOrSkippedRoadmapIds = RoadmapEnrollment::where('student_id', Auth::id())
+            ->whereIn('status', ['completed', 'skipped'])
             ->pluck('roadmap_id')
             ->toArray();
 
-        // Check if has prerequisite that's not completed
-        if ($this->roadmap->prerequisite_roadmap_id && !in_array($this->roadmap->prerequisite_roadmap_id, $completedRoadmapIds)) {
+        // Check if has prerequisite that's not completed or skipped
+        if ($this->roadmap->prerequisite_roadmap_id && !in_array($this->roadmap->prerequisite_roadmap_id, $completedOrSkippedRoadmapIds)) {
             $this->isLocked = true;
-            $this->lockReason = 'Complete previous roadmap first';
+            $this->lockReason = 'Complete or skip previous roadmap first';
             return;
         }
 
@@ -86,6 +86,28 @@ class RoadmapView extends Component
         return $this->roadmap->tasks->groupBy('day_number');
     }
 
+    public function skipRoadmap()
+    {
+        if ($this->isEnrolled) {
+            session()->flash('error', 'You are already enrolled in this roadmap.');
+            return;
+        }
+
+        // Skipping is always FREE - no subscription required
+        // This allows students to skip roadmaps they don't need without paying
+
+        // Create skipped enrollment
+        RoadmapEnrollment::create([
+            'student_id' => Auth::id(),
+            'roadmap_id' => $this->roadmapId,
+            'started_at' => now(),
+            'status' => 'skipped',
+        ]);
+
+        session()->flash('message', 'Roadmap skipped successfully! You can now enroll in the next roadmap.');
+        return redirect()->route('student.roadmaps');
+    }
+
     public function enroll()
     {
         if ($this->isEnrolled) {
@@ -94,12 +116,13 @@ class RoadmapView extends Component
         }
 
         // Check subscription requirement (first roadmap is free, 2nd+ requires subscription)
-        $completedRoadmapsCount = RoadmapEnrollment::where('student_id', Auth::id())
-            ->where('status', 'completed')
+        // Count only non-skipped enrollments
+        $totalEnrollmentsCount = RoadmapEnrollment::where('student_id', Auth::id())
+            ->where('status', '!=', 'skipped')
             ->count();
 
-        // If user has completed at least one roadmap, they need an active subscription
-        if ($completedRoadmapsCount >= 1) {
+        // If user already has at least one enrollment, they need an active subscription for additional roadmaps
+        if ($totalEnrollmentsCount >= 1) {
             $activeSubscription = \App\Models\Subscription::where('student_id', Auth::id())
                 ->where('status', 'active')
                 ->where('expires_at', '>', now())
@@ -113,14 +136,14 @@ class RoadmapView extends Component
 
         // Check if roadmap has prerequisite
         if ($this->roadmap->prerequisite_roadmap_id) {
-            $prerequisiteCompleted = RoadmapEnrollment::where('student_id', Auth::id())
+            $prerequisiteSatisfied = RoadmapEnrollment::where('student_id', Auth::id())
                 ->where('roadmap_id', $this->roadmap->prerequisite_roadmap_id)
-                ->where('status', 'completed')
+                ->whereIn('status', ['completed', 'skipped'])
                 ->exists();
 
-            if (!$prerequisiteCompleted) {
+            if (!$prerequisiteSatisfied) {
                 $prerequisiteRoadmap = Roadmap::find($this->roadmap->prerequisite_roadmap_id);
-                session()->flash('error', 'You must complete "' . $prerequisiteRoadmap->title . '" before enrolling in this roadmap.');
+                session()->flash('error', 'You must complete or skip "' . $prerequisiteRoadmap->title . '" before enrolling in this roadmap.');
                 return;
             }
         }

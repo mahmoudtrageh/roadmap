@@ -33,15 +33,28 @@
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6">
                 <!-- Header -->
-                <div class="mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800">{{ $activeEnrollment->roadmap->title }}</h2>
-                    <p class="text-gray-600 mt-1">
-                        @if($activeEnrollment->status === 'completed')
-                            <span class="text-green-600 font-semibold">✓ Completed</span> - Viewing tasks
-                        @else
-                            Day {{ $currentDay }} of {{ $activeEnrollment->roadmap->duration_days }}
-                        @endif
-                    </p>
+                <div class="mb-6 flex items-start justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">{{ $activeEnrollment->roadmap->title }}</h2>
+                        <p class="text-gray-600 mt-1">
+                            @if($activeEnrollment->status === 'completed')
+                                <span class="text-green-600 font-semibold">✓ Completed</span> - Viewing tasks
+                            @else
+                                Day {{ $currentDay }} of {{ $activeEnrollment->roadmap->duration_days }}
+                            @endif
+                        </p>
+                    </div>
+                    @if($activeEnrollment->status !== 'completed')
+                    <button
+                        wire:click="openCompleteAllModal"
+                        class="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-lg shadow-md transition-all duration-200 flex items-center gap-2"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                        </svg>
+                        Complete All Tasks
+                    </button>
+                    @endif
                 </div>
 
                 <!-- Day Navigation -->
@@ -946,6 +959,60 @@
                         </button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- Complete All Tasks Confirmation Modal -->
+    @if($showCompleteAllModal)
+    <div class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4 text-white rounded-t-lg">
+                <h2 class="text-xl font-bold">✓ Complete All Tasks</h2>
+            </div>
+
+            <div class="p-6">
+                <div class="mb-4">
+                    <div class="flex items-start gap-3 mb-4">
+                        <svg class="w-6 h-6 text-yellow-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                        </svg>
+                        <div>
+                            <h3 class="font-semibold text-gray-900 dark:text-gray-100 mb-2">Are you sure?</h3>
+                            <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
+                                This will mark ALL tasks in this roadmap as completed instantly. This action will:
+                            </p>
+                            <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1 ml-4 list-disc">
+                                <li>Complete all remaining tasks</li>
+                                <li>Award points for each task</li>
+                                <li>Mark the roadmap as complete</li>
+                                <li>Generate your certificate</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
+                        <p class="text-sm text-blue-800 dark:text-blue-200">
+                            <strong>Note:</strong> This is a shortcut for testing or quick completion. For the best learning experience, we recommend completing tasks individually.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 rounded-b-lg flex items-center justify-between gap-3">
+                <button
+                    wire:click="closeCompleteAllModal"
+                    class="flex-1 px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 font-medium border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors"
+                >
+                    Cancel
+                </button>
+                <button
+                    wire:click="completeAllTasks"
+                    class="flex-1 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                >
+                    Yes, Complete All
+                </button>
             </div>
         </div>
     </div>

@@ -74,7 +74,7 @@ class Subscription extends Model
     /**
      * Cancel subscription
      */
-    public function cancel(string $reason = null): void
+    public function cancel(?string $reason = null): void
     {
         $this->update([
             'status' => 'cancelled',

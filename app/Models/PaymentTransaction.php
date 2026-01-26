@@ -51,7 +51,7 @@ class PaymentTransaction extends Model
     /**
      * Mark transaction as failed
      */
-    public function markAsFailed(string $reason = null): void
+    public function markAsFailed(?string $reason = null): void
     {
         $this->update([
             'status' => 'failed',

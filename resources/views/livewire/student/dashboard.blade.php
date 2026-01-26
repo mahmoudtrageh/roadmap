@@ -36,6 +36,30 @@
         </div>
         @endif
 
+        <!-- First Roadmap Free Notice -->
+        @php
+            $totalEnrollments = \App\Models\RoadmapEnrollment::where('student_id', auth()->id())->count();
+        @endphp
+        @if($totalEnrollments === 0)
+        <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg shadow-lg p-6 mb-6 text-white">
+            <div class="flex items-start gap-4">
+                <div class="text-4xl">🎁</div>
+                <div class="flex-1">
+                    <h3 class="text-xl font-bold mb-2">Your First Roadmap is FREE!</h3>
+                    <p class="text-green-100 mb-3">
+                        Start your learning journey at no cost! Your first roadmap enrollment is completely free. Additional roadmaps require a subscription of only <span class="font-bold">100 EGP/year</span> for unlimited access to all roadmaps.
+                    </p>
+                    <div class="flex gap-4 items-center">
+                        <a href="{{ route('student.roadmaps') }}" class="inline-block bg-white text-green-600 hover:bg-green-50 px-5 py-2 rounded-lg font-semibold shadow-md transition-colors text-sm">
+                            Browse Roadmaps →
+                        </a>
+                        <span class="text-green-100 text-sm">✓ No credit card required</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endif
+
         <!-- Welcome Section for First-Time Users -->
         @if($overallProgress == 0 && $totalTasks == 0)
         <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg shadow-lg p-8 mb-6 text-white">
@@ -111,62 +135,6 @@
                     @endif
                 </div>
 
-                <!-- Schedule Adherence & Pace Controls -->
-                @if($activeEnrollment && $activeEnrollment->weekly_hours)
-                <div class="bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg p-6 text-white mb-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <div class="flex-1">
-                            <h3 class="text-lg font-semibold mb-1">📅 Your Learning Pace</h3>
-                            <p class="text-cyan-100 text-sm">{{ $activeEnrollment->weekly_hours }} hours per week</p>
-                        </div>
-                        <div class="flex gap-2">
-                            @if($activeEnrollment->isPaused())
-                                <button
-                                    wire:click="resumeEnrollment"
-                                    class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2"
-                                >
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                    Resume
-                                </button>
-                                <div class="bg-yellow-500/20 border border-yellow-300 rounded-lg px-4 py-2">
-                                    <span class="text-yellow-100 text-sm font-medium">⏸ Paused {{ $activeEnrollment->getDaysPaused() }} days ago</span>
-                                </div>
-                            @else
-                                <button
-                                    wire:click="openPauseModal"
-                                    class="bg-white/20 hover:bg-white/30 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-                                >
-                                    ⏸ Pause
-                                </button>
-                            @endif
-                        </div>
-                    </div>
-
-                    @if(!empty($scheduleAdherence) && $scheduleAdherence['has_schedule'])
-                    <div class="grid grid-cols-3 gap-3 mb-4">
-                        <div class="bg-white/10 backdrop-blur rounded-lg p-3 text-center">
-                            <div class="text-2xl font-bold">{{ $scheduleAdherence['tasks_completed'] }}</div>
-                            <div class="text-xs text-cyan-100">Completed</div>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur rounded-lg p-3 text-center">
-                            <div class="text-2xl font-bold">{{ $scheduleAdherence['tasks_due'] }}</div>
-                            <div class="text-xs text-cyan-100">Due</div>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur rounded-lg p-3 text-center">
-                            <div class="text-2xl font-bold">{{ $scheduleAdherence['adherence_percentage'] }}%</div>
-                            <div class="text-xs text-cyan-100">On Track</div>
-                        </div>
-                    </div>
-
-                    <div class="bg-white/10 backdrop-blur rounded-lg p-3">
-                        <p class="text-sm text-center">{{ $scheduleAdherence['message'] }}</p>
-                    </div>
-                    @endif
-                </div>
-                @endif
 
                 <!-- Quick Stats Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -598,199 +566,151 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Job Board Section -->
-        @if(count($recentJobs) > 0)
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-6">
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800">Career Opportunities</h2>
-                    <a href="{{ route('student.jobs') }}" class="text-blue-600 hover:text-blue-700 font-medium text-sm">
-                        View All Jobs →
-                    </a>
-                </div>
+             <!-- Job Board Section -->
+            @if(count($recentJobs) > 0)
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mt-6 mb-6">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">Career Opportunities</h2>
+                        <a href="{{ route('student.jobs') }}" class="text-blue-600 hover:text-blue-700 font-medium text-sm">
+                            View All Jobs →
+                        </a>
+                    </div>
 
-                <div class="grid grid-cols-1 gap-4">
-                    @foreach($recentJobs as $job)
-                    <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-5 hover:shadow-md transition-shadow bg-white dark:bg-gray-800">
-                        <div class="flex items-start justify-between gap-4">
-                            <div class="flex-1">
-                                <div class="flex items-start gap-4">
-                                    @if(isset($job['company']['logo']) && $job['company']['logo'])
-                                    <img src="{{ Storage::url($job['company']['logo']) }}" alt="{{ $job['company']['name'] }}" class="w-16 h-16 rounded-lg object-cover">
-                                    @else
-                                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-2xl">
-                                        {{ substr($job['company']['name'] ?? 'C', 0, 1) }}
-                                    </div>
-                                    @endif
+                    <div class="grid grid-cols-1 gap-4">
+                        @foreach($recentJobs as $job)
+                        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-5 hover:shadow-md transition-shadow bg-white dark:bg-gray-800">
+                            <div class="flex flex-col md:flex-row items-start justify-between gap-4">
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start gap-4">
+                                        @if(isset($job['company']['logo']) && $job['company']['logo'])
+                                        <img src="{{ Storage::url($job['company']['logo']) }}" alt="{{ $job['company']['name'] }}" class="w-16 h-16 rounded-lg object-cover">
+                                        @else
+                                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center text-white font-bold text-2xl">
+                                            {{ substr($job['company']['name'] ?? 'C', 0, 1) }}
+                                        </div>
+                                        @endif
 
-                                    <div class="flex-1">
-                                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">
-                                            {{ $job['title'] }}
-                                        </h3>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                                            {{ $job['company']['name'] ?? 'Company' }}
-                                            @if($job['location'])
-                                            <span class="mx-2">•</span>
-                                            <span>{{ $job['location'] }}</span>
-                                            @endif
-                                        </p>
+                                        <div class="flex-1 min-w-0">
+                                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1 truncate">
+                                                {{ $job['title'] }}
+                                            </h3>
+                                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2 truncate">
+                                                {{ $job['company']['name'] ?? 'Company' }}
+                                                @if($job['location'])
+                                                <span class="mx-2">•</span>
+                                                <span>{{ $job['location'] }}</span>
+                                                @endif
+                                            </p>
 
-                                        <div class="flex flex-wrap items-center gap-2 mb-3">
-                                            <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-full">
-                                                {{ ucfirst(str_replace('_', ' ', $job['job_type'])) }}
-                                            </span>
-                                            <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-semibold rounded-full">
-                                                {{ ucfirst($job['experience_level']) }} Level
-                                            </span>
-                                            @if($job['salary_min'] && $job['salary_max'])
-                                            <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold rounded-full">
-                                                ${{ number_format($job['salary_min']) }} - ${{ number_format($job['salary_max']) }}
-                                            </span>
+                                            <div class="flex flex-wrap items-center gap-2 mb-3">
+                                                <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-full">
+                                                    {{ ucfirst(str_replace('_', ' ', $job['job_type'])) }}
+                                                </span>
+                                                <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-semibold rounded-full">
+                                                    {{ ucfirst($job['experience_level']) }} Level
+                                                </span>
+                                                @if($job['salary_min'] && $job['salary_max'])
+                                                <span class="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold rounded-full">
+                                                    ${{ number_format($job['salary_min']) }} - ${{ number_format($job['salary_max']) }}
+                                                </span>
+                                                @endif
+                                            </div>
+
+                                            <p class="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">
+                                                {{ $job['description'] }}
+                                            </p>
+
+                                            @if($job['deadline'])
+                                            <p class="text-xs text-orange-600 dark:text-orange-400 mt-2">
+                                                ⏰ Apply before {{ \Carbon\Carbon::parse($job['deadline'])->format('M d, Y') }}
+                                            </p>
                                             @endif
                                         </div>
-
-                                        <p class="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">
-                                            {{ $job['description'] }}
-                                        </p>
-
-                                        @if($job['deadline'])
-                                        <p class="text-xs text-orange-600 dark:text-orange-400 mt-2">
-                                            ⏰ Apply before {{ \Carbon\Carbon::parse($job['deadline'])->format('M d, Y') }}
-                                        </p>
-                                        @endif
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="flex flex-col gap-2">
-                                <a href="{{ route('student.job.view', $job['id']) }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors text-center">
-                                    View Details
-                                </a>
-                                @php
-                                    $hasApplied = \App\Models\JobApplication::where('job_id', $job['id'])
-                                        ->where('student_id', auth()->id())
-                                        ->exists();
-                                @endphp
-                                @if($hasApplied)
-                                <span class="px-4 py-2 bg-green-100 text-green-700 text-sm font-medium rounded-lg text-center">
-                                    Applied ✓
-                                </span>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                    @endforeach
-                </div>
-
-                <div class="mt-6 text-center">
-                    <a href="{{ route('student.jobs') }}" class="inline-block px-6 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-lg transition-colors">
-                        Browse All {{ \App\Models\JobListing::where('status', 'open')->count() }} Open Positions
-                    </a>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        <!-- Leaderboard Preview -->
-        @php
-            $topLeaders = \App\Models\User::where('role', 'student')
-                ->where('show_on_leaderboard', true)
-                ->orderBy('total_points', 'desc')
-                ->take(5)
-                ->get();
-        @endphp
-
-        @if($topLeaders->count() > 0)
-        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-6">
-            <div class="p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Top Learners</h3>
-                    <a href="{{ route('student.leaderboard') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">View All</a>
-                </div>
-
-                <div class="space-y-3">
-                    @foreach($topLeaders as $leader)
-                    <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg {{ $leader->id === auth()->id() ? 'ring-2 ring-blue-500' : '' }}">
-                        <div class="flex items-center gap-3">
-                            <span class="text-lg font-bold text-gray-500 dark:text-gray-400 w-6">{{ $loop->iteration }}</span>
-                            @if($leader->avatar)
-                                <img src="{{ Storage::url($leader->avatar) }}" alt="{{ $leader->name }}" class="w-8 h-8 rounded-full">
-                            @else
-                                <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
-                                    {{ substr($leader->name, 0, 1) }}
-                                </div>
-                            @endif
-                            <div>
-                                <div class="font-medium text-gray-900 dark:text-gray-100 text-sm">
-                                    {{ $leader->leaderboard_display_name ?: $leader->name }}
-                                    @if($leader->id === auth()->id())
-                                        <span class="text-xs text-blue-600 dark:text-blue-400">(You)</span>
+                                <div class="flex flex-col gap-2 shrink-0">
+                                    <a href="{{ route('student.job.view', $job['id']) }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors text-center whitespace-nowrap">
+                                        View Details
+                                    </a>
+                                    @php
+                                        $hasApplied = \App\Models\JobApplication::where('job_id', $job['id'])
+                                            ->where('student_id', auth()->id())
+                                            ->exists();
+                                    @endphp
+                                    @if($hasApplied)
+                                    <span class="px-4 py-2 bg-green-100 text-green-700 text-sm font-medium rounded-lg text-center">
+                                        Applied ✓
+                                    </span>
                                     @endif
                                 </div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400">Level {{ $leader->current_level }}</div>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <div class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($leader->total_points) }}</div>
-                            <div class="text-xs text-gray-500 dark:text-gray-400">points</div>
-                        </div>
+                        @endforeach
                     </div>
-                    @endforeach
+
+                    <div class="mt-6 text-center">
+                        <a href="{{ route('student.jobs') }}" class="inline-block px-6 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-lg transition-colors">
+                            Browse All {{ \App\Models\JobListing::where('status', 'open')->count() }} Open Positions
+                        </a>
+                    </div>
                 </div>
+            </div>
+            @endif
+
+            <!-- Leaderboard Preview -->
+            @php
+                $topLeaders = \App\Models\User::where('role', 'student')
+                    ->where('show_on_leaderboard', true)
+                    ->orderBy('total_points', 'desc')
+                    ->take(5)
+                    ->get();
+            @endphp
+
+            @if($topLeaders->count() > 0)
+            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-6 mb-6">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Top Learners</h3>
+                        <a href="{{ route('student.leaderboard') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">View All</a>
+                    </div>
+
+                    <div class="space-y-3">
+                        @foreach($topLeaders as $leader)
+                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg {{ $leader->id === auth()->id() ? 'ring-2 ring-blue-500' : '' }}">
+                            <div class="flex items-center gap-3 min-w-0 flex-1">
+                                <span class="text-lg font-bold text-gray-500 dark:text-gray-400 w-6">{{ $loop->iteration }}</span>
+                                @if($leader->avatar)
+                                    <img src="{{ Storage::url($leader->avatar) }}" alt="{{ $leader->name }}" class="w-8 h-8 rounded-full">
+                                @else
+                                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
+                                        {{ substr($leader->name, 0, 1) }}
+                                    </div>
+                                @endif
+                                <div class="min-w-0 flex-1">
+                                    <div class="font-medium text-gray-900 dark:text-gray-100 text-sm truncate">
+                                        {{ $leader->leaderboard_display_name ?: $leader->name }}
+                                        @if($leader->id === auth()->id())
+                                            <span class="text-xs text-blue-600 dark:text-blue-400">(You)</span>
+                                        @endif
+                                    </div>
+                                    <div class="text-xs text-gray-500 dark:text-gray-400">Level {{ $leader->current_level }}</div>
+                                </div>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <div class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($leader->total_points) }}</div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">points</div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            @endif
             </div>
         </div>
-        @endif
-    </div>
+        <!-- End of max-w-7xl container -->
 
-    <!-- Pause Modal -->
-    @if($showPauseModal)
-    <div class="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
-            <div class="bg-gradient-to-r from-yellow-500 to-orange-500 px-6 py-4 text-white rounded-t-lg">
-                <h2 class="text-xl font-bold">⏸ Pause Your Learning</h2>
-            </div>
-
-            <div class="p-6">
-                <p class="text-gray-700 dark:text-gray-300 mb-4">
-                    Taking a break? No problem! You can pause your enrollment without any penalty. Your progress will be saved.
-                </p>
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        Reason (optional)
-                    </label>
-                    <textarea
-                        wire:model="pauseReason"
-                        rows="3"
-                        class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 rounded-lg"
-                        placeholder="e.g., Exams coming up, vacation, work overload..."
-                    ></textarea>
-                </div>
-
-                <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3 mb-4">
-                    <p class="text-sm text-blue-800 dark:text-blue-200">
-                        <strong>Note:</strong> Your schedule will be automatically adjusted when you resume. No rush!
-                    </p>
-                </div>
-            </div>
-
-            <div class="bg-gray-50 dark:bg-gray-700 px-6 py-4 rounded-b-lg flex items-center justify-between">
-                <button
-                    wire:click="closePauseModal"
-                    class="px-4 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 font-medium"
-                >
-                    Cancel
-                </button>
-                <button
-                    wire:click="pauseEnrollment"
-                    class="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium"
-                >
-                    Pause Enrollment
-                </button>
-            </div>
-        </div>
-    </div>
-    @endif
 </div>

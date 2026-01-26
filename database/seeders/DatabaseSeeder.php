@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             CompanySeeder::class,
             EnhancedTaskDataSeeder::class,
             YouTubeResourcesSeeder::class,
+            AchievementSeeder::class,
         ]);
     }
 }

@@ -132,10 +132,10 @@
                             $isLocked = false;
                             $lockReason = '';
 
-                            // Check if has prerequisite that's not completed
-                            if ($roadmap->prerequisite_roadmap_id && !in_array($roadmap->prerequisite_roadmap_id, $completedRoadmapIds)) {
+                            // Check if has prerequisite that's not completed or skipped
+                            if ($roadmap->prerequisite_roadmap_id && !in_array($roadmap->prerequisite_roadmap_id, $completedOrSkippedRoadmapIds)) {
                                 $isLocked = true;
-                                $lockReason = 'Complete previous roadmap first';
+                                $lockReason = 'Complete or skip previous roadmap first';
                             }
 
                             // Check if user already has active enrollment
@@ -155,9 +155,14 @@
                             </button>
                             <p class="text-xs text-gray-500 text-center mt-1">{{ $lockReason }}</p>
                         @else
-                            <button wire:click="enroll({{ $roadmap->id }})" class="block w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition duration-150">
-                                Enroll Now
-                            </button>
+                            <div class="flex flex-col gap-2">
+                                <button wire:click="enroll({{ $roadmap->id }})" class="block w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition duration-150">
+                                    Enroll Now
+                                </button>
+                                <button wire:click="skipRoadmap({{ $roadmap->id }})" class="block w-full bg-gray-500 hover:bg-gray-600 text-white px-4 py-1.5 rounded-lg font-medium text-sm transition duration-150">
+                                    Skip
+                                </button>
+                            </div>
                         @endif
                     </div>
                 </div>

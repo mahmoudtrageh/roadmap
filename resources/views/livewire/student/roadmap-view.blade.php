@@ -93,9 +93,14 @@
                                 <p class="text-xs text-gray-500 mt-2">{{ $lockReason }}</p>
                             </div>
                         @else
-                            <button wire:click="enroll" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium">
-                                Enroll Now
-                            </button>
+                            <div class="flex flex-col gap-2">
+                                <button wire:click="enroll" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium whitespace-nowrap">
+                                    Enroll Now
+                                </button>
+                                <button wire:click="skipRoadmap" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium text-sm whitespace-nowrap">
+                                    Skip Roadmap
+                                </button>
+                            </div>
                         @endif
                     </div>
                 </div>

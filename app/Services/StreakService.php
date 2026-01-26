@@ -10,6 +10,15 @@ class StreakService
 {
     /**
      * Update user's streak based on their activity.
+     * Alias for backward compatibility.
+     */
+    public function updateStreak(User $user): void
+    {
+        $this->updateUserStreak($user);
+    }
+
+    /**
+     * Update user's streak based on their activity.
      */
     public function updateUserStreak(User $user): void
     {
