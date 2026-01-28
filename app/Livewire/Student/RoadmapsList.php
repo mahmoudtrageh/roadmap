@@ -56,21 +56,21 @@ class RoadmapsList extends Component
             return;
         }
 
-        // Check subscription requirement (first roadmap is free, 2nd+ requires subscription)
+        // Check subscription requirement (first 2 roadmaps are free: Translation + 1 technical, rest require subscription)
         // Count only non-skipped enrollments
         $totalEnrollmentsCount = RoadmapEnrollment::where('student_id', $user->id)
             ->where('status', '!=', 'skipped')
             ->count();
 
-        // If user already has at least one enrollment, they need an active subscription for additional roadmaps
-        if ($totalEnrollmentsCount >= 1) {
+        // If user already has 2 or more enrollments, they need an active subscription for additional roadmaps
+        if ($totalEnrollmentsCount >= 2) {
             $activeSubscription = \App\Models\Subscription::where('student_id', $user->id)
                 ->where('status', 'active')
                 ->where('expires_at', '>', now())
                 ->first();
 
             if (!$activeSubscription) {
-                session()->flash('error', 'You need an active subscription to enroll in additional roadmaps. The first roadmap is free!');
+                session()->flash('error', 'You need an active subscription to enroll in additional roadmaps. The first 2 roadmaps are free (Translation + one technical roadmap)!');
                 return redirect()->route('student.subscription');
             }
         }

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->enum('role', ['student', 'instructor', 'admin'])->default('student');
+            $table->enum('role', ['student', 'instructor', 'admin', 'company'])->default('student');
             $table->string('avatar')->nullable();
             $table->integer('current_streak')->default(0);
             $table->integer('longest_streak')->default(0);

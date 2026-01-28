@@ -25,7 +25,6 @@ class User extends Authenticatable
         'password',
         'role',
         'avatar',
-        'learning_style',
         'current_streak',
         'longest_streak',
         'last_activity_date',

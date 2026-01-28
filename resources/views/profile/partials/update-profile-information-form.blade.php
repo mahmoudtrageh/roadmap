@@ -48,37 +48,6 @@
         </div>
 
         @if($user->role === 'student')
-        <!-- Learning Style -->
-        <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
-            <h3 class="text-base font-semibold text-gray-900 dark:text-gray-100 mb-4">Learning Preferences</h3>
-
-            <div class="mb-6">
-                <x-input-label for="learning_style" :value="__('Learning Style')" />
-                <select
-                    id="learning_style"
-                    name="learning_style"
-                    class="mt-1 block w-full border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm"
-                >
-                    <option value="visual" {{ old('learning_style', $user->learning_style) === 'visual' ? 'selected' : '' }}>
-                        Visual (Videos, Diagrams, Images)
-                    </option>
-                    <option value="auditory" {{ old('learning_style', $user->learning_style) === 'auditory' ? 'selected' : '' }}>
-                        Auditory (Podcasts, Discussions, Audio)
-                    </option>
-                    <option value="reading_writing" {{ old('learning_style', $user->learning_style) === 'reading_writing' ? 'selected' : '' }}>
-                        Reading/Writing (Articles, Documentation, Text)
-                    </option>
-                    <option value="kinesthetic" {{ old('learning_style', $user->learning_style) === 'kinesthetic' ? 'selected' : '' }}>
-                        Kinesthetic (Hands-on, Interactive, Practice)
-                    </option>
-                </select>
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Choose your preferred learning style to personalize content recommendations
-                </p>
-                <x-input-error class="mt-2" :messages="$errors->get('learning_style')" />
-            </div>
-        </div>
-
         <!-- Leaderboard Settings -->
         <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
             <h3 class="text-base font-semibold text-gray-900 dark:text-gray-100 mb-4">Leaderboard Settings</h3>

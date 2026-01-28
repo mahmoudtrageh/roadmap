@@ -7,6 +7,7 @@ use App\Models\TaskCompletion;
 use App\Services\PointsService;
 use App\Services\ProgressService;
 use App\Services\StreakService;
+use App\Helpers\TranslationData;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Attributes\Layout;
@@ -19,6 +20,7 @@ class TaskList extends Component
     public array $tasks = [];
     public int $currentDay = 1;
     public array $taskCompletions = [];
+    public array $allEnrollments = [];
 
     // Form properties for task completion
     public ?int $selectedTaskId = null;
@@ -47,20 +49,41 @@ class TaskList extends Component
         $this->streakService = $streakService;
     }
 
-    public function mount(): void
+    public function mount(?int $roadmapId = null): void
     {
         $user = Auth::user();
 
-        // Get active enrollment
-        $this->activeEnrollment = $user->enrollments()
-            ->with('roadmap.tasks')
-            ->where('status', 'active')
-            ->first();
+        // Get all enrollments (active and completed, NOT skipped) for roadmap selector
+        $this->allEnrollments = $user->enrollments()
+            ->with('roadmap')
+            ->whereIn('status', ['active', 'completed'])
+            ->orderByRaw("CASE WHEN status = 'active' THEN 1 ELSE 2 END")
+            ->orderBy('updated_at', 'desc')
+            ->get()
+            ->toArray();
 
-        // If no active enrollment, try to get most recent for viewing
+        // If roadmapId is provided, load that specific enrollment
+        if ($roadmapId) {
+            $this->activeEnrollment = $user->enrollments()
+                ->with('roadmap.tasks')
+                ->where('roadmap_id', $roadmapId)
+                ->whereIn('status', ['active', 'completed'])
+                ->first();
+        }
+
+        // Otherwise, get active enrollment first
         if (!$this->activeEnrollment) {
             $this->activeEnrollment = $user->enrollments()
                 ->with('roadmap.tasks')
+                ->where('status', 'active')
+                ->first();
+        }
+
+        // If no active enrollment, try to get completed one for viewing
+        if (!$this->activeEnrollment) {
+            $this->activeEnrollment = $user->enrollments()
+                ->with('roadmap.tasks')
+                ->where('status', 'completed')
                 ->latest('updated_at')
                 ->first();
         }
@@ -71,9 +94,25 @@ class TaskList extends Component
         }
     }
 
+    public function switchRoadmap(int $roadmapId): void
+    {
+        $user = Auth::user();
+
+        $this->activeEnrollment = $user->enrollments()
+            ->with('roadmap.tasks')
+            ->where('roadmap_id', $roadmapId)
+            ->whereIn('status', ['active', 'completed'])
+            ->first();
+
+        if ($this->activeEnrollment) {
+            $this->currentDay = $this->activeEnrollment->current_day ?? 1;
+            $this->loadTasksForCurrentDay();
+        }
+    }
+
     public function loadTasksForCurrentDay(): void
     {
-        if (!$this->activeEnrollment) {
+        if (!$this->activeEnrollment || !$this->activeEnrollment->roadmap) {
             return;
         }
 
@@ -184,10 +223,6 @@ class TaskList extends Component
                 : null;
             $ratingCount = $ratingStats ? $ratingStats->rating_count : 0;
 
-            // Filter resources by user's learning style (Phase 2 enhancement)
-            $learningStyle = Auth::user()->learning_style ?? null;
-            $filteredResources = $task->getResourcesByLearningStyle($learningStyle);
-
             return [
                 'id' => $task->id,
                 'title' => $task->title,
@@ -197,7 +232,7 @@ class TaskList extends Component
                 'category' => $task->category,
                 'order' => $task->order,
                 'resources_links' => $task->resources_links,
-                'resources' => $filteredResources, // Personalized by learning style
+                'resources' => $task->resources,
                 'has_code_submission' => $task->has_code_submission,
                 'code_submitted' => $codeSubmitted,
                 'has_quality_rating' => $task->has_quality_rating,
@@ -460,13 +495,24 @@ class TaskList extends Component
         $this->mount(); // Reload all data
     }
 
+    protected function getTranslationTerms($day)
+    {
+        return TranslationData::getTerms($day);
+    }
+
     public function render(): View
     {
         // Calculate which days are accessible and completed
         $accessibleDays = [];
         $completedDays = [];
+        $translationTerms = null;
 
         if ($this->activeEnrollment) {
+            // Get translation terms if this is translation roadmap
+            if ($this->activeEnrollment->roadmap->slug === 'technical-terms-translation') {
+                $translationTerms = $this->getTranslationTerms($this->currentDay);
+            }
+
             for ($day = 1; $day <= $this->activeEnrollment->roadmap->duration_days; $day++) {
                 // All days are accessible for exploration
                 $accessibleDays[$day] = true;
@@ -491,6 +537,7 @@ class TaskList extends Component
         return view('livewire.student.task-list', [
             'accessibleDays' => $accessibleDays,
             'completedDays' => $completedDays,
+            'translationTerms' => $translationTerms,
         ]);
     }
 }

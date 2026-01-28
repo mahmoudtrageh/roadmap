@@ -1,41 +1,5 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <!-- Learning Style Prompt -->
-        @if(!auth()->user()->learning_style || auth()->user()->learning_style === 'reading_writing')
-        <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg p-6 mb-6 text-white">
-            <div class="flex items-start gap-4">
-                <div class="text-4xl">✨</div>
-                <div class="flex-1">
-                    <h3 class="text-xl font-bold mb-2">Personalize Your Learning Experience</h3>
-                    <p class="text-purple-100 mb-3">
-                        Everyone learns differently! Set your learning style to get personalized resource recommendations that match how you learn best.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
-                        <div class="bg-white/10 backdrop-blur rounded-lg p-3">
-                            <div class="font-semibold mb-1">🎥 Visual</div>
-                            <p class="text-xs text-purple-100">Videos, diagrams, images</p>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur rounded-lg p-3">
-                            <div class="font-semibold mb-1">🎧 Auditory</div>
-                            <p class="text-xs text-purple-100">Podcasts, discussions, audio</p>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur rounded-lg p-3">
-                            <div class="font-semibold mb-1">📚 Reading/Writing</div>
-                            <p class="text-xs text-purple-100">Articles, docs, text</p>
-                        </div>
-                        <div class="bg-white/10 backdrop-blur rounded-lg p-3">
-                            <div class="font-semibold mb-1">⚡ Kinesthetic</div>
-                            <p class="text-xs text-purple-100">Hands-on, interactive, practice</p>
-                        </div>
-                    </div>
-                    <a href="{{ route('profile.edit') }}" class="inline-block bg-white text-purple-600 hover:bg-purple-50 px-5 py-2 rounded-lg font-semibold shadow-md transition-colors text-sm">
-                        Set Your Learning Style →
-                    </a>
-                </div>
-            </div>
-        </div>
-        @endif
-
         <!-- First Roadmap Free Notice -->
         @php
             $totalEnrollments = \App\Models\RoadmapEnrollment::where('student_id', auth()->id())->count();
@@ -100,9 +64,9 @@
 
         @endif
 
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
             <div class="p-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-6">Student Dashboard</h2>
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Student Dashboard</h2>
 
                 <!-- Level & Points Card -->
                 <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg p-6 text-white mb-6">

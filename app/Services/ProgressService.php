@@ -88,6 +88,10 @@ class ProgressService
      */
     public function isDayCompleted(RoadmapEnrollment $enrollment, int $dayNumber): bool
     {
+        if (!$enrollment->roadmap) {
+            return false;
+        }
+
         $tasksForDay = $enrollment->roadmap->tasks()
             ->where('day_number', $dayNumber)
             ->pluck('id');
@@ -185,6 +189,10 @@ class ProgressService
      */
     public function getTasksForDay(RoadmapEnrollment $enrollment, int $dayNumber): array
     {
+        if (!$enrollment->roadmap) {
+            return [];
+        }
+
         $tasks = $enrollment->roadmap->tasks()
             ->where('day_number', $dayNumber)
             ->orderBy('order')

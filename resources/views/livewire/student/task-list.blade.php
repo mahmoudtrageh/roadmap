@@ -1,12 +1,44 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         @if(session()->has('message'))
-        <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-6" role="alert">
+        <div class="bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-700 text-green-700 dark:text-green-300 px-4 py-3 rounded relative mb-6" role="alert">
             <span class="block sm:inline">{{ session('message') }}</span>
         </div>
         @endif
 
+        @if(session()->has('error'))
+        <div class="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-700 text-red-700 dark:text-red-300 px-4 py-3 rounded relative mb-6" role="alert">
+            <span class="block sm:inline">{{ session('error') }}</span>
+        </div>
+        @endif
+
         @if($activeEnrollment)
+
+        <!-- Roadmap Selector -->
+        @if(count($allEnrollments) > 1)
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-4 mb-6">
+            <div class="flex items-center gap-3">
+                <label class="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Viewing Roadmap:
+                </label>
+                <select wire:change="switchRoadmap($event.target.value)"
+                        class="flex-1 rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                    @foreach($allEnrollments as $enrollment)
+                        <option value="{{ $enrollment['roadmap_id'] }}"
+                                {{ $activeEnrollment->roadmap_id == $enrollment['roadmap_id'] ? 'selected' : '' }}>
+                            {{ $enrollment['roadmap']['title'] }}
+                            @if($enrollment['status'] === 'completed')
+                                ✅ (Completed)
+                            @else
+                                (In Progress)
+                            @endif
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+        @endif
+
         <!-- Completed Roadmap Banner -->
         @if($activeEnrollment->status === 'completed')
         <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg p-6 mb-6 text-white">
@@ -30,13 +62,13 @@
         </div>
         @endif
 
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6">
                 <!-- Header -->
                 <div class="mb-6 flex items-start justify-between gap-4">
                     <div>
-                        <h2 class="text-2xl font-bold text-gray-800">{{ $activeEnrollment->roadmap->title }}</h2>
-                        <p class="text-gray-600 mt-1">
+                        <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">{{ $activeEnrollment->roadmap->title }}</h2>
+                        <p class="text-gray-600 dark:text-gray-400 mt-1">
                             @if($activeEnrollment->status === 'completed')
                                 <span class="text-green-600 font-semibold">✓ Completed</span> - Viewing tasks
                             @else
@@ -81,7 +113,7 @@
                                 class="px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap
                                     {{ $day === $currentDay
                                         ? 'bg-blue-600 text-white'
-                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }}">
+                                        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' }}">
                                 Day {{ $day }}
                             </button>
                         @endif
@@ -89,7 +121,7 @@
                         <button
                             disabled
                             title="Complete all tasks in Day {{ $day - 1 }} first"
-                            class="px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap bg-gray-200 text-gray-400 cursor-not-allowed">
+                            class="px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap bg-gray-200 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-not-allowed">
                             🔒 Day {{ $day }}
                         </button>
                     @endif
@@ -100,47 +132,112 @@
                 @if(count($tasks) > 0)
                 <div class="space-y-4">
                     @foreach($tasks as $task)
-                    <div class="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow
-                        {{ $task['status'] === 'completed' ? 'bg-green-50 border-green-200' : '' }}
-                        {{ $task['status'] === 'in_progress' ? 'bg-blue-50 border-blue-200' : '' }}
-                        {{ $task['status'] === 'skipped' ? 'bg-gray-100 border-gray-300' : '' }}
-                        {{ $task['is_locked'] ? 'opacity-60 bg-gray-50' : '' }}">
+                    <div class="border rounded-lg p-6 hover:shadow-md transition-shadow
+                        {{ $task['status'] === 'completed' ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800' : '' }}
+                        {{ $task['status'] === 'in_progress' ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : '' }}
+                        {{ $task['status'] === 'skipped' ? 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600' : '' }}
+                        {{ $task['status'] === 'not_started' && !$task['is_locked'] ? 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700' : '' }}
+                        {{ $task['is_locked'] ? 'opacity-60 bg-gray-50 dark:bg-gray-900 border-gray-200 dark:border-gray-700' : '' }}">
 
                         <div class="flex items-start justify-between">
                             <div class="flex-1">
                                 <!-- Task Header -->
                                 <div class="flex items-center gap-3 mb-2">
-                                    <h3 class="text-lg font-semibold text-gray-900">{{ $task['title'] }}</h3>
+                                    <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">{{ $task['title'] }}</h3>
 
                                     <!-- Status Badge -->
                                     @if($task['status'] === 'completed')
-                                    <span class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                                    <span class="bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 text-xs font-semibold px-2.5 py-0.5 rounded">
                                         ✓ Completed
                                     </span>
                                     @elseif($task['status'] === 'in_progress')
-                                    <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                                    <span class="bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 text-xs font-semibold px-2.5 py-0.5 rounded">
                                         ⏳ In Progress
                                     </span>
                                     @elseif($task['status'] === 'skipped')
-                                    <span class="bg-gray-100 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded">
+                                    <span class="bg-gray-100 dark:bg-gray-600 text-gray-800 dark:text-gray-200 text-xs font-semibold px-2.5 py-0.5 rounded">
                                         ⏭ Skipped
                                     </span>
                                     @endif
                                 </div>
 
                                 <!-- Task Description -->
-                                <p class="text-gray-600 mb-3">{{ $task['description'] }}</p>
+                                <p class="text-gray-600 dark:text-gray-300 mb-3">{{ $task['description'] }}</p>
+
+                                <!-- Translation Terms Table -->
+                                @if(isset($translationTerms) && $translationTerms)
+                                <div class="mb-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden shadow-sm">
+                                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-3">
+                                        <h3 class="text-white font-semibold text-lg flex items-center gap-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                                            </svg>
+                                            {{ $translationTerms['title'] }}
+                                            <span class="text-sm font-normal text-blue-100">- {{ $translationTerms['titleAr'] }}</span>
+                                        </h3>
+                                        <p class="text-blue-100 text-sm mt-1">{{ count($translationTerms['terms']) }} Technical Terms</p>
+                                    </div>
+
+                                    <div class="overflow-x-auto">
+                                        <table class="w-full">
+                                            <thead class="bg-gray-50 dark:bg-gray-700">
+                                                <tr>
+                                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider w-1/4">
+                                                        English Term
+                                                    </th>
+                                                    <th class="px-4 py-3 text-right text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider w-1/4" dir="rtl">
+                                                        الترجمة العربية
+                                                    </th>
+                                                    <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider w-1/2">
+                                                        Code Example
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                                                @foreach($translationTerms['terms'] as $term)
+                                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                                                    <td class="px-4 py-3">
+                                                        <span class="text-sm font-semibold text-blue-700 dark:text-blue-400">
+                                                            {{ $term['english'] }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-4 py-3 text-right" dir="rtl">
+                                                        <span class="text-sm font-semibold text-green-700 dark:text-green-400">
+                                                            {{ $term['arabic'] }}
+                                                        </span>
+                                                    </td>
+                                                    <td class="px-4 py-3">
+                                                        <code class="text-xs bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-300 px-2 py-1 rounded font-mono">
+                                                            {{ $term['example'] }}
+                                                        </code>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="bg-gray-50 dark:bg-gray-700 px-4 py-3 border-t border-gray-200 dark:border-gray-600">
+                                        <p class="text-xs text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                                            <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            💡 Tip: Practice using these terms in your code comments and documentation
+                                        </p>
+                                    </div>
+                                </div>
+                                @endif
 
                                 <!-- Learning Objectives -->
                                 @if(!empty($task['learning_objectives']))
                                 <div class="mb-3">
-                                    <p class="text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
+                                    <p class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1">
                                         <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
                                         Learning Objectives:
                                     </p>
-                                    <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1">
                                         @foreach($task['learning_objectives'] as $objective)
                                         <li>{{ $objective }}</li>
                                         @endforeach
@@ -150,8 +247,8 @@
 
                                 <!-- Prerequisites (if any) -->
                                 @if(!empty($task['missing_prerequisites']))
-                                <div class="mb-3 bg-red-50 border border-red-200 rounded-lg p-3">
-                                    <p class="text-sm font-semibold text-red-800 mb-2 flex items-center gap-1">
+                                <div class="mb-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
+                                    <p class="text-sm font-semibold text-red-800 dark:text-red-300 mb-2 flex items-center gap-1">
                                         <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
                                         </svg>
@@ -208,13 +305,13 @@
                                 <!-- Success Criteria -->
                                 @if(!empty($task['success_criteria']) && !$task['is_locked'])
                                 <div class="mb-3">
-                                    <p class="text-sm font-semibold text-gray-700 mb-1 flex items-center gap-1">
+                                    <p class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1">
                                         <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
                                         </svg>
                                         Success Criteria:
                                     </p>
-                                    <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1">
                                         @foreach($task['success_criteria'] as $criteria)
                                         <li>{{ $criteria }}</li>
                                         @endforeach
@@ -224,56 +321,86 @@
 
 
                                 <!-- Task Meta Information -->
-                                <div class="flex flex-wrap gap-4 text-sm text-gray-500 mb-3">
+                                <div class="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
                                     <div class="flex items-center gap-1">
                                         <span class="font-medium">Type:</span>
-                                        <span class="bg-purple-100 text-purple-800 px-2 py-0.5 rounded text-xs">
+                                        <span class="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 px-2 py-0.5 rounded text-xs">
                                             {{ ucfirst($task['task_type']) }}
                                         </span>
                                     </div>
                                     <div class="flex items-center gap-1">
                                         <span class="font-medium">Category:</span>
-                                        <span class="bg-indigo-100 text-indigo-800 px-2 py-0.5 rounded text-xs">
+                                        <span class="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300 px-2 py-0.5 rounded text-xs">
                                             {{ ucfirst($task['category']) }}
                                         </span>
                                     </div>
                                     <div class="flex items-center gap-1">
-                                        <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
                                         <span class="font-medium">Estimated:</span>
-                                        <span class="{{ $task['estimated_time_minutes'] > 120 ? 'text-orange-600 font-semibold' : '' }}">
-                                            {{ $task['estimated_time_minutes'] }} min
+                                        @php
+                                            $estMinutes = $task['estimated_time_minutes'];
+                                            if ($estMinutes >= 60) {
+                                                $hours = floor($estMinutes / 60);
+                                                $mins = $estMinutes % 60;
+                                                $estDisplay = $mins > 0 ? "{$hours}h {$mins}m" : "{$hours}h";
+                                            } else {
+                                                $estDisplay = "{$estMinutes}m";
+                                            }
+                                        @endphp
+                                        <span class="{{ $task['estimated_time_minutes'] > 120 ? 'text-orange-600 dark:text-orange-400 font-semibold' : '' }}">
+                                            {{ $estDisplay }}
                                         </span>
-                                        @if($task['estimated_time_minutes'] > 120)
-                                        <span class="text-xs text-orange-600">(Long task)</span>
+                                        @if($task['estimated_time_minutes'] > 180)
+                                        <span class="text-xs text-orange-600 dark:text-orange-400">(Long task)</span>
                                         @endif
                                     </div>
                                     @if(isset($task['actual_avg_time_minutes']) && $task['actual_avg_time_minutes'] > 0)
+                                    @php
+                                        $avgMinutes = $task['actual_avg_time_minutes'];
+                                        if ($avgMinutes >= 60) {
+                                            $avgHours = floor($avgMinutes / 60);
+                                            $avgMins = $avgMinutes % 60;
+                                            $avgDisplay = $avgMins > 0 ? "{$avgHours}h {$avgMins}m" : "{$avgHours}h";
+                                        } else {
+                                            $avgDisplay = "{$avgMinutes}m";
+                                        }
+                                    @endphp
                                     <div class="flex items-center gap-1">
                                         <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                         </svg>
                                         <span class="font-medium">Others completed in:</span>
-                                        <span class="text-blue-600 font-semibold">{{ $task['actual_avg_time_minutes'] }} min avg</span>
+                                        <span class="text-blue-600 dark:text-blue-400 font-semibold">{{ $avgDisplay }} avg</span>
                                         @php
                                             $diff = $task['actual_avg_time_minutes'] - $task['estimated_time_minutes'];
                                             $diffPercent = $task['estimated_time_minutes'] > 0 ? round(($diff / $task['estimated_time_minutes']) * 100) : 0;
                                         @endphp
                                         @if(abs($diffPercent) > 20)
-                                        <span class="text-xs {{ $diff > 0 ? 'text-orange-600' : 'text-green-600' }}">
+                                        <span class="text-xs {{ $diff > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-green-600 dark:text-green-400' }}">
                                             ({{ $diff > 0 ? '+' : '' }}{{ $diffPercent }}%)
                                         </span>
                                         @endif
                                     </div>
                                     @endif
                                     @if($task['time_spent_minutes'])
+                                    @php
+                                        $spentMinutes = $task['time_spent_minutes'];
+                                        if ($spentMinutes >= 60) {
+                                            $spentHours = floor($spentMinutes / 60);
+                                            $spentMins = $spentMinutes % 60;
+                                            $spentDisplay = $spentMins > 0 ? "{$spentHours}h {$spentMins}m" : "{$spentHours}h";
+                                        } else {
+                                            $spentDisplay = "{$spentMinutes}m";
+                                        }
+                                    @endphp
                                     <div class="flex items-center gap-1">
                                         <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                         </svg>
                                         <span class="font-medium">Your time:</span>
-                                        <span class="text-green-600 font-semibold">{{ $task['time_spent_minutes'] }} min</span>
+                                        <span class="text-green-600 dark:text-green-400 font-semibold">{{ $spentDisplay }}</span>
                                     </div>
                                     @endif
                                 </div>
@@ -391,18 +518,17 @@
                                     $newResources = $task['resources'] ?? [];
                                     $legacyResources = $task['resources_links'] ?? [];
 
-                                    // Group new resources by language
+                                    // Group new resources by language (default to English if not specified)
                                     $englishResources = [];
                                     $arabicResources = [];
 
                                     if (is_array($newResources) && count($newResources) > 0) {
                                         foreach ($newResources as $resource) {
-                                            if (isset($resource['language'])) {
-                                                if ($resource['language'] === 'ar') {
-                                                    $arabicResources[] = $resource;
-                                                } else {
-                                                    $englishResources[] = $resource;
-                                                }
+                                            $lang = $resource['language'] ?? 'en';
+                                            if ($lang === 'ar') {
+                                                $arabicResources[] = $resource;
+                                            } else {
+                                                $englishResources[] = $resource;
                                             }
                                         }
                                     }
@@ -419,11 +545,6 @@
                                             <span class="text-xs text-gray-500">({{ count($englishResources) }} English, {{ count($arabicResources) }} Arabic)</span>
                                             @endif
                                         </p>
-                                        @if(auth()->user()->learning_style)
-                                        <span class="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded-full font-medium">
-                                            ✨ Personalized for {{ ucfirst(str_replace('_', '/', auth()->user()->learning_style)) }}
-                                        </span>
-                                        @endif
                                     </div>
 
                                     <!-- English Resources Section -->
@@ -437,13 +558,70 @@
                                         </div>
                                         <div class="space-y-2 pl-3 border-l-2 border-blue-200 dark:border-blue-800">
                                             @foreach($englishResources as $index => $resource)
-                                            <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 hover:shadow-sm transition-shadow">
-                                                <a href="{{ $resource['url'] }}" target="_blank" class="flex items-start gap-2 group">
+                                            @php
+                                                // Get rating data for this resource
+                                                $resourceRatings = \App\Models\ResourceRating::where('task_id', $task['id'])
+                                                    ->where('resource_index', $index)
+                                                    ->get();
+                                                $avgRating = $resourceRatings->count() > 0 ? round($resourceRatings->avg('rating'), 1) : null;
+                                                $ratingCount = $resourceRatings->count();
+                                                $isHighlyRated = $avgRating >= 4.0 && $ratingCount >= 3;
+                                                $isPoorlyRated = $avgRating < 3.0 && $ratingCount >= 3;
+                                            @endphp
+                                            <div class="bg-white dark:bg-gray-800 border {{ $isHighlyRated ? 'border-yellow-400' : 'border-gray-200 dark:border-gray-700' }} rounded-lg p-3 hover:shadow-sm transition-shadow {{ $isHighlyRated ? 'ring-1 ring-yellow-200' : '' }}">
+                                                @if($resource['type'] === 'book')
+                                                {{-- Book resource (no URL) --}}
+                                                <div class="flex items-start gap-2">
+                                                    <span class="text-lg flex-shrink-0">📚</span>
+                                                    <div class="flex-1 min-w-0">
+                                                        <div class="flex items-start justify-between">
+                                                            <p class="text-sm font-medium text-gray-800 dark:text-gray-200">
+                                                                {{ $resource['title'] }}
+                                                            </p>
+                                                            @if($avgRating)
+                                                            <div class="flex items-center gap-1 text-sm ml-2">
+                                                                <span class="font-semibold {{ $isHighlyRated ? 'text-yellow-600' : 'text-gray-600' }}">{{ $avgRating }}</span>
+                                                                <svg class="w-4 h-4 {{ $isHighlyRated ? 'text-yellow-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
+                                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                                </svg>
+                                                                <span class="text-xs text-gray-500">({{ $ratingCount }})</span>
+                                                            </div>
+                                                            @endif
+                                                        </div>
+                                                        @if(!empty($resource['author']))
+                                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                                                            by {{ $resource['author'] }}
+                                                        </p>
+                                                        @endif
+                                                        @if(!empty($resource['chapters']))
+                                                        <p class="text-xs text-blue-600 dark:text-blue-400 mt-1 font-medium">
+                                                            {{ $resource['chapters'] }}
+                                                        </p>
+                                                        @endif
+                                                        @if(!empty($resource['description']))
+                                                        <p class="text-xs text-gray-500 dark:text-gray-500 mt-1 italic">
+                                                            {{ $resource['description'] }}
+                                                        </p>
+                                                        @endif
+                                                        @if($isHighlyRated)
+                                                        <span class="inline-flex items-center gap-1 mt-2 px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">
+                                                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                                            Highly Rated
+                                                        </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                                @else
+                                                {{-- URL-based resource --}}
+                                                <div class="flex items-start justify-between gap-2">
+                                                <a href="{{ $resource['url'] ?? '#' }}" target="_blank" class="flex items-start gap-2 group flex-1">
                                                     <span class="text-lg flex-shrink-0">
-                                                        @if($resource['type'] === 'youtube')
+                                                        @if($resource['type'] === 'youtube' || $resource['type'] === 'video')
                                                             🎥
-                                                        @elseif($resource['type'] === 'video')
-                                                            📹
+                                                        @elseif($resource['type'] === 'article')
+                                                            📄
+                                                        @elseif($resource['type'] === 'interactive')
+                                                            💻
                                                         @elseif($resource['type'] === 'documentation')
                                                             📘
                                                         @elseif($resource['type'] === 'tutorial')
@@ -460,16 +638,71 @@
                                                         <p class="text-sm font-medium text-blue-600 dark:text-blue-400 group-hover:text-blue-700 dark:group-hover:text-blue-300 group-hover:underline">
                                                             {{ $resource['title'] ?: 'Learning Resource' }}
                                                         </p>
-                                                        @if(!empty($resource['title']))
-                                                        <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">
-                                                            {{ $resource['url'] }}
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                                            @if(!empty($resource['is_playlist']) && !empty($resource['video_count']))
+                                                                <span class="inline-flex items-center gap-1 text-purple-600 dark:text-purple-400">
+                                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path>
+                                                                    </svg>
+                                                                    {{ $resource['video_count'] }} videos
+                                                                </span>
+                                                                <span class="mx-1">•</span>
+                                                            @endif
+                                                            @if(!empty($resource['duration_seconds']))
+                                                                @php
+                                                                    $totalMinutes = round($resource['duration_seconds'] / 60);
+                                                                    $hours = floor($totalMinutes / 60);
+                                                                    $minutes = $totalMinutes % 60;
+                                                                    $durationFormatted = $hours > 0 ? "{$hours}h " . ($minutes > 0 ? "{$minutes}m" : "") : "{$minutes}m";
+                                                                @endphp
+                                                                <span class="inline-flex items-center gap-1">
+                                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                                    </svg>
+                                                                    {{ trim($durationFormatted) }}
+                                                                </span>
+                                                                @if(!empty($resource['author'])) <span class="mx-1">•</span> @endif
+                                                            @elseif(!empty($resource['duration']))
+                                                                <span class="inline-flex items-center gap-1">
+                                                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                                    </svg>
+                                                                    {{ $resource['duration'] }}
+                                                                </span>
+                                                                @if(!empty($resource['author'])) <span class="mx-1">•</span> @endif
+                                                            @endif
+                                                            @if(!empty($resource['author']))
+                                                                by {{ $resource['author'] }}
+                                                            @endif
                                                         </p>
+                                                        @if($isHighlyRated)
+                                                        <span class="inline-flex items-center gap-1 mt-1 px-2 py-0.5 bg-yellow-100 text-yellow-800 text-xs font-semibold rounded-full">
+                                                            <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                                            Highly Rated
+                                                        </span>
                                                         @endif
                                                     </div>
                                                     <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                                                     </svg>
                                                 </a>
+                                                <div class="flex items-center gap-1 text-sm ml-2">
+                                                    @if($avgRating)
+                                                    <span class="font-semibold {{ $isHighlyRated ? 'text-yellow-600 dark:text-yellow-400' : 'text-gray-600 dark:text-gray-400' }}">{{ $avgRating }}</span>
+                                                    <svg class="w-4 h-4 {{ $isHighlyRated ? 'text-yellow-500' : 'text-gray-400' }}" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+                                                    </svg>
+                                                    <span class="text-xs text-gray-500 dark:text-gray-400">({{ $ratingCount }})</span>
+                                                    @endif
+                                                </div>
+                                                </div>
+                                                {{-- Rate & Comment buttons --}}
+                                                @if(!$task['is_locked'] && !empty($resource['url']))
+                                                <div class="mt-2 pt-2 border-t border-gray-100 dark:border-gray-700">
+                                                    @livewire('student.resource-review', ['taskId' => $task['id'], 'resourceUrl' => $resource['url'], 'isLocked' => $task['is_locked']], key('resource-review-'.$task['id'].'-'.$index))
+                                                </div>
+                                                @endif
+                                                @endif
                                             </div>
                                             @endforeach
                                         </div>
@@ -503,10 +736,14 @@
                                                         @endif
                                                     </div>
                                                     <span class="text-lg flex-shrink-0">
-                                                        @if($resource['type'] === 'youtube')
+                                                        @if($resource['type'] === 'youtube' || $resource['type'] === 'video')
                                                             🎥
-                                                        @elseif($resource['type'] === 'video')
-                                                            📹
+                                                        @elseif($resource['type'] === 'article')
+                                                            📄
+                                                        @elseif($resource['type'] === 'book')
+                                                            📚
+                                                        @elseif($resource['type'] === 'interactive')
+                                                            💻
                                                         @elseif($resource['type'] === 'documentation')
                                                             📘
                                                         @elseif($resource['type'] === 'tutorial')
@@ -761,9 +998,9 @@
 
                                 <!-- Self Notes Display -->
                                 @if($task['self_notes'])
-                                <div class="bg-white border border-gray-200 rounded-lg p-3">
-                                    <p class="text-sm font-medium text-gray-700 mb-1">Notes:</p>
-                                    <p class="text-sm text-gray-600">{{ $task['self_notes'] }}</p>
+                                <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+                                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes:</p>
+                                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $task['self_notes'] }}</p>
                                 </div>
                                 @endif
                             </div>
@@ -772,10 +1009,10 @@
                             <div class="ml-4 flex flex-col gap-2">
                                 @if($task['is_locked'])
                                     <div class="text-center">
-                                        <div class="bg-gray-300 text-gray-600 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
+                                        <div class="bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-400 px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
                                             🔒 Locked
                                         </div>
-                                        <p class="text-xs text-gray-500 mt-1">Complete previous task</p>
+                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Complete previous task</p>
                                     </div>
                                 @else
                                     @if($task['has_code_submission'])
@@ -865,11 +1102,11 @@
             </div>
         </div>
         @else
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+        <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-12 text-center">
                 <div class="text-6xl mb-4">📚</div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-2">No Active Roadmap</h3>
-                <p class="text-gray-600 text-lg mb-6">Start your learning journey by enrolling in a roadmap!</p>
+                <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2">No Active Roadmap</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-lg mb-6">Start your learning journey by enrolling in a roadmap!</p>
                 <a href="{{ route('student.roadmaps') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
                     Browse Roadmaps →
                 </a>
@@ -880,23 +1117,23 @@
 
     <!-- Completion Modal -->
     @if($showCompletionModal)
-    <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50" wire:click="closeCompletionModal">
-        <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-2/3 lg:w-1/2 shadow-lg rounded-lg bg-white" wire:click.stop>
+    <div class="fixed inset-0 bg-gray-900/50 overflow-y-auto h-full w-full z-50" wire:click="closeCompletionModal">
+        <div class="relative top-20 mx-auto p-5 border border-gray-200 dark:border-gray-700 w-11/12 md:w-2/3 lg:w-1/2 shadow-lg rounded-lg bg-white dark:bg-gray-800" wire:click.stop>
             <div class="mt-3">
-                <h3 class="text-lg font-semibold text-gray-900 mb-4">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                     {{ $status === 'completed' ? 'Complete Task' : ($status === 'in_progress' ? 'Start Task' : 'Skip Task') }}
                 </h3>
 
                 <form wire:submit.prevent="updateTaskStatus">
                     <!-- Time Spent -->
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
-                            Time Spent (minutes) <span class="text-gray-400 text-xs">(optional)</span>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Time Spent (minutes) <span class="text-gray-400 dark:text-gray-500 text-xs">(optional)</span>
                         </label>
                         <input
                             type="number"
                             wire:model="timeSpentMinutes"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                            class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Enter time spent in minutes (optional)"
                             min="0">
                         @error('timeSpentMinutes')
@@ -907,10 +1144,10 @@
                     <!-- Quality Rating (only for completed status) -->
                     @if($status === 'completed')
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Quality Rating (1-10)
                         </label>
-                        <div class="flex gap-2">
+                        <div class="flex gap-2 flex-wrap">
                             @for($i = 1; $i <= 10; $i++)
                             <button
                                 type="button"
@@ -918,7 +1155,7 @@
                                 class="w-10 h-10 rounded-lg border-2 font-semibold transition-colors
                                     {{ $qualityRating === $i
                                         ? 'bg-yellow-500 border-yellow-600 text-white'
-                                        : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50' }}">
+                                        : 'bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600' }}">
                                 {{ $i }}
                             </button>
                             @endfor
@@ -931,13 +1168,13 @@
 
                     <!-- Self Notes -->
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-2">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Notes / Reflections
                         </label>
                         <textarea
                             wire:model="selfNotes"
                             rows="4"
-                            class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-blue-500 focus:border-blue-500"
+                            class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Add your notes, reflections, or key learnings..."></textarea>
                         @error('selfNotes')
                         <span class="text-red-500 text-xs">{{ $message }}</span>
@@ -949,7 +1186,7 @@
                         <button
                             type="button"
                             wire:click="closeCompletionModal"
-                            class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-6 py-2 rounded-lg font-medium">
+                            class="bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200 px-6 py-2 rounded-lg font-medium">
                             Cancel
                         </button>
                         <button

@@ -70,7 +70,7 @@ class ProgressTracker extends Component
 
     public function loadDayWiseProgress(): void
     {
-        if (!$this->activeEnrollment) {
+        if (!$this->activeEnrollment || !$this->activeEnrollment->roadmap) {
             return;
         }
 

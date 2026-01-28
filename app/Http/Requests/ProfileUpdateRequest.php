@@ -25,7 +25,6 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
-            'learning_style' => ['nullable', 'in:visual,auditory,reading_writing,kinesthetic'],
             'show_on_leaderboard' => ['nullable', 'boolean'],
             'leaderboard_display_name' => ['nullable', 'string', 'max:100'],
         ];

@@ -32,6 +32,13 @@
             <main>
                 {{ $slot }}
             </main>
+
+            <!-- Feedback Button (only for non-admin users) -->
+            @auth
+                @if(auth()->user()->role !== 'admin')
+                    @livewire('feedback-button')
+                @endif
+            @endauth
         </div>
         @livewireScripts
     </body>

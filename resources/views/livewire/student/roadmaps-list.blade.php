@@ -46,20 +46,19 @@
             <p class="text-blue-800 text-sm mb-3">
                 Follow these 8 roadmaps in order to go from complete beginner to senior developer in <strong>8-9 months</strong> with flexible daily study.
             </p>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                 <div class="bg-white rounded p-2 border border-blue-100">
-                    <div class="font-semibold text-blue-900 mb-1">🟢 Light Days (1-2 hrs)</div>
-                    <div class="text-blue-700">Reading & simple exercises</div>
+                    <div class="font-semibold text-blue-900 mb-1">🟢 Light Days (30-60 min)</div>
+                    <div class="text-blue-700">Quick tutorials & articles</div>
                 </div>
                 <div class="bg-white rounded p-2 border border-blue-100">
-                    <div class="font-semibold text-blue-900 mb-1">🟡 Standard Days (2-3 hrs)</div>
-                    <div class="text-blue-700">Practice tasks & coding</div>
-                </div>
-                <div class="bg-white rounded p-2 border border-blue-100">
-                    <div class="font-semibold text-blue-900 mb-1">🔴 Project Days (3-4 hrs)</div>
-                    <div class="text-blue-700">Build real applications</div>
+                    <div class="font-semibold text-blue-900 mb-1">🟡 Standard Days (1-2 hrs)</div>
+                    <div class="text-blue-700">Video learning & practice</div>
                 </div>
             </div>
+            <p class="text-blue-600 text-xs mt-2 italic">
+                All tasks are optimized to ≤ 2 hours per day for consistent daily progress
+            </p>
         </div>
 
         <!-- Roadmaps Grid -->
@@ -84,9 +83,16 @@
                                     <h3 class="text-lg font-semibold text-gray-900">{{ $roadmap->title }}</h3>
                                 </div>
                             </div>
-                            @if ($roadmap->is_featured)
-                                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">⭐ Start Here</span>
-                            @endif
+                            <div class="flex flex-col gap-1 items-end">
+                                @if ($roadmap->order <= 2)
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-800">
+                                        🎁 FREE
+                                    </span>
+                                @endif
+                                @if ($roadmap->is_featured)
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">⭐ Start Here</span>
+                                @endif
+                            </div>
                         </div>
 
                         <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ $roadmap->description }}</p>
@@ -146,9 +152,21 @@
                         @endphp
 
                         @if (in_array($roadmap->id, $enrolledRoadmapIds))
-                            <span class="block w-full text-center bg-green-100 text-green-700 px-4 py-2 rounded-lg font-medium">
-                                ✓ Enrolled
-                            </span>
+                            @if(in_array($roadmap->id, $completedRoadmapIds))
+                                <span class="block w-full text-center bg-green-100 text-green-700 px-4 py-2 rounded-lg font-medium mb-2">
+                                    ✅ Completed
+                                </span>
+                                <a href="{{ route('student.tasks', ['roadmapId' => $roadmap->id]) }}" class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition duration-150">
+                                    Review Tasks
+                                </a>
+                            @else
+                                <span class="block w-full text-center bg-green-100 text-green-700 px-4 py-2 rounded-lg font-medium mb-2">
+                                    ✓ Enrolled
+                                </span>
+                                <a href="{{ route('student.tasks', ['roadmapId' => $roadmap->id]) }}" class="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition duration-150">
+                                    View Tasks
+                                </a>
+                            @endif
                         @elseif ($isLocked)
                             <button disabled class="block w-full bg-gray-300 text-gray-500 px-4 py-2 rounded-lg font-medium cursor-not-allowed" title="{{ $lockReason }}">
                                 🔒 Locked

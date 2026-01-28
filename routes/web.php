@@ -34,7 +34,7 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::get('/dashboard', App\Livewire\Student\Dashboard::class)->name('dashboard');
     Route::get('/roadmaps', App\Livewire\Student\RoadmapsList::class)->name('roadmaps');
     Route::get('/roadmaps/{roadmapId}', App\Livewire\Student\RoadmapView::class)->name('roadmap.view');
-    Route::get('/tasks', App\Livewire\Student\TaskList::class)->name('tasks');
+    Route::get('/tasks/{roadmapId?}', App\Livewire\Student\TaskList::class)->name('tasks');
     Route::get('/progress', App\Livewire\Student\ProgressTracker::class)->name('progress');
     Route::get('/leaderboard', App\Livewire\Student\Leaderboard::class)->name('leaderboard');
     Route::get('/certificates', [CertificateController::class, 'index'])->name('certificates');
@@ -66,6 +66,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/users', App\Livewire\Admin\UserManagement::class)->name('users');
     Route::get('/content-management', App\Livewire\Admin\ContentManagement::class)->name('content-management');
     Route::get('/subscriptions', App\Livewire\Instructor\SubscriptionManagement::class)->name('subscriptions');
+    Route::get('/feedback', App\Livewire\Admin\FeedbackManager::class)->name('feedback');
 });
 
 // Company Routes

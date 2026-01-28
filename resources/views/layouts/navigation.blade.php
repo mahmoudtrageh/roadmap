@@ -47,6 +47,17 @@
                         <x-nav-link :href="route('admin.subscriptions')" :active="request()->routeIs('admin.subscriptions')">
                             {{ __('Subscriptions') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.feedback')" :active="request()->routeIs('admin.feedback')">
+                            {{ __('Feedback') }}
+                            @php
+                                $newFeedbackCount = \App\Models\Feedback::where('status', 'new')->count();
+                            @endphp
+                            @if($newFeedbackCount > 0)
+                                <span class="ml-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                                    {{ $newFeedbackCount }}
+                                </span>
+                            @endif
+                        </x-nav-link>
                     @endif
 
                     @if(auth()->user()->role === 'instructor')
@@ -152,6 +163,17 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.subscriptions')" :active="request()->routeIs('admin.subscriptions')">
                     {{ __('Subscriptions') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.feedback')" :active="request()->routeIs('admin.feedback')">
+                    {{ __('Feedback') }}
+                    @php
+                        $newFeedbackCount = \App\Models\Feedback::where('status', 'new')->count();
+                    @endphp
+                    @if($newFeedbackCount > 0)
+                        <span class="ml-1 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                            {{ $newFeedbackCount }}
+                        </span>
+                    @endif
                 </x-responsive-nav-link>
             @endif
 
