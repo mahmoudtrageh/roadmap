@@ -18,10 +18,12 @@ class Subscription extends Component
     public $receipt = null;
     public $showPaymentModal = false;
     public $transactionNotes = '';
+    public $selectedPlan = 'yearly'; // yearly or monthly
 
     protected $rules = [
         'receipt' => 'required|image|max:2048', // Max 2MB
         'transactionNotes' => 'nullable|string|max:500',
+        'selectedPlan' => 'required|in:monthly,yearly',
     ];
 
     public function mount()
@@ -57,13 +59,17 @@ class Subscription extends Component
     {
         $this->validate();
 
+        // Determine amount and duration based on selected plan
+        $amount = $this->selectedPlan === 'yearly' ? 1000.00 : 100.00;
+        $duration = $this->selectedPlan === 'yearly' ? 365 : 30; // days
+
         // Create pending subscription
         $subscription = SubscriptionModel::create([
             'student_id' => Auth::id(),
             'status' => 'pending',
-            'amount' => 100.00,
+            'amount' => $amount,
             'payment_method' => 'bank_transfer',
-            'notes' => $this->transactionNotes,
+            'notes' => $this->transactionNotes . ' (Plan: ' . ucfirst($this->selectedPlan) . ')',
         ]);
 
         // Store receipt
@@ -74,13 +80,15 @@ class Subscription extends Component
             'student_id' => Auth::id(),
             'subscription_id' => $subscription->id,
             'transaction_id' => 'TXN-' . time() . '-' . Auth::id(),
-            'amount' => 100.00,
+            'amount' => $amount,
             'currency' => 'EGP',
             'status' => 'pending',
             'payment_method' => 'bank_transfer',
             'payment_details' => [
                 'receipt_path' => $receiptPath,
                 'uploaded_at' => now()->toDateTimeString(),
+                'plan' => $this->selectedPlan,
+                'duration_days' => $duration,
             ],
             'notes' => $this->transactionNotes,
         ]);

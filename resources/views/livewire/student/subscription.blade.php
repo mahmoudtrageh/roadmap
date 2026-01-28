@@ -75,53 +75,120 @@
                             </div>
                         </div>
 
-                        <!-- Subscription Plan -->
+                        <!-- Subscription Plans -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <!-- Monthly Plan -->
+                            <div class="bg-white rounded-lg p-8 text-gray-800 shadow-lg">
+                                <div class="text-center mb-6">
+                                    <h3 class="text-2xl font-bold mb-2">Monthly</h3>
+                                    <div class="text-5xl font-bold text-indigo-600 mb-1">100 EGP</div>
+                                    <p class="text-gray-600">per month</p>
+                                </div>
+                                <ul class="space-y-3 mb-6 text-left">
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        <span class="text-sm">Unlimited roadmap access</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        <span class="text-sm">All certificates</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        <span class="text-sm">Cancel anytime</span>
+                                    </li>
+                                </ul>
+                                <div class="text-center">
+                                    <p class="text-sm text-gray-500">Billed monthly</p>
+                                </div>
+                            </div>
+
+                            <!-- Annual Plan (Best Value) -->
+                            <div class="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg p-8 text-white shadow-lg relative">
+                                <div class="absolute -top-3 right-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-xs font-bold">
+                                    SAVE 17%
+                                </div>
+                                <div class="text-center mb-6">
+                                    <h3 class="text-2xl font-bold mb-2">Yearly</h3>
+                                    <div class="text-5xl font-bold mb-1">1000 EGP</div>
+                                    <p class="text-indigo-100 mb-1">per year</p>
+                                    <p class="text-sm text-indigo-200">Only 83 EGP/month</p>
+                                </div>
+                                <ul class="space-y-3 mb-6 text-left">
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        <span class="text-sm">Unlimited roadmap access</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        <span class="text-sm">All certificates</span>
+                                    </li>
+                                    <li class="flex items-start gap-2">
+                                        <svg class="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                        </svg>
+                                        <span class="text-sm font-bold">Best value - 2 months FREE!</span>
+                                    </li>
+                                </ul>
+                                <div class="text-center">
+                                    <p class="text-sm text-indigo-100">Billed annually</p>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-lg p-8 text-white">
                             <div class="max-w-3xl mx-auto text-center">
-                                <h3 class="text-3xl font-bold mb-4">Annual Subscription</h3>
-                                <div class="text-6xl font-bold mb-2">100 EGP</div>
-                                <p class="text-indigo-100 mb-6">per year</p>
 
                                 <div class="bg-white/10 backdrop-blur rounded-lg p-6 mb-6 text-left">
-                                    <h4 class="font-bold text-lg mb-3">What's Included:</h4>
-                                    <ul class="space-y-2">
-                                        <li class="flex items-start gap-2">
-                                            <svg class="w-6 h-6 text-green-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <h4 class="font-bold text-lg mb-3">All Plans Include:</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                        <div class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                             </svg>
-                                            <span>Unlimited access to ALL roadmaps</span>
-                                        </li>
-                                        <li class="flex items-start gap-2">
-                                            <svg class="w-6 h-6 text-green-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <span class="text-sm">Unlimited access to ALL roadmaps</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                             </svg>
-                                            <span>Certificates for completed roadmaps</span>
-                                        </li>
-                                        <li class="flex items-start gap-2">
-                                            <svg class="w-6 h-6 text-green-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <span class="text-sm">Certificates for completed roadmaps</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                             </svg>
-                                            <span>Progress tracking and analytics</span>
-                                        </li>
-                                        <li class="flex items-start gap-2">
-                                            <svg class="w-6 h-6 text-green-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <span class="text-sm">Progress tracking and analytics</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                             </svg>
-                                            <span>Leaderboard participation</span>
-                                        </li>
-                                        <li class="flex items-start gap-2">
-                                            <svg class="w-6 h-6 text-green-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <span class="text-sm">Leaderboard participation</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                             </svg>
-                                            <span>Job board access</span>
-                                        </li>
-                                        <li class="flex items-start gap-2">
-                                            <svg class="w-6 h-6 text-green-300 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <span class="text-sm">Job board access</span>
+                                        </div>
+                                        <div class="flex items-start gap-2">
+                                            <svg class="w-5 h-5 text-green-300 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                             </svg>
-                                            <span>Priority support</span>
-                                        </li>
-                                    </ul>
+                                            <span class="text-sm">Priority support</span>
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- Payment Instructions -->
@@ -130,26 +197,30 @@
                                     <ol class="space-y-2 text-sm">
                                         <li class="flex items-start gap-2">
                                             <span class="font-bold text-green-300">1.</span>
-                                            <span>Transfer <strong>100 EGP</strong> to our bank account or mobile wallet</span>
+                                            <span>Choose your plan: <strong>100 EGP/month</strong> or <strong>1000 EGP/year</strong></span>
                                         </li>
                                         <li class="flex items-start gap-2">
                                             <span class="font-bold text-green-300">2.</span>
-                                            <span>Take a screenshot of the payment receipt</span>
+                                            <span>Transfer the amount to our bank account or mobile wallet</span>
                                         </li>
                                         <li class="flex items-start gap-2">
                                             <span class="font-bold text-green-300">3.</span>
-                                            <span>Upload the receipt using the button below</span>
+                                            <span>Take a screenshot of the payment receipt</span>
                                         </li>
                                         <li class="flex items-start gap-2">
                                             <span class="font-bold text-green-300">4.</span>
+                                            <span>Upload the receipt using the button below</span>
+                                        </li>
+                                        <li class="flex items-start gap-2">
+                                            <span class="font-bold text-green-300">5.</span>
                                             <span>Wait for admin approval (usually within 24 hours)</span>
                                         </li>
                                     </ol>
 
                                     <div class="mt-4 p-3 bg-white/10 rounded border border-white/20">
-                                        <p class="text-xs text-white/90 mb-2"><strong>Bank Account:</strong></p>
+                                        <p class="text-xs text-white/90 mb-2"><strong>Payment Methods:</strong></p>
                                         <p class="text-sm font-mono">Vodafone Cash: <strong>01234567890</strong></p>
-                                        <p class="text-sm font-mono">Bank: <strong>1234-5678-9012-3456</strong></p>
+                                        <p class="text-sm font-mono">Bank Account: <strong>1234-5678-9012-3456</strong></p>
                                     </div>
                                 </div>
 
@@ -233,13 +304,53 @@
 
             <form wire:submit.prevent="submitPayment" class="p-6">
                 <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                        Select Your Plan <span class="text-red-500">*</span>
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4">
+                        <label class="relative cursor-pointer">
+                            <input
+                                type="radio"
+                                wire:model="selectedPlan"
+                                value="monthly"
+                                class="peer sr-only"
+                            >
+                            <div class="border-2 border-gray-300 dark:border-gray-600 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/20 rounded-lg p-4 transition-all">
+                                <div class="font-bold text-lg text-gray-900 dark:text-gray-100">Monthly</div>
+                                <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">100 EGP</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400">per month</div>
+                            </div>
+                        </label>
+                        <label class="relative cursor-pointer">
+                            <input
+                                type="radio"
+                                wire:model="selectedPlan"
+                                value="yearly"
+                                class="peer sr-only"
+                            >
+                            <div class="border-2 border-gray-300 dark:border-gray-600 peer-checked:border-indigo-600 peer-checked:bg-indigo-50 dark:peer-checked:bg-indigo-900/20 rounded-lg p-4 transition-all relative">
+                                <div class="absolute -top-2 -right-2 bg-yellow-400 text-gray-900 px-2 py-0.5 rounded-full text-xs font-bold">
+                                    SAVE 17%
+                                </div>
+                                <div class="font-bold text-lg text-gray-900 dark:text-gray-100">Yearly</div>
+                                <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">1000 EGP</div>
+                                <div class="text-sm text-gray-600 dark:text-gray-400">83 EGP/month</div>
+                            </div>
+                        </label>
+                    </div>
+                    @error('selectedPlan')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    @enderror
+
                     <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-4">
-                        <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-2">Payment Details:</h4>
+                        <h4 class="font-semibold text-blue-900 dark:text-blue-100 mb-2">Payment Methods:</h4>
                         <ul class="text-sm text-blue-800 dark:text-blue-200 space-y-1">
-                            <li>• Amount: <strong>100 EGP</strong></li>
                             <li>• Vodafone Cash: <strong>01234567890</strong></li>
                             <li>• Bank Account: <strong>1234-5678-9012-3456</strong></li>
                         </ul>
+                        <p class="text-xs text-blue-700 dark:text-blue-300 mt-2">
+                            Transfer the amount for your selected plan, then upload your receipt below.
+                        </p>
                     </div>
 
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">

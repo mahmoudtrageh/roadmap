@@ -11,7 +11,7 @@
                 <div class="flex-1">
                     <h3 class="text-xl font-bold mb-2">Your First Roadmap is FREE!</h3>
                     <p class="text-green-100 mb-3">
-                        Start your learning journey at no cost! Your first roadmap enrollment is completely free. Additional roadmaps require a subscription of only <span class="font-bold">100 EGP/year</span> for unlimited access to all roadmaps.
+                        Start your learning journey at no cost! Your first roadmap enrollment is completely free. Additional roadmaps require a subscription starting at only <span class="font-bold">100 EGP/month</span> or <span class="font-bold">1000 EGP/year</span> for unlimited access to all roadmaps.
                     </p>
                     <div class="flex gap-4 items-center">
                         <a href="{{ route('student.roadmaps') }}" class="inline-block bg-white text-green-600 hover:bg-green-50 px-5 py-2 rounded-lg font-semibold shadow-md transition-colors text-sm">
