@@ -44,8 +44,7 @@
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
                         <!-- Channel Header -->
                         <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6">
-                            <div class="text-5xl mb-3 text-center">{{ $channel['icon'] }}</div>
-                            <h3 class="text-xl font-bold text-white text-center mb-1">
+                            <h3 class="text-xl font-bold text-white text-center">
                                 {{ $channel['name'] }}
                             </h3>
                         </div>
@@ -54,7 +53,7 @@
                         <div class="p-6">
                             <!-- Description -->
                             <div class="mb-4">
-                                <p class="text-gray-700 dark:text-gray-300 text-sm">
+                                <p class="text-gray-700 dark:text-gray-300 text-sm line-clamp-3">
                                     {{ $channel['description'] }}
                                 </p>
                             </div>
@@ -102,7 +101,6 @@
                     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden group">
                         <!-- Channel Header -->
                         <div class="bg-gradient-to-r from-purple-500 to-pink-600 p-6">
-                            <div class="text-5xl mb-3 text-center">{{ $channel['icon'] }}</div>
                             <h3 class="text-xl font-bold text-white text-center mb-1">
                                 {{ $channel['name'] }}
                             </h3>
@@ -115,10 +113,10 @@
                         <div class="p-6">
                             <!-- Description -->
                             <div class="mb-4">
-                                <p class="text-gray-700 dark:text-gray-300 text-sm mb-2 text-right" dir="rtl">
+                                <p class="text-gray-700 dark:text-gray-300 text-sm mb-2 text-right line-clamp-2" dir="rtl">
                                     {{ $channel['description_ar'] }}
                                 </p>
-                                <p class="text-gray-500 dark:text-gray-400 text-xs">
+                                <p class="text-gray-500 dark:text-gray-400 text-xs line-clamp-2">
                                     {{ $channel['description_en'] }}
                                 </p>
                             </div>

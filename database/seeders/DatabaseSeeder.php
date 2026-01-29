@@ -46,8 +46,11 @@ class DatabaseSeeder extends Seeder
             MidLevelSkillsRoadmapSeeder::class,         // Phase 11 - 13 tasks
             ProfessionalSkillsRoadmapSeeder::class,     // Phase 12 - 2 tasks
 
+            // Algorithms & Data Structures (Phase 13)
+            AlgorithmsDataStructuresRoadmapSeeder::class, // Phase 13 - 30 tasks (Master DSA)
+
             // Career & Interview Preparation (End)
-            CareerSkillsSeeder::class,                  // Phase 13 - 14 tasks (CV & Interview skills)
+            CareerSkillsSeeder::class,                  // Phase 14 - 14 tasks (CV & Interview skills)
         ]);
     }
 }

@@ -64,6 +64,32 @@
 
         @endif
 
+        <!-- Weekly Sessions Notice -->
+        <div class="bg-gradient-to-r from-purple-500 to-indigo-600 rounded-lg shadow-lg p-6 mb-6 text-white">
+            <div class="flex items-start gap-4">
+                <div class="text-4xl">📅</div>
+                <div class="flex-1">
+                    <h3 class="text-xl font-bold mb-2">Weekly Live Sessions</h3>
+                    <p class="text-purple-100 mb-3">
+                        Join our instructor-led learning sessions every Saturday for guidance, Q&A, and collaborative learning.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">⏰</span>
+                            <div>
+                                <div class="font-semibold">Saturday, 10:00 AM - 12:00 PM</div>
+                                <div class="text-purple-200 text-sm">Cairo Time (GMT+2)</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-purple-100">
+                            <span>✓</span>
+                            <span>2-hour guided session</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
             <div class="p-6">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Student Dashboard</h2>

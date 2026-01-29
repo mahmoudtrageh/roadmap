@@ -13,7 +13,7 @@ Route::get('/dashboard', function () {
 
     return match($user->role) {
         'admin' => redirect()->route('admin.dashboard'),
-        'instructor' => redirect()->route('instructor.dashboard'),
+        'instructor' => redirect()->route('instructor.dashboard'), 
         'student' => redirect()->route('student.dashboard'),
         'company' => redirect()->route('company.dashboard'),
         default => view('dashboard'),
@@ -45,6 +45,9 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::get('/code-editor/{taskId}', App\Livewire\Student\CodeEditor::class)->name('code-editor');
     Route::get('/youtube-channels', App\Livewire\Student\YoutubeChannels::class)->name('youtube-channels');
     Route::get('/programming-blogs', App\Livewire\Student\ProgrammingBlogs::class)->name('programming-blogs');
+    Route::get('/podcasts', App\Livewire\Student\Podcasts::class)->name('podcasts');
+    Route::get('/newsletters', App\Livewire\Student\Newsletters::class)->name('newsletters');
+    Route::get('/books', App\Livewire\Student\Books::class)->name('books');
 });
 
 // Certificate Download (authenticated)

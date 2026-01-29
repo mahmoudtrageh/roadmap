@@ -67,7 +67,15 @@
                     </div>
 
                     <div class="ml-6">
-                        @if($isEnrolled)
+                        <!-- DEBUG: enrollment={{ $enrollment ? $enrollment->status : 'NULL' }}, isEnrolled={{ $isEnrolled ? 'TRUE' : 'FALSE' }} -->
+                        @if($enrollment && $enrollment->status === 'skipped')
+                            <div class="text-center">
+                                <button disabled class="bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-medium cursor-not-allowed">
+                                    ⏭️ Skipped
+                                </button>
+                                <p class="text-xs text-gray-500 mt-2">You have skipped this roadmap</p>
+                            </div>
+                        @elseif($isEnrolled)
                             <div class="flex flex-col gap-2">
                                 <span class="block text-green-600 font-semibold text-center">✓ Enrolled</span>
                                 <a href="{{ route('student.tasks') }}" class="block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium text-center">

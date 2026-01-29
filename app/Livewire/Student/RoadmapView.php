@@ -32,12 +32,14 @@ class RoadmapView extends Component
             $query->orderBy('day_number')->orderBy('order');
         }])->findOrFail($roadmapId);
 
-        // Check if user is enrolled
+        // Check if user is enrolled (excluding skipped enrollments)
         $this->enrollment = RoadmapEnrollment::where('student_id', Auth::id())
             ->where('roadmap_id', $roadmapId)
             ->first();
 
-        $this->isEnrolled = $this->enrollment !== null;
+        // User is considered enrolled only if they have an active or completed enrollment
+        // Skipped enrollments should be treated as "not enrolled"
+        $this->isEnrolled = $this->enrollment !== null && $this->enrollment->status !== 'skipped';
 
         // Check if roadmap is locked
         $this->checkIfLocked();
@@ -70,8 +72,9 @@ class RoadmapView extends Component
             return;
         }
 
-        // Check if user already has active enrollment
+        // Check if user already has active enrollment (not including current roadmap)
         $this->hasActiveEnrollment = RoadmapEnrollment::where('student_id', Auth::id())
+            ->where('roadmap_id', '!=', $this->roadmap->id)
             ->where('status', 'active')
             ->exists();
 

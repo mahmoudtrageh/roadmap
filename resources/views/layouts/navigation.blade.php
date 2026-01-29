@@ -52,7 +52,16 @@
                                         📺 {{ __('YouTube Channels') }}
                                     </a>
                                     <a href="{{ route('student.programming-blogs') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-600 transition duration-150 ease-in-out">
-                                        📚 {{ __('Programming Blogs') }}
+                                        📝 {{ __('Programming Blogs') }}
+                                    </a>
+                                    <a href="{{ route('student.podcasts') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-600 transition duration-150 ease-in-out">
+                                        🎙️ {{ __('Podcasts') }}
+                                    </a>
+                                    <a href="{{ route('student.newsletters') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-600 transition duration-150 ease-in-out">
+                                        📧 {{ __('Newsletters') }}
+                                    </a>
+                                    <a href="{{ route('student.books') }}" class="block px-4 py-2 text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-600 transition duration-150 ease-in-out">
+                                        📚 {{ __('Books') }}
                                     </a>
                                 </div>
                             </div>
@@ -191,7 +200,16 @@
                         📺 {{ __('YouTube Channels') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('student.programming-blogs')" :active="request()->routeIs('student.programming-blogs')">
-                        📚 {{ __('Programming Blogs') }}
+                        📝 {{ __('Programming Blogs') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('student.podcasts')" :active="request()->routeIs('student.podcasts')">
+                        🎙️ {{ __('Podcasts') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('student.newsletters')" :active="request()->routeIs('student.newsletters')">
+                        📧 {{ __('Newsletters') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('student.books')" :active="request()->routeIs('student.books')">
+                        📚 {{ __('Books') }}
                     </x-responsive-nav-link>
                 </div>
 

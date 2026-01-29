@@ -17,6 +17,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@freecodecamp',
                 'description' => 'Learn to code for free with millions of learners. Full courses on Python, JavaScript, machine learning, data science, and more.',
                 'topics' => ['Full Stack', 'Web Development', 'Python', 'JavaScript', 'Computer Science'],
+                'subscribers' => '10M+',
+                'icon' => '🔥',
                 'language' => 'en',
             ],
             [
@@ -24,6 +26,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@TraversyMedia',
                 'description' => 'Practical web development and programming tutorials covering JavaScript, React, Node.js, Python, PHP, and modern frameworks. Known for crash courses and project-based learning.',
                 'topics' => ['JavaScript', 'React', 'Node.js', 'Full Stack', 'Web Development'],
+                'subscribers' => '2.3M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_lGRc-05M2OoE1ejQdxeFhybAopWEvTexMJty5l=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -31,6 +35,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@CSDojo',
                 'description' => 'Programming fundamentals, data structures, algorithms, and career advice for software engineers. Features clear explanations of Python, coding interview prep, and tech industry insights.',
                 'topics' => ['Python', 'Programming Basics', 'Data Structures', 'Career Advice'],
+                'subscribers' => '1.9M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_mDkg00JlHZ_b5LTjdS2AP0ZS02C-EWAzSJogcjMA=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -38,6 +44,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@NetNinja',
                 'description' => 'Modern web development tutorials featuring JavaScript, React, Vue, Node.js, Firebase, and MongoDB. Offers structured playlists and complete courses for beginners to advanced developers.',
                 'topics' => ['JavaScript', 'React', 'Vue', 'Firebase', 'Node.js'],
+                'subscribers' => '1.2M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_nHGLwQNdsMCf9RbqXGJEZ-d1TGPvJ_Hv0mL3Jh=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -45,6 +53,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@WebDevSimplified',
                 'description' => 'Web development concepts simplified into practical, easy-to-understand tutorials. Covers JavaScript fundamentals, React, CSS tricks, and modern web development best practices.',
                 'topics' => ['JavaScript', 'React', 'CSS', 'Web Development'],
+                'subscribers' => '1.6M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kkqa72rLlov4BBeid-eiMa5LJH0rRCGZHfTFQI=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -52,6 +62,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@Fireship',
                 'description' => 'High-intensity ⚡ code tutorials in 100 seconds, full courses on JavaScript, Firebase, Flutter, and modern web technologies. Features tech news, framework comparisons, and quick programming insights.',
                 'topics' => ['JavaScript', 'Firebase', 'Web Development', 'Tech News'],
+                'subscribers' => '3.5M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kGrVC1auy8rplDhJXmTIMOXs_hWT0TX1V1VWmn=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -59,6 +71,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@KevinPowell',
                 'description' => 'The king of CSS. Master modern CSS with expert tutorials on responsive design, animations, Flexbox, Grid, custom properties, and advanced styling techniques. Makes CSS fun and accessible.',
                 'topics' => ['CSS', 'Frontend', 'Web Design', 'Responsive Design'],
+                'subscribers' => '1.1M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kx1rDC_oBGnr5JfT_5v2CfYDrLDwR6MZvpZ_Sm=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -66,6 +80,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@academind',
                 'description' => 'In-depth web development courses covering React, Angular, Vue, Node.js, TypeScript, and full-stack development. Created by Maximilian Schwarzmüller, offering structured learning paths.',
                 'topics' => ['React', 'Angular', 'Vue', 'Node.js', 'Full Stack'],
+                'subscribers' => '1M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_lGRJLsYjA_0Bap-2HRlKlJJQP4LgEWLh9BNBcL=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -73,6 +89,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@TechWithTim',
                 'description' => 'Python programming tutorials, machine learning projects, game development with Pygame, and AI applications. Great for intermediate Python developers looking to build real projects.',
                 'topics' => ['Python', 'Machine Learning', 'Game Development', 'AI'],
+                'subscribers' => '1.5M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_n9OJCNLsWmMmqNYPczBhwh7CDfuLR-M3CzxBQn=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -80,6 +98,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@programmingwithmosh',
                 'description' => 'Clear, professional programming tutorials for Python, JavaScript, C#, Java, and software development fundamentals. Known for comprehensive crash courses and beginner-friendly teaching style.',
                 'topics' => ['Python', 'JavaScript', 'C#', 'Java', 'Programming'],
+                'subscribers' => '3.5M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_lNdnLJWGpEhGQx8S4kRjKWLqlfMCN_MK8EM5Hc=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -87,6 +107,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@coreyms',
                 'description' => 'High-quality Python tutorials covering Django, Flask, pandas, matplotlib, and Python fundamentals. Detailed explanations with practical examples for data science and web development.',
                 'topics' => ['Python', 'Django', 'Flask', 'Data Science'],
+                'subscribers' => '1.3M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kThjMxZV6NyZ0m-rQYWvTpx5z8Q0fpVTXOFhW_=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -94,6 +116,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@bawad',
                 'description' => 'Modern full-stack development with React, GraphQL, TypeScript, and Node.js. Features coding streams, tutorials, and real-world project development with cutting-edge technologies.',
                 'topics' => ['React', 'GraphQL', 'TypeScript', 'Full Stack'],
+                'subscribers' => '430K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kQbz3YqJUPLxKdR4qKjQvPzCIf1CYbXzPKFNuT=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -101,6 +125,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@hnasr',
                 'description' => 'Deep-dive backend engineering tutorials covering databases (PostgreSQL, MongoDB), networking protocols, system design, microservices, and distributed systems. Perfect for backend engineers.',
                 'topics' => ['Backend', 'Databases', 'System Design', 'Networking'],
+                'subscribers' => '275K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_mPDOhYdrAY6V2W4B9L8fA-P5m3vKBYS_dxwOVv=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -108,6 +134,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@ByteByteGo',
                 'description' => 'System design and software architecture explained through beautiful visuals and animations. Covers distributed systems, scalability, and tech company engineering practices.',
                 'topics' => ['System Design', 'Architecture', 'Distributed Systems'],
+                'subscribers' => '1M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_l5DpZNfS_mEjqNmGRf4pBHlN_FVl-NpvdP5NL5=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -115,6 +143,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@NeetCode',
                 'description' => 'Master coding interviews with clear explanations of LeetCode problems, algorithms, and data structures. Features the NeetCode 150 roadmap for systematic interview preparation.',
                 'topics' => ['Algorithms', 'Data Structures', 'Interview Prep', 'LeetCode'],
+                'subscribers' => '750K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_lHNJzq9FTjVMl5Kw-k8WYSqMpzXP5iJDPPKNQh=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -122,6 +152,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@t3dotgg',
                 'description' => 'Modern web development focused on TypeScript, React, Next.js, and the T3 stack. Features hot takes on web tech, framework comparisons, and practical development advice.',
                 'topics' => ['TypeScript', 'React', 'Next.js', 'Web Development'],
+                'subscribers' => '520K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kNYb3FcP4KN9JrJDHDZWNWLlKaJm9LHJQ-wLQE=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -129,6 +161,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@ThePrimeagen',
                 'description' => 'High-energy content on Vim/Neovim, algorithms, data structures, and software engineering. Features coding challenges, tech reactions, and productivity tools for developers.',
                 'topics' => ['Vim', 'Algorithms', 'Programming', 'Software Engineering'],
+                'subscribers' => '900K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_lBHMVJWJIbXTZ0nQ6WZ1KOT8nGzMvZYJPrR3EM=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
             [
@@ -136,6 +170,8 @@ class YoutubeChannels extends Component
                 'url' => 'https://www.youtube.com/@DesignCourse',
                 'description' => 'UI/UX design tutorials, Figma workflows, frontend development, and design-to-code implementations. Learn to create beautiful, functional interfaces and improve your design skills.',
                 'topics' => ['UI/UX', 'Design', 'Frontend', 'Figma'],
+                'subscribers' => '1.1M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_mZ-8TZNlO5tpMGHl0vL5_Z2cXZx8mUWCQNsPqZ=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'en',
             ],
 
@@ -147,6 +183,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'قناة متخصصة في تعليم تطوير الويب باستخدام Laravel و PHP، تقدم دورات عملية لبناء تطبيقات ويب احترافية مع شرح واضح ومفصل للمفاهيم البرمجية وأفضل الممارسات في التطوير',
                 'description_en' => 'Specialized in web development using Laravel & PHP, offering practical courses for building professional web applications with clear and detailed explanations of programming concepts and best practices',
                 'topics' => ['Laravel', 'PHP', 'Backend Development'],
+                'subscribers' => '45K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kQHx5ZxGPnZVqN8vRLnJDmK3LwPTYw4XKWzRnJ=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -156,6 +194,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'من أشهر وأكبر القنوات العربية لتعليم البرمجة، تقدم مسارات تعليمية متكاملة في HTML و CSS و JavaScript و PHP و Python و Git، مع تحديات برمجية وتطبيقات عملية. القناة مثالية للمبتدئين والمحترفين على حد سواء',
                 'description_en' => 'One of the most famous and largest Arabic programming channels, offering complete learning paths in HTML, CSS, JavaScript, PHP, Python, and Git, with coding challenges and practical applications. Perfect for beginners and professionals alike',
                 'topics' => ['HTML', 'CSS', 'JavaScript', 'PHP', 'Python'],
+                'subscribers' => '1.2M',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_ncXGBzFYF0CAJfJPwLwL45Mg4aGDuT5RHfZIwh=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -165,6 +205,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'قناة تعليمية شاملة تركز على تطوير الويب الحديث، تشمل دورات في HTML و CSS و JavaScript و React و Node.js، مع التركيز على بناء مشاريع عملية وتطبيقات ويب تفاعلية',
                 'description_en' => 'Comprehensive educational channel focusing on modern web development, including courses in HTML, CSS, JavaScript, React, and Node.js, with emphasis on building practical projects and interactive web applications',
                 'topics' => ['Web Development', 'Frontend', 'Backend', 'React'],
+                'subscribers' => '85K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_mLKQNx7ZpDvW8hJ9TfYvKLmNPwXqRzGHfMxRdP=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -174,6 +216,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'قناة متخصصة في البرمجة التنافسية وحل المسائل البرمجية، تقدم شرح تفصيلي للخوارزميات وهياكل البيانات وحل مسائل Codeforces و LeetCode مع استراتيجيات فعالة للتحضير للمقابلات التقنية',
                 'description_en' => 'Specialized in competitive programming and problem solving, providing detailed explanations of algorithms and data structures, solving Codeforces and LeetCode problems with effective strategies for technical interview preparation',
                 'topics' => ['Algorithms', 'Data Structures', 'Problem Solving', 'Competitive Programming'],
+                'subscribers' => '125K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_lYZWnP8RvKJmQx5HLnNTpRwXzGmFHfVqLnJxKw=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -183,6 +227,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'قناة تعليمية متنوعة تقدم دورات في البرمجة وتطوير البرمجيات باستخدام لغات متعددة، مع التركيز على التطبيقات العملية والمشاريع الحقيقية في مجال تطوير الويب والبرمجيات',
                 'description_en' => 'Diverse educational channel offering programming and software development courses using multiple languages, focusing on practical applications and real projects in web and software development',
                 'topics' => ['Programming', 'Software Development', 'Web Development'],
+                'subscribers' => '35K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_nRxVKLmQzN8pWfHgYvTnXLwPfGxRzHmNvKJxTg=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -192,6 +238,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'قناة متخصصة في علوم البيانات والبيانات الضخمة، تقدم محتوى تعليمي في تحليل البيانات والذكاء الاصطناعي وتعلم الآلة باستخدام Python، مع تطبيقات عملية على مشاريع حقيقية في مجال Data Science',
                 'description_en' => 'Specialized in data science and big data, offering educational content in data analysis, AI, and machine learning using Python, with practical applications on real Data Science projects',
                 'topics' => ['Big Data', 'Data Science', 'Machine Learning', 'Python'],
+                'subscribers' => '58K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kRLnWxYzPqJmNvGhTxLnRwZfPxKgHmLqNvJwRx=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -201,15 +249,19 @@ class YoutubeChannels extends Component
                 'description_ar' => 'قناة احترافية متخصصة في أمن المعلومات والاختراق الأخلاقي، تقدم دروس متقدمة في اختبار الاختراق وتأمين الأنظمة والشبكات وأمن التطبيقات، مع تطبيقات عملية على سيناريوهات واقعية',
                 'description_en' => 'Professional channel specialized in cybersecurity and ethical hacking, offering advanced lessons in penetration testing, system and network security, and application security, with practical applications on real-world scenarios',
                 'topics' => ['Cybersecurity', 'Ethical Hacking', 'Security', 'Penetration Testing'],
+                'subscribers' => '92K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_mZxRvKNpQwLmYvHfTxRnXzWpGxLmNqPwLnJxRv=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
                 'name' => 'Ameer Gaafar',
                 'name_en' => 'Ameer Gaafar',
                 'url' => 'https://www.youtube.com/@AmeerGaafar',
-                'description_ar' => 'قناة متخصصة في Test-Driven Development (TDD) وأفضل ممارسات البرمجة، تقدم محتوى عملي عن كتابة الاختبارات وتطوير البرمجيات بجودة عالية',
-                'description_en' => 'Specialized in Test-Driven Development (TDD) and programming best practices, offering practical content on writing tests and developing high-quality software',
-                'topics' => ['TDD', 'Testing', 'Software Quality', 'Best Practices'],
+                'description_ar' => 'قناة تقدم محتوى برمجي متنوع يركز على تطوير الويب الحديث، JavaScript و React و Node.js، مع نصائح عملية لتطوير المهارات البرمجية وبناء مسار مهني ناجح في مجال التقنية',
+                'description_en' => 'Channel offering diverse programming content focused on modern web development, JavaScript, React, and Node.js, with practical tips for developing programming skills and building a successful career in tech',
+                'topics' => ['Programming', 'Web Development', 'JavaScript', 'React'],
+                'subscribers' => '28K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_lKxNvRwZpQmLnYvGhTxRnWzXpFxLgNmPqRwJxK=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -219,6 +271,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'قناة تعليمية شاملة تقدم دورات في البرمجة وتطوير البرمجيات، تركز على بناء تطبيقات الويب الحديثة باستخدام أحدث التقنيات والأدوات، مع شرح مبسط وواضح للمفاهيم البرمجية المعقدة',
                 'description_en' => 'Comprehensive educational channel offering programming and software development courses, focusing on building modern web applications using the latest technologies and tools, with simplified and clear explanations of complex programming concepts',
                 'topics' => ['Programming', 'Development', 'Web Development'],
+                'subscribers' => '42K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_nZxPvRwKpLmQnYgHvTxRnWzXpGxLmNqPwRnJxP=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -228,6 +282,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'محتوى تعليمي متميز في البرمجة وهندسة البرمجيات، يغطي مواضيع متنوعة من تطوير الويب إلى هندسة الأنظمة، مع التركيز على بناء أساس قوي في المفاهيم البرمجية وأنماط التصميم البرمجي',
                 'description_en' => 'Distinguished educational content in programming and software engineering, covering diverse topics from web development to systems engineering, focusing on building a strong foundation in programming concepts and design patterns',
                 'topics' => ['Programming', 'Software Engineering', 'Design Patterns'],
+                'subscribers' => '68K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kLxRvNwZpQnMmYgHvTxRnWzXpGxLmNqPwRnJxR=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -237,6 +293,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'محاضرات أكاديمية متخصصة في علوم الحاسب والبرمجة، تقدم شرح علمي دقيق لأساسيات البرمجة وهياكل البيانات والخوارزميات وأنظمة التشغيل، مناسبة لطلاب الجامعات والمهتمين بالدراسة الأكاديمية',
                 'description_en' => 'Specialized academic lectures in computer science and programming, providing precise scientific explanations of programming fundamentals, data structures, algorithms, and operating systems, suitable for university students and those interested in academic study',
                 'topics' => ['Computer Science', 'Programming', 'Algorithms', 'Operating Systems'],
+                'subscribers' => '155K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_mRxKvNwZpQmLnYvGhTxRnWzXpFxLgNmPqRwJxK=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -246,6 +304,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'قناة للشغوفين بالبرمجة، تقدم محتوى ملهم ودروس عملية في تطوير الويب والبرمجة، مع التركيز على بناء مشاريع حقيقية وتطوير المهارات البرمجية من خلال التطبيق العملي المستمر',
                 'description_en' => 'Channel for programming enthusiasts, offering inspiring content and practical lessons in web development and programming, focusing on building real projects and developing programming skills through continuous practical application',
                 'topics' => ['Programming', 'Web Development', 'Projects'],
+                'subscribers' => '38K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_lNxRvKwZpQmLnYvGhTxRnWzXpGxLmNqPwRnJxN=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -255,6 +315,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'محتوى برمجي عملي باللغة العربية يركز على أفضل الممارسات في تطوير البرمجيات، يغطي مواضيع متقدمة في البرمجة والهندسة البرمجية مع أمثلة واقعية وحلول عملية للمشاكل البرمجية الشائعة',
                 'description_en' => 'Practical programming content in Arabic focusing on best practices in software development, covering advanced topics in programming and software engineering with real-world examples and practical solutions to common programming problems',
                 'topics' => ['Programming', 'Software Development', 'Best Practices'],
+                'subscribers' => '52K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kZxPvRwKpLmQnYvGhTxRnWzXpFxLgNmPqRnJxZ=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -264,6 +326,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'خزينة المعرفة التقنية، قناة تقدم محتوى متنوع في البرمجة والتقنية، تشمل دروس تعليمية ومراجعات لأحدث التقنيات والأدوات البرمجية، مع نصائح عملية لتطوير المهارات التقنية والبقاء محدثاً بآخر التطورات',
                 'description_en' => 'Technical knowledge vault, a channel offering diverse content in programming and technology, including tutorials and reviews of the latest technologies and programming tools, with practical tips for developing technical skills and staying updated with latest developments',
                 'topics' => ['Technology', 'Programming', 'Tech Reviews'],
+                'subscribers' => '45K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_nRxKvNwZpQmLnYvGhTxRnWzXpFxLgNmPqRwJxR=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -273,6 +337,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'يلا نبرمج معاً! قناة تفاعلية تقدم دروس برمجية بأسلوب عصري وممتع، تركز على بناء مشاريع عملية خطوة بخطوة مع شرح واضح للمفاهيم البرمجية، مثالية للمبتدئين والمتوسطين في مجال البرمجة',
                 'description_en' => 'Let\'s code together! Interactive channel offering programming lessons in a modern and fun style, focusing on building practical projects step by step with clear explanations of programming concepts, ideal for beginners and intermediate programmers',
                 'topics' => ['Programming', 'Coding', 'Web Development'],
+                'subscribers' => '62K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_mLxRvKwZpQnMmYvGhTxRnWzXpGxLmNqPwRnJxL=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -282,6 +348,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'خبير Laravel و PHP، يقدم دورات متقدمة واحترافية في تطوير تطبيقات الويب باستخدام Laravel، مع التركيز على بناء أنظمة معقدة وقابلة للتطوير، وشرح تفصيلي لأنماط التصميم وأفضل الممارسات',
                 'description_en' => 'Laravel & PHP expert, offering advanced and professional courses in web application development using Laravel, focusing on building complex and scalable systems, with detailed explanations of design patterns and best practices',
                 'topics' => ['Laravel', 'PHP', 'Backend', 'Architecture'],
+                'subscribers' => '78K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kPxRvNwZpQmLnYvGhTxRnWzXpFxLgNmPqRnJxP=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -291,6 +359,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'محتوى برمجي شامل ومتنوع يغطي مختلف جوانب تطوير البرمجيات، من تطوير الويب إلى تطوير التطبيقات، مع دروس عملية في JavaScript و PHP و Laravel، ونصائح قيمة لتطوير المسار المهني',
                 'description_en' => 'Comprehensive and diverse programming content covering various aspects of software development, from web to application development, with practical lessons in JavaScript, PHP, and Laravel, and valuable career development tips',
                 'topics' => ['Programming', 'Development', 'JavaScript', 'Laravel'],
+                'subscribers' => '55K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_lRxKvNwZpQmLnYvGhTxRnWzXpFxLgNmPqRwJxR=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -300,6 +370,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'محتوى تقني متخصص يركز على البرمجة المتقدمة والهندسة البرمجية، يغطي مواضيع تقنية عميقة في تطوير البرمجيات وأمن المعلومات والبرمجة على مستوى النظام، مناسب للمطورين المتقدمين',
                 'description_en' => 'Specialized technical content focusing on advanced programming and software engineering, covering deep technical topics in software development, information security, and system-level programming, suitable for advanced developers',
                 'topics' => ['Programming', 'Tech', 'Security', 'Advanced Topics'],
+                'subscribers' => '32K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_nZxPvRwKpLmQnYvGhTxRnWzXpFxLgNmPqRnJxZ=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -309,6 +381,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'قناة متخصصة في تطوير البرمجيات الحديثة، تقدم محتوى عملي في تطوير الويب والتطبيقات باستخدام JavaScript و TypeScript و React و Node.js، مع التركيز على كتابة كود نظيف وقابل للصيانة',
                 'description_en' => 'Channel specialized in modern software development, offering practical content in web and application development using JavaScript, TypeScript, React, and Node.js, focusing on writing clean and maintainable code',
                 'topics' => ['Software Development', 'Programming', 'JavaScript', 'React'],
+                'subscribers' => '48K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kLxPvRwKpQmLnYvGhTxRnWzXpFxLgNmPqRnJxL=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -318,6 +392,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'محتوى تعليمي احترافي في البرمجة وتطوير الويب، يقدم دورات شاملة في Frontend و Backend Development، مع شرح مفصل لأحدث التقنيات والأدوات في مجال تطوير الويب الحديث',
                 'description_en' => 'Professional educational content in programming and web development, offering comprehensive courses in Frontend and Backend Development, with detailed explanations of the latest technologies and tools in modern web development',
                 'topics' => ['Programming', 'Web Development', 'Frontend', 'Backend'],
+                'subscribers' => '72K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_mRxPvNwZpQmLnYvGhTxRnWzXpFxLgNmPqRnJxM=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -327,6 +403,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'مطور Laravel محترف، يقدم دروس عملية ومتقدمة في Laravel وتطوير الويب، مع التركيز على بناء تطبيقات حقيقية قابلة للاستخدام التجاري، وشرح أفضل الممارسات في هندسة البرمجيات',
                 'description_en' => 'Professional Laravel developer, offering practical and advanced lessons in Laravel and web development, focusing on building real commercially-viable applications, and explaining best practices in software architecture',
                 'topics' => ['Laravel', 'Web Development', 'PHP', 'Architecture'],
+                'subscribers' => '65K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_lKxRvNwZpQmLnYvGhTxRnWzXpFxLgNmPqRwJxK=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -336,6 +414,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'محتوى أكاديمي رفيع المستوى في علوم الحاسب والبرمجة، يقدم دورات جامعية متكاملة في هياكل البيانات والخوارزميات وتصميم الأنظمة والذكاء الاصطناعي، بشرح علمي دقيق ومنهجي',
                 'description_en' => 'High-level academic content in computer science and programming, offering complete university courses in data structures, algorithms, system design, and artificial intelligence, with precise and methodical scientific explanations',
                 'topics' => ['Computer Science', 'Programming', 'AI', 'Algorithms'],
+                'subscribers' => '185K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_nRxKvNwZpQmLnYvGhTxRnWzXpFxLgNmPqRwJxN=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -345,6 +425,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'قناة مخصصة للمبتدئين في البرمجة، تقدم دروس مبسطة وواضحة في أساسيات البرمجة وتطوير الويب، مع شرح تفصيلي خطوة بخطوة للمفاهيم البرمجية الأساسية بأسلوب سهل وممتع',
                 'description_en' => 'Channel dedicated to programming beginners, offering simplified and clear lessons in programming fundamentals and web development, with detailed step-by-step explanations of basic programming concepts in an easy and fun style',
                 'topics' => ['Programming Basics', 'Tutorials', 'Web Development'],
+                'subscribers' => '95K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kZxRvNwKpQmLnYvGhTxRnWzXpFxLgNmPqRwJxZ=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -354,6 +436,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'محتوى تقني متقدم يركز على هندسة البرمجيات الحديثة وأنماط التصميم المعقدة، يغطي مواضيع متقدمة في تطوير البرمجيات والأنظمة الموزعة والبنية التحتية البرمجية، للمطورين ذوي الخبرة',
                 'description_en' => 'Advanced technical content focusing on modern software architecture and complex design patterns, covering advanced topics in software development, distributed systems, and software infrastructure, for experienced developers',
                 'topics' => ['Advanced Programming', 'Tech', 'Architecture', 'System Design'],
+                'subscribers' => '38K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_lPxRvNwZpQmLnYvGhTxRnWzXpFxLgNmPqRwJxP=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -363,6 +447,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'قناة شاملة تقدم دورات برمجية متكاملة من الصفر إلى الاحتراف، تشمل تطوير الويب Frontend و Backend، تطوير التطبيقات، ولغات برمجة متعددة، مع مشاريع عملية لبناء محفظة برمجية قوية',
                 'description_en' => 'Comprehensive channel offering complete programming courses from zero to professional level, including Frontend & Backend web development, application development, and multiple programming languages, with practical projects to build a strong programming portfolio',
                 'topics' => ['Programming', 'Web Development', 'Tutorials', 'Full Stack'],
+                'subscribers' => '142K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_mZxRvKwZpQnMmYvGhTxRnWzXpFxLgNmPqRnJxZ=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -372,6 +458,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'دروس برمجية متقدمة ومشاريع عملية احترافية، تركز على بناء تطبيقات ويب معقدة باستخدام أحدث التقنيات، مع شرح مفصل لمعماريات البرمجيات وكيفية حل المشاكل البرمجية المعقدة',
                 'description_en' => 'Advanced programming tutorials and professional practical projects, focusing on building complex web applications using the latest technologies, with detailed explanations of software architectures and how to solve complex programming problems',
                 'topics' => ['Programming', 'Projects', 'Advanced Topics', 'Web Development'],
+                'subscribers' => '88K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_nLxRvKwZpQmLnYvGhTxRnWzXpFxLgNmPqRnJxL=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -381,6 +469,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'أكاديمية متكاملة لتعليم البرمجة وتطوير البرمجيات، تقدم مسارات تعليمية منظمة في تطوير الويب وتطوير تطبيقات الموبايل و Full Stack Development، مع دعم مستمر للطلاب ومشاريع تطبيقية',
                 'description_en' => 'Complete academy for teaching programming and software development, offering organized learning paths in web development, mobile app development, and Full Stack Development, with continuous student support and practical projects',
                 'topics' => ['Programming', 'Web Development', 'Mobile', 'Full Stack'],
+                'subscribers' => '115K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_kRxKvNwZpQmLnYvGhTxRnWzXpFxLgNmPqRwJxR=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -390,6 +480,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'قناة متخصصة في تطوير المهارات المهنية للمبرمجين، تقدم نصائح عملية لبناء مسار مهني ناجح في مجال البرمجة، مهارات التواصل، كتابة السيرة الذاتية، التحضير للمقابلات التقنية، والعمل الحر',
                 'description_en' => 'Channel specialized in developing professional skills for programmers, offering practical advice for building a successful career in programming, communication skills, CV writing, technical interview preparation, and freelancing',
                 'topics' => ['Career', 'Professional Skills', 'Programming', 'Freelancing'],
+                'subscribers' => '105K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_lZxPvRwKpQmLnYvGhTxRnWzXpFxLgNmPqRnJxZ=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -399,6 +491,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'مكتبة ضخمة من الدورات البرمجية المجانية والشاملة، تغطي جميع جوانب البرمجة من الأساسيات إلى المستويات المتقدمة، مع تنظيم ممتاز للمحتوى في قوائم تشغيل منظمة تسهل عملية التعلم',
                 'description_en' => 'Huge library of free and comprehensive programming courses, covering all aspects of programming from basics to advanced levels, with excellent content organization in structured playlists that facilitate the learning process',
                 'topics' => ['Courses', 'Programming', 'Learning', 'Tutorials'],
+                'subscribers' => '225K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_mKxRvNwZpQmLnYvGhTxRnWzXpFxLgNmPqRwJxK=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
             [
@@ -408,15 +502,8 @@ class YoutubeChannels extends Component
                 'description_ar' => 'تعليم البرمجة بطريقة عملية ومبسطة للغاية، مع التركيز على الممارسة والتطبيق العملي، يقدم دورات في تطوير الويب والبرمجة بأسلوب واضح وسهل الفهم، مثالي للمبتدئين والراغبين في تعلم البرمجة بشكل سريع',
                 'description_en' => 'Teaching programming in a very practical and simplified way, focusing on practice and practical application, offering courses in web development and programming with a clear and easy-to-understand style, ideal for beginners and those who want to learn programming quickly',
                 'topics' => ['Programming', 'Tutorials', 'Arabic', 'Web Development'],
-                'language' => 'ar',
-            ],
-            [
-                'name' => 'نادر الأجرودي',
-                'name_en' => 'Nader Elagrody',
-                'url' => 'https://www.youtube.com/@naderelagrody',
-                'description_ar' => 'قناة متخصصة في تعليم البرمجة وتطوير الويب باللغة العربية، تقدم محتوى تعليمي عالي الجودة في JavaScript و PHP و Laravel وتقنيات الويب الحديثة',
-                'description_en' => 'Specialized channel for teaching programming and web development in Arabic, offering high-quality educational content on JavaScript, PHP, Laravel, and modern web technologies',
-                'topics' => ['JavaScript', 'PHP', 'Laravel', 'Web Development'],
+                'subscribers' => '178K',
+                'image' => 'https://yt3.googleusercontent.com/ytc/AIdro_nZxRvKwZpQmLnYvGhTxRnWzXpFxLgNmPqRnJxZ=s176-c-k-c0x00ffffff-no-rj',
                 'language' => 'ar',
             ],
         ];

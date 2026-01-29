@@ -20,7 +20,7 @@ class FoundationRoadmapSeeder extends Seeder
             'description' => 'Master fundamental concepts: How computers work, operating systems, command line, programming basics, internet, HTTP/HTTPS, DNS, and browsers.',
             'slug' => 'phase-1-foundation',
             'creator_id' => $admin->id ?? null,
-            'duration_days' => 16,
+            'duration_days' => 17,
             'difficulty_level' => 'beginner',
             'is_published' => true,
             'is_featured' => true,
@@ -136,7 +136,7 @@ class FoundationRoadmapSeeder extends Seeder
                     ['url' => '#', 'title' => 'Learning the bash Shell O\'Reilly (Chapters 1-5)', 'type' => 'book'],
                 ],
             ],
-            // Day 7-8: Programming Fundamentals (split 1073 min into 2 days of 120 min each)
+            // Day 7: Programming Fundamentals - Part 1
             [
                 'title' => 'Programming Fundamentals - Part 1',
                 'description' => 'Learn core programming concepts: variables, data types, operators, input/output, and problem-solving basics. Watch first 2 hours of freeCodeCamp course.',
@@ -156,7 +156,27 @@ class FoundationRoadmapSeeder extends Seeder
                     ['url' => '#', 'title' => 'Clean Code by Robert Martin (Chapter 2)', 'type' => 'book'],
                 ],
             ],
-            // Day 8: Control Flow & Loops (22 min actual)
+            // Day 8: JavaScript Introduction - Part 2
+            [
+                'title' => 'JavaScript Introduction - Part 2',
+                'description' => 'Continue learning JavaScript fundamentals with deeper focus on syntax, expressions, and basic programming patterns. This bridges the gap between basic programming concepts and advanced topics.',
+                'estimated_time_minutes' => 120,
+                'task_type' => 'video',
+                'category' => 'Programming',
+                'learning_objectives' => ['Master JavaScript syntax', 'Understand expressions and statements', 'Learn basic programming patterns'],
+                'skills_gained' => ['JavaScript', 'Programming Patterns', 'Syntax'],
+                'tags' => ['javascript', 'programming', 'fundamentals'],
+                'success_criteria' => ['Can write JavaScript programs', 'Understands JS syntax', 'Can apply programming patterns'],
+                'has_code_submission' => true,
+                'resources' => [
+                    ['url' => 'https://youtube.com/watch?v=W6NZfCO5SIk', 'title' => 'Mosh - JavaScript Tutorial for Beginners (Hour 1-2)', 'type' => 'video'],
+                    ['url' => 'https://javascript.info/first-steps', 'title' => 'JavaScript Fundamentals - javascript.info', 'type' => 'article'],
+                    ['url' => 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Introduction', 'title' => 'JavaScript Introduction - MDN', 'type' => 'article'],
+                    ['url' => '#', 'title' => 'Eloquent JavaScript (Chapter 1)', 'type' => 'book'],
+                    ['url' => '#', 'title' => 'JavaScript: The Good Parts (Chapter 1)', 'type' => 'book'],
+                ],
+            ],
+            // Day 9: Control Flow & Loops (22 min actual)
             [
                 'title' => 'Control Flow & Loops',
                 'description' => 'Master conditional statements (if/else/switch), loops (for/while), and control flow patterns.',
@@ -176,7 +196,7 @@ class FoundationRoadmapSeeder extends Seeder
                     ['url' => '#', 'title' => 'JavaScript: The Good Parts (Chapter 2)', 'type' => 'book'],
                 ],
             ],
-            // Day 9: Functions (54 min actual)
+            // Day 10: Functions (54 min actual)
             [
                 'title' => 'Functions',
                 'description' => 'Learn to create and use functions, understand parameters, return values, and function scope.',
@@ -196,7 +216,7 @@ class FoundationRoadmapSeeder extends Seeder
                     ['url' => '#', 'title' => 'JavaScript: The Definitive Guide (Chapter 8)', 'type' => 'book'],
                 ],
             ],
-            // Day 10: Arrays & Objects (16 min actual)
+            // Day 11: Arrays & Objects (16 min actual)
             [
                 'title' => 'Arrays & Objects',
                 'description' => 'Master arrays and objects: creation, manipulation, iteration, and common operations.',
@@ -216,7 +236,7 @@ class FoundationRoadmapSeeder extends Seeder
                     ['url' => '#', 'title' => 'You Don\'t Know JS: Types & Grammar (Chapters 2-3)', 'type' => 'book'],
                 ],
             ],
-            // Day 11: How The Internet Works (57 min actual)
+            // Day 12: How The Internet Works (57 min actual)
             [
                 'title' => 'How The Internet Works',
                 'description' => 'Understand internet fundamentals: IP addresses, packets, routing, protocols, and network layers.',
@@ -235,7 +255,7 @@ class FoundationRoadmapSeeder extends Seeder
                     ['url' => '#', 'title' => 'HTTP: The Definitive Guide (Chapters 1-2)', 'type' => 'book'],
                 ],
             ],
-            // Day 13-15: HTTP/HTTPS (split 347 min into 3 days)
+            // Day 13-16: HTTP/HTTPS (split 347 min into 3 days)
             [
                 'title' => 'HTTP/HTTPS - Part 1',
                 'description' => 'Learn HTTP protocol basics: requests, responses, methods, and request structure. Watch Traversy Media HTTP Crash Course.',
@@ -285,7 +305,7 @@ class FoundationRoadmapSeeder extends Seeder
                     ['url' => '#', 'title' => 'High Performance Browser Networking (Chapters 9-11)', 'type' => 'book'],
                 ],
             ],
-            // Day 15: DNS & Domain Names (8 min actual)
+            // Day 16: DNS & Domain Names (8 min actual)
             [
                 'title' => 'DNS & Domain Names',
                 'description' => 'Understand DNS system, domain name resolution, DNS records, and how domains work.',
@@ -304,7 +324,7 @@ class FoundationRoadmapSeeder extends Seeder
                     ['url' => '#', 'title' => 'Computer Networking by Kurose (Chapter 2.4)', 'type' => 'book'],
                 ],
             ],
-            // Day 16: Browsers & Client-Server Model (32 min actual)
+            // Day 17: Browsers & Client-Server Model (32 min actual)
             [
                 'title' => 'Browsers & Client-Server Model',
                 'description' => 'Learn how browsers work, rendering engines, client-server architecture, and web application flow.',
