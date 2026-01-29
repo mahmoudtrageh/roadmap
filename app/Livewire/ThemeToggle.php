@@ -11,7 +11,7 @@ class ThemeToggle extends Component
 
     public function mount(): void
     {
-        $this->theme = Auth::user()->theme_preference ?? 'auto';
+        $this->theme = Auth::user()->theme_preference ?? 'dark';
     }
 
     public function setTheme(string $theme): void

@@ -1,7 +1,7 @@
 <div class="flex items-center gap-2">
     <button
         wire:click="setTheme('light')"
-        class="p-2 rounded-lg transition-colors {{ $theme === 'light' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}"
+        class="p-2 rounded-lg transition-colors {{ $theme === 'light' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600' }}"
         title="Light mode"
     >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -11,21 +11,11 @@
 
     <button
         wire:click="setTheme('dark')"
-        class="p-2 rounded-lg transition-colors {{ $theme === 'dark' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}"
+        class="p-2 rounded-lg transition-colors {{ $theme === 'dark' ? 'bg-blue-100 text-blue-600 dark:bg-blue-900 dark:text-blue-300' : 'bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-400 dark:hover:bg-gray-600' }}"
         title="Dark mode"
     >
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
-        </svg>
-    </button>
-
-    <button
-        wire:click="setTheme('auto')"
-        class="p-2 rounded-lg transition-colors {{ $theme === 'auto' ? 'bg-blue-100 text-blue-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}"
-        title="Auto (system preference)"
-    >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
         </svg>
     </button>
 </div>
@@ -39,13 +29,7 @@
 
     // Apply theme on page load
     function applyTheme(preference) {
-        let isDark = false;
-
-        if (preference === 'dark') {
-            isDark = true;
-        } else if (preference === 'auto') {
-            isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        }
+        let isDark = preference === 'dark';
 
         if (isDark) {
             document.documentElement.classList.add('dark');
@@ -56,6 +40,6 @@
 
     // Initial theme application
     @if(auth()->check())
-        applyTheme('{{ auth()->user()->theme_preference ?? "auto" }}');
+        applyTheme('{{ auth()->user()->theme_preference ?? "dark" }}');
     @endif
 </script>

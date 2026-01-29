@@ -726,14 +726,26 @@
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
                                                     </svg>
                                                     <div class="flex-1 min-w-0">
+                                                        @php
+                                                            $arabicTitle = $resource['title_ar'] ?? $resource['title'] ?? 'مصدر تعليمي';
+                                                            $englishTitle = $resource['title_en'] ?? $resource['title'] ?? '';
+                                                        @endphp
                                                         <p class="text-sm font-medium text-green-600 dark:text-green-400 group-hover:text-green-700 dark:group-hover:text-green-300 group-hover:underline">
-                                                            {{ $resource['title'] ?: 'مصدر تعليمي' }}
+                                                            {{ $arabicTitle }}
                                                         </p>
-                                                        @if(!empty($resource['title']))
+                                                        @if(!empty($englishTitle))
+                                                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                                                            {{ $englishTitle }}
+                                                        </p>
+                                                        @endif
+                                                        @if(!empty($resource['channel']))
+                                                        <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
+                                                            📺 {{ $resource['channel'] }}
+                                                        </p>
+                                                        @endif
                                                         <p class="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5" dir="ltr">
                                                             {{ $resource['url'] }}
                                                         </p>
-                                                        @endif
                                                     </div>
                                                     <span class="text-lg flex-shrink-0">
                                                         @if($resource['type'] === 'youtube' || $resource['type'] === 'video')

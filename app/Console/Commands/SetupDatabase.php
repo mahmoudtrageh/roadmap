@@ -55,11 +55,11 @@ class SetupDatabase extends Command
         $this->info('✅ Video durations capped');
         $this->newLine();
 
-        // Step 4: Ensure only 1 video per task
-        $this->info('🎯 Step 4/5: Ensuring only 1 video resource per task...');
+        // Step 4: Ensure only 1 video per language per task
+        $this->info('🎯 Step 4/5: Ensuring 1 English + 1 Arabic video per task...');
         Artisan::call('tasks:force-one-video');
         $this->line(Artisan::output());
-        $this->info('✅ One video per task enforced');
+        $this->info('✅ One video per language enforced (1 EN + 1 AR max)');
         $this->newLine();
 
         // Step 5: Remove conflicting duration field

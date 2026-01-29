@@ -18,7 +18,7 @@ class TechnicalTermsTranslationSeeder extends Seeder
             'title' => 'Technical Terms: English ⟷ Arabic',
             'description' => 'Master essential English technical terms with Arabic translations. Download PDF files containing term-translation pairs for each topic.',
             'slug' => 'technical-terms-translation',
-            'duration_days' => 14,
+            'duration_days' => 35,
             'difficulty_level' => 'beginner',
             'is_published' => true,
             'is_featured' => true,
@@ -100,6 +100,111 @@ class TechnicalTermsTranslationSeeder extends Seeder
             [
                 'title' => 'Day 14: Professional Communication - التواصل المهني',
                 'description' => 'Download and study the PDF covering professional terms: code review, documentation, Agile, sprint, standup, retrospective, and technical writing.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 15: APIs & HTTP - واجهات برمجة التطبيقات',
+                'description' => 'Learn API terminology: REST, endpoint, HTTP methods (GET, POST, PUT, DELETE), status codes, headers, JSON, GraphQL, and webhooks.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 16: Frontend Frameworks - أطر العمل الأمامية',
+                'description' => 'Study frontend framework terms: React, Vue, Angular, components, props, state, hooks, lifecycle, virtual DOM, and SSR/CSR concepts.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 17: Backend Development - تطوير الخادم الخلفي',
+                'description' => 'Master backend terms: Laravel, Node.js, Express, Django, middleware, routes, controllers, MVC, queues, and validation.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 18: Mobile Development - تطوير تطبيقات الجوال',
+                'description' => 'Learn mobile development terminology: React Native, Flutter, Swift, Kotlin, native apps, cross-platform, widgets, and app stores.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 19: Performance & Optimization - الأداء والتحسين',
+                'description' => 'Study performance terms: caching, lazy loading, code splitting, minification, compression, web vitals, profiling, and bottlenecks.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 20: Cloud & Infrastructure - الحوسبة السحابية والبنية التحتية',
+                'description' => 'Master cloud terminology: AWS, Azure, GCP, serverless, containers, load balancers, auto-scaling, and infrastructure as code.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 21: TypeScript & Modern JavaScript - تايب سكريبت وجافا سكريبت الحديث',
+                'description' => 'Learn TypeScript terms: type annotations, interfaces, generics, union types, decorators, and modern JavaScript features.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 22: CSS & Styling - التنسيق والأنماط',
+                'description' => 'Study CSS terminology: Flexbox, Grid, responsive design, media queries, transitions, animations, box model, and transforms.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 23: HTML & Semantic Web - HTML والويب الدلالي',
+                'description' => 'Master HTML terms: semantic elements, accessibility, ARIA, forms, meta tags, SEO, and document structure.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 24: Laravel Specific - لارافيل المتقدم',
+                'description' => 'Learn Laravel-specific terms: Blade templates, Eloquent ORM, migrations, seeders, Artisan, middleware, and service providers.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 25: Linux & Command Line - لينكس وسطر الأوامر',
+                'description' => 'Study Linux terminology: terminal, shell, commands, permissions, processes, SSH, pipes, environment variables, and cron jobs.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 26: Networking & Web Concepts - الشبكات ومفاهيم الويب',
+                'description' => 'Master networking terms: IP address, DNS, URL, protocols, client-server, proxy, SSL, VPN, cookies, and sessions.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 27: Project Management & Workflow - إدارة المشاريع وسير العمل',
+                'description' => 'Learn project management terms: repository, version control, README, documentation, releases, MVP, POC, and production.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 28: Common Dev Tools & Packages - أدوات وحزم شائعة',
+                'description' => 'Study development tools: NPM, Composer, Webpack, Vite, ESLint, Prettier, VS Code, Postman, and other essential tools.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 29: Advanced JavaScript Concepts - مفاهيم جافا سكريبت المتقدمة',
+                'description' => 'Master advanced JS concepts: hoisting, event loop, closures, prototypes, currying, event delegation, and pure functions.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 30: Error Handling & Debugging - معالجة الأخطاء وإصلاحها',
+                'description' => 'Learn error handling terms: try-catch, exceptions, stack trace, breakpoints, debugging tools, and error types.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 31: Design Patterns - أنماط التصميم',
+                'description' => 'Study design patterns: Singleton, Factory, Observer, Strategy, MVC, MVVM, Repository, and Dependency Injection.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 32: Authentication & Authorization - المصادقة والتفويض',
+                'description' => 'Master security terms: authentication, authorization, JWT, OAuth, sessions, 2FA, roles, permissions, and API keys.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 33: Data Formats & Serialization - تنسيقات البيانات والتسلسل',
+                'description' => 'Learn data format terminology: JSON, XML, YAML, CSV, serialization, encoding, Base64, and character sets.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 34: Caching & Performance - التخزين المؤقت والأداء',
+                'description' => 'Study caching terms: cache hit/miss, Redis, Memcached, TTL, CDN, cache invalidation, and browser caching.',
+                'estimated_time_minutes' => 60,
+            ],
+            [
+                'title' => 'Day 35: Async & Concurrency - البرمجة غير المتزامنة والتزامن',
+                'description' => 'Master async programming: promises, async/await, event loop, threads, race conditions, and web workers.',
                 'estimated_time_minutes' => 60,
             ],
         ];

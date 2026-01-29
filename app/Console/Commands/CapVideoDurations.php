@@ -35,8 +35,13 @@ class CapVideoDurations extends Command
                         $resource['duration_seconds'] = 120 * 60;
 
                         // Add instruction if not already there
-                        if (stripos($resource['title'], 'Watch first') === false) {
-                            $resource['title'] .= ' (Watch first 2 hours only)';
+                        $resourceTitle = $resource['title'] ?? $resource['title_en'] ?? $resource['title_ar'] ?? '';
+                        if (stripos($resourceTitle, 'Watch first') === false) {
+                            if (isset($resource['title'])) {
+                                $resource['title'] .= ' (Watch first 2 hours only)';
+                            } elseif (isset($resource['title_en'])) {
+                                $resource['title_en'] .= ' (Watch first 2 hours only)';
+                            }
                         }
 
                         $modified = true;

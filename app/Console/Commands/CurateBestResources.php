@@ -55,10 +55,11 @@ class CurateBestResources extends Command
 
             foreach ($videoResources as $video) {
                 $score = 0;
+                $videoTitle = $video['title'] ?? $video['title_en'] ?? $video['title_ar'] ?? '';
 
                 // Check channel priority
                 foreach ($priority as $channel => $points) {
-                    if (stripos($video['title'], $channel) !== false) {
+                    if (stripos($videoTitle, $channel) !== false) {
                         $score = $points;
                         break;
                     }
@@ -71,8 +72,8 @@ class CurateBestResources extends Command
                 }
 
                 // Prefer "crash course" or "full course"
-                if (stripos($video['title'], 'crash course') !== false ||
-                    stripos($video['title'], 'full course') !== false) {
+                if (stripos($videoTitle, 'crash course') !== false ||
+                    stripos($videoTitle, 'full course') !== false) {
                     $score += 5;
                 }
 
@@ -104,7 +105,11 @@ class CurateBestResources extends Command
             // If video exceeds 120 min, add note about watching specific portion
             if ($videoDuration > 120) {
                 $hoursToWatch = 2; // 120 minutes = 2 hours
-                $bestVideo['title'] .= " (Watch first {$hoursToWatch} hours only)";
+                if (isset($bestVideo['title'])) {
+                    $bestVideo['title'] .= " (Watch first {$hoursToWatch} hours only)";
+                } elseif (isset($bestVideo['title_en'])) {
+                    $bestVideo['title_en'] .= " (Watch first {$hoursToWatch} hours only)";
+                }
                 $bestVideo['duration_seconds'] = 120 * 60; // Cap at 120 minutes
             }
 
@@ -114,9 +119,10 @@ class CurateBestResources extends Command
                 'estimated_time_minutes' => $newEstimation
             ]);
 
+            $bestVideoDisplayTitle = $bestVideo['title'] ?? $bestVideo['title_en'] ?? $bestVideo['title_ar'] ?? 'Untitled';
             $this->line("<fg=green>✓</> Task {$task->id}: {$task->title}");
             $this->line("  Videos: " . count($videoResources) . " → 1 | Time: " . round($totalMinutes) . " min → {$newEstimation} min");
-            $this->line("  Selected: {$bestVideo['title']}");
+            $this->line("  Selected: {$bestVideoDisplayTitle}");
             $this->newLine();
 
             $updatedCount++;

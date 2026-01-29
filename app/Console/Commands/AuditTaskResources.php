@@ -89,7 +89,7 @@ class AuditTaskResources extends Command
             } else {
                 // New format: array with metadata
                 $url = $resource['url'] ?? '';
-                $title = $resource['title'] ?? '';
+                $title = $resource['title'] ?? $resource['title_en'] ?? $resource['title_ar'] ?? '';
 
                 if (empty($title)) {
                     $this->stats['resources_without_titles']++;

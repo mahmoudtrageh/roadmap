@@ -234,10 +234,11 @@ class FetchYouTubeDurations extends Command
                             $hasChanges = true;
                             $this->stats['playlists_updated']++;
 
+                            $resourceTitle = $resource['title'] ?? $resource['title_en'] ?? $resource['title_ar'] ?? 'Untitled';
                             if ($isDryRun) {
-                                $this->line("  [DRY-RUN] Task {$task->id}: Would update playlist \"{$resource['title']}\" - {$playlistDetails['video_count']} videos, {$playlistDetails['duration_formatted']}");
+                                $this->line("  [DRY-RUN] Task {$task->id}: Would update playlist \"{$resourceTitle}\" - {$playlistDetails['video_count']} videos, {$playlistDetails['duration_formatted']}");
                             } else {
-                                $this->line("  Task {$task->id}: Updated playlist \"{$resource['title']}\" - {$playlistDetails['video_count']} videos, {$playlistDetails['duration_formatted']}");
+                                $this->line("  Task {$task->id}: Updated playlist \"{$resourceTitle}\" - {$playlistDetails['video_count']} videos, {$playlistDetails['duration_formatted']}");
                             }
                         } else {
                             $this->stats['errors'][] = [
@@ -276,10 +277,11 @@ class FetchYouTubeDurations extends Command
                 $hasChanges = true;
                 $this->stats['videos_updated']++;
 
+                $resourceTitle = $resource['title'] ?? $resource['title_en'] ?? $resource['title_ar'] ?? 'Untitled';
                 if ($isDryRun) {
-                    $this->line("  [DRY-RUN] Task {$task->id}: Would update \"{$resource['title']}\" with duration: {$details['duration_formatted']}");
+                    $this->line("  [DRY-RUN] Task {$task->id}: Would update \"{$resourceTitle}\" with duration: {$details['duration_formatted']}");
                 } else {
-                    $this->line("  Task {$task->id}: Updated \"{$resource['title']}\" - Duration: {$details['duration_formatted']}");
+                    $this->line("  Task {$task->id}: Updated \"{$resourceTitle}\" - Duration: {$details['duration_formatted']}");
                 }
             }
 

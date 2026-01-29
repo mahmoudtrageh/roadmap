@@ -91,7 +91,7 @@ class ValidateResourceUrls extends Command
                     $this->results['errors'][] = [
                         'task_id' => $task->id,
                         'task_title' => $task->title,
-                        'resource_title' => $resource['title'] ?? 'Unknown',
+                        'resource_title' => $resource['title'] ?? $resource['title_en'] ?? $resource['title_ar'] ?? 'Unknown',
                         'url' => 'MISSING',
                         'error' => 'No URL provided',
                         'fixable' => false,
@@ -100,7 +100,7 @@ class ValidateResourceUrls extends Command
                     continue;
                 }
                 $url = $resource['url'];
-                $resourceTitle = $resource['title'] ?? 'Unknown';
+                $resourceTitle = $resource['title'] ?? $resource['title_en'] ?? $resource['title_ar'] ?? 'Unknown';
             }
 
             $result = $this->checkUrl($url);
