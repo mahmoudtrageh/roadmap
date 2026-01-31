@@ -14,33 +14,7 @@ class RoadmapsList extends Component
     public $searchTerm = '';
     public $filterDifficulty = 'all';
 
-    public function skipRoadmap($roadmapId)
-    {
-        $user = Auth::user();
-
-        // Check if already enrolled
-        $existingEnrollment = RoadmapEnrollment::where('student_id', $user->id)
-            ->where('roadmap_id', $roadmapId)
-            ->first();
-
-        if ($existingEnrollment) {
-            session()->flash('error', 'You are already enrolled in this roadmap.');
-            return;
-        }
-
-        // Skipping is always FREE - no subscription required
-        // This allows students to skip roadmaps they don't need without paying
-
-        // Create skipped enrollment
-        RoadmapEnrollment::create([
-            'student_id' => $user->id,
-            'roadmap_id' => $roadmapId,
-            'started_at' => now(),
-            'status' => 'skipped',
-        ]);
-
-        session()->flash('message', 'Roadmap skipped successfully!');
-    }
+    // Skip functionality removed
 
     public function enroll($roadmapId)
     {
@@ -51,7 +25,8 @@ class RoadmapsList extends Component
             ->where('roadmap_id', $roadmapId)
             ->first();
 
-        if ($existingEnrollment) {
+        // If already enrolled and NOT skipped, show error
+        if ($existingEnrollment && $existingEnrollment->status !== 'skipped') {
             session()->flash('error', 'You are already enrolled in this roadmap.');
             return;
         }
@@ -75,44 +50,33 @@ class RoadmapsList extends Component
             }
         }
 
-        // Get the roadmap with prerequisite
-        $roadmap = Roadmap::findOrFail($roadmapId);
-
-        // Check if roadmap has prerequisite
-        if ($roadmap->prerequisite_roadmap_id) {
-            // Check if user completed or skipped the prerequisite roadmap
-            $prerequisiteSatisfied = RoadmapEnrollment::where('student_id', $user->id)
-                ->where('roadmap_id', $roadmap->prerequisite_roadmap_id)
-                ->whereIn('status', ['completed', 'skipped'])
-                ->exists();
-
-            if (!$prerequisiteSatisfied) {
-                $prerequisiteRoadmap = Roadmap::find($roadmap->prerequisite_roadmap_id);
-                session()->flash('error', 'You must complete or skip "' . $prerequisiteRoadmap->title . '" before enrolling in this roadmap.');
-                return;
-            }
-        }
-
-        // Check if user has any active enrollment
-        $activeEnrollment = RoadmapEnrollment::where('student_id', $user->id)
+        // Check if user has any active (incomplete) enrollments
+        $hasActiveEnrollment = RoadmapEnrollment::where('student_id', $user->id)
             ->where('status', 'active')
             ->exists();
 
-        if ($activeEnrollment) {
-            session()->flash('error', 'You already have an active roadmap. Please complete or pause it before enrolling in a new one.');
+        if ($hasActiveEnrollment) {
+            session()->flash('error', 'Please complete your current roadmap before enrolling in a new one.');
             return;
         }
 
-        // Create enrollment
-        RoadmapEnrollment::create([
-            'student_id' => $user->id,
-            'roadmap_id' => $roadmapId,
-            'started_at' => now(),
-            'status' => 'active',
-        ]);
+        // If there's a skipped enrollment, update it instead of creating new
+        if ($existingEnrollment && $existingEnrollment->status === 'skipped') {
+            $existingEnrollment->status = 'active';
+            $existingEnrollment->started_at = now();
+            $existingEnrollment->save();
+        } else {
+            // Create new enrollment
+            RoadmapEnrollment::create([
+                'student_id' => $user->id,
+                'roadmap_id' => $roadmapId,
+                'started_at' => now(),
+                'status' => 'active',
+            ]);
+        }
 
         session()->flash('message', 'Successfully enrolled in the roadmap!');
-        return redirect()->route('student.dashboard');
+        return redirect()->route('student.tasks', ['roadmapId' => $roadmapId]);
     }
 
     public function render()
@@ -134,8 +98,15 @@ class RoadmapsList extends Component
         // Order by order column to show proper learning progression
         $roadmaps = $query->orderBy('order')->orderBy('created_at')->get();
 
-        // Get user's enrolled roadmap IDs
+        // Get user's enrolled roadmap IDs (active or completed, NOT skipped)
         $enrolledRoadmapIds = RoadmapEnrollment::where('student_id', Auth::id())
+            ->whereIn('status', ['active', 'completed'])
+            ->pluck('roadmap_id')
+            ->toArray();
+
+        // Get user's skipped roadmap IDs
+        $skippedRoadmapIds = RoadmapEnrollment::where('student_id', Auth::id())
+            ->where('status', 'skipped')
             ->pluck('roadmap_id')
             ->toArray();
 
@@ -159,6 +130,7 @@ class RoadmapsList extends Component
         return view('livewire.student.roadmaps-list', [
             'roadmaps' => $roadmaps,
             'enrolledRoadmapIds' => $enrolledRoadmapIds,
+            'skippedRoadmapIds' => $skippedRoadmapIds,
             'completedRoadmapIds' => $completedRoadmapIds,
             'completedOrSkippedRoadmapIds' => $completedOrSkippedRoadmapIds,
             'hasActiveEnrollment' => $hasActiveEnrollment,

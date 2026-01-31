@@ -16,7 +16,7 @@ class ProfessionalSkillsRoadmapSeeder extends Seeder
 
         $roadmap = Roadmap::create([
             'creator_id' => $admin->id ?? null,
-            'title' => 'Phase 8: Professional Skills',
+            'title' => 'Professional Skills',
             'description' => 'Develop essential professional skills for career success: communication and project management.',
             'slug' => 'phase-8-professional-skills',
             'duration_days' => 2,
@@ -39,10 +39,10 @@ class ProfessionalSkillsRoadmapSeeder extends Seeder
                 'estimated_time_minutes' => 120,
                 'task_type' => 'video',
                 'category' => 'Professional',
-                'learning_objectives' => ['Write clear documentation', 'Explain complex concepts', 'Create README files'],
+                'learning_objectives' => [],
                 'skills_gained' => ['Technical Writing', 'Communication', 'Documentation'],
                 'tags' => ['communication', 'documentation', 'writing', 'professional'],
-                'success_criteria' => ['Can write clear docs', 'Can explain to non-technical people', 'Creates comprehensive READMEs'],
+                'success_criteria' => [],
                 'has_code_submission' => false,
                 'resources' => [
                     ['url' => 'https://youtube.com/watch?v=YK-GurROGIg', 'title' => 'Traversy Media - Documentation', 'type' => 'video'],
@@ -58,10 +58,10 @@ class ProfessionalSkillsRoadmapSeeder extends Seeder
                 'estimated_time_minutes' => 120,
                 'task_type' => 'video',
                 'category' => 'Professional',
-                'learning_objectives' => ['Estimate task complexity', 'Understand Agile/Scrum', 'Work in teams'],
+                'learning_objectives' => [],
                 'skills_gained' => ['Time Estimation', 'Agile Methodology', 'Scrum', 'Project Management'],
                 'tags' => ['project-management', 'agile', 'scrum', 'time-estimation'],
-                'success_criteria' => ['Can estimate task durations', 'Understands Agile/Scrum', 'Can work in sprints'],
+                'success_criteria' => [],
                 'has_code_submission' => false,
                 'resources' => [
                     ['url' => 'https://youtube.com/watch?v=8eVXTyIZ1Hs', 'title' => 'freeCodeCamp - Agile', 'type' => 'video'],

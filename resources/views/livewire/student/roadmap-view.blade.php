@@ -67,15 +67,7 @@
                     </div>
 
                     <div class="ml-6">
-                        <!-- DEBUG: enrollment={{ $enrollment ? $enrollment->status : 'NULL' }}, isEnrolled={{ $isEnrolled ? 'TRUE' : 'FALSE' }} -->
-                        @if($enrollment && $enrollment->status === 'skipped')
-                            <div class="text-center">
-                                <button disabled class="bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-medium cursor-not-allowed">
-                                    ⏭️ Skipped
-                                </button>
-                                <p class="text-xs text-gray-500 mt-2">You have skipped this roadmap</p>
-                            </div>
-                        @elseif($isEnrolled)
+                        @if($isEnrolled)
                             <div class="flex flex-col gap-2">
                                 <span class="block text-green-600 font-semibold text-center">✓ Enrolled</span>
                                 <a href="{{ route('student.tasks') }}" class="block bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium text-center">
@@ -105,9 +97,13 @@
                                 <button wire:click="enroll" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium whitespace-nowrap">
                                     Enroll Now
                                 </button>
-                                <button wire:click="skipRoadmap" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium text-sm whitespace-nowrap">
-                                    Skip Roadmap
-                                </button>
+                                @if(!$enrollment || $enrollment->status !== 'skipped')
+                                    <button wire:click="skipRoadmap" class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-lg font-medium text-sm whitespace-nowrap">
+                                        Skip Roadmap
+                                    </button>
+                                @else
+                                    <p class="text-xs text-gray-500 text-center mt-1">Previously skipped - you can enroll anytime!</p>
+                                @endif
                             </div>
                         @endif
                     </div>

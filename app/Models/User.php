@@ -29,12 +29,7 @@ class User extends Authenticatable
         'longest_streak',
         'last_activity_date',
         'daily_study_hours',
-        'total_points',
-        'current_level',
-        'level_title',
         'theme_preference',
-        'show_on_leaderboard',
-        'leaderboard_display_name',
     ];
 
     /**
@@ -104,11 +99,6 @@ class User extends Authenticatable
     public function codeReviews(): HasMany
     {
         return $this->hasMany(CodeReview::class, 'reviewer_id');
-    }
-
-    public function achievements(): HasMany
-    {
-        return $this->hasMany(UserAchievement::class);
     }
 
     public function notes(): HasMany

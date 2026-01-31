@@ -23,9 +23,6 @@
                         <x-nav-link :href="route('student.tasks')" :active="request()->routeIs('student.tasks')">
                             {{ __('My Tasks') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('student.progress')" :active="request()->routeIs('student.progress')">
-                            {{ __('Progress') }}
-                        </x-nav-link>
 
                         <!-- Resources Dropdown -->
                         <div class="relative inline-flex items-center" x-data="{ open: false }">
@@ -67,12 +64,6 @@
                             </div>
                         </div>
 
-                        <x-nav-link :href="route('student.leaderboard')" :active="request()->routeIs('student.leaderboard')">
-                            {{ __('Leaderboard') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('student.certificates')" :active="request()->routeIs('student.certificates')">
-                            {{ __('Certificates') }}
-                        </x-nav-link>
                         <x-nav-link :href="route('student.jobs')" :active="request()->routeIs('student.jobs*')">
                             {{ __('Jobs') }}
                         </x-nav-link>
@@ -186,9 +177,6 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('student.tasks')" :active="request()->routeIs('student.tasks')">
                     {{ __('My Tasks') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('student.progress')" :active="request()->routeIs('student.progress')">
-                    {{ __('Progress') }}
                 </x-responsive-nav-link>
 
                 <!-- Resources Section -->

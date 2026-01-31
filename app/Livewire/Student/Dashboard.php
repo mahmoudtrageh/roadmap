@@ -3,7 +3,6 @@
 namespace App\Livewire\Student;
 
 use App\Services\ProgressService;
-use App\Services\PointsService;
 use App\Services\ScheduleService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -21,20 +20,16 @@ class Dashboard extends Component
     public int $totalTimeSpent = 0;
     public array $progressStats = [];
     public $recentJobs = [];
-    public int $pointsToNextLevel = 0;
-    public float $levelProgress = 0;
     public bool $showPauseModal = false;
     public string $pauseReason = '';
     public array $scheduleAdherence = [];
 
     protected ProgressService $progressService;
-    protected PointsService $pointsService;
     protected ScheduleService $scheduleService;
 
-    public function boot(ProgressService $progressService, PointsService $pointsService, ScheduleService $scheduleService): void
+    public function boot(ProgressService $progressService, ScheduleService $scheduleService): void
     {
         $this->progressService = $progressService;
-        $this->pointsService = $pointsService;
         $this->scheduleService = $scheduleService;
     }
 
@@ -91,10 +86,6 @@ class Dashboard extends Component
             ->take(3)
             ->get()
             ->toArray();
-
-        // Calculate level progress
-        $this->pointsToNextLevel = $this->pointsService->getPointsToNextLevel($user) ?? 0;
-        $this->levelProgress = $this->pointsService->getLevelProgress($user);
 
         // Check schedule adherence if enrollment has auto_schedule
         if ($this->activeEnrollment && $this->activeEnrollment->auto_schedule) {

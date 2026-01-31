@@ -21,7 +21,7 @@ class TechnicalTermsTranslationSeeder extends Seeder
             'duration_days' => 35,
             'difficulty_level' => 'beginner',
             'is_published' => true,
-            'is_featured' => true,
+            'is_featured' => false,
             'order' => 1,
             'prerequisite_roadmap_id' => null,
         ]);
@@ -218,13 +218,14 @@ class TechnicalTermsTranslationSeeder extends Seeder
                 'task_type' => 'reading',
                 'category' => 'Translation',
                 'difficulty_level' => 'beginner',
-                'learning_objectives' => ['Master technical vocabulary', 'Understand Arabic translations', 'Build bilingual fluency'],
+                'description' => '',
+                'learning_objectives' => [],
                 'skills_gained' => ['Technical Vocabulary', 'Bilingual Communication'],
                 'tags' => ['translation', 'arabic', 'english', 'terminology'],
-                'success_criteria' => ['Downloaded and studied PDF', 'Can translate key terms'],
+                'success_criteria' => [],
                 'resources' => [],
                 'has_code_submission' => false,
-                'has_quality_rating' => false,
+                'has_quality_rating' => true,
             ]));
         }
     }

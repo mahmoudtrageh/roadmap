@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,18 +25,12 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Certificate Routes (public verification)
-Route::get('/certificate/verify/{code}', [CertificateController::class, 'verify'])->name('certificate.verify');
-
 // Student Routes
 Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')->group(function () {
     Route::get('/dashboard', App\Livewire\Student\Dashboard::class)->name('dashboard');
     Route::get('/roadmaps', App\Livewire\Student\RoadmapsList::class)->name('roadmaps');
     Route::get('/roadmaps/{roadmapId}', App\Livewire\Student\RoadmapView::class)->name('roadmap.view');
     Route::get('/tasks/{roadmapId?}', App\Livewire\Student\TaskList::class)->name('tasks');
-    Route::get('/progress', App\Livewire\Student\ProgressTracker::class)->name('progress');
-    Route::get('/leaderboard', App\Livewire\Student\Leaderboard::class)->name('leaderboard');
-    Route::get('/certificates', [CertificateController::class, 'index'])->name('certificates');
     Route::get('/subscription', App\Livewire\Student\Subscription::class)->name('subscription');
     Route::get('/jobs', App\Livewire\Student\JobListings::class)->name('jobs');
     Route::get('/jobs/{jobId}', App\Livewire\Student\JobView::class)->name('job.view');
@@ -48,11 +41,6 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::get('/podcasts', App\Livewire\Student\Podcasts::class)->name('podcasts');
     Route::get('/newsletters', App\Livewire\Student\Newsletters::class)->name('newsletters');
     Route::get('/books', App\Livewire\Student\Books::class)->name('books');
-});
-
-// Certificate Download (authenticated)
-Route::middleware('auth')->group(function () {
-    Route::get('/certificate/download/{certificate}', [CertificateController::class, 'download'])->name('certificate.download');
 });
 
 // Instructor Routes

@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             UserSeeder::class,
             CompanySeeder::class,
-            AchievementSeeder::class,
 
             // Roadmap 1: Translation (Start here for Arabic speakers)
             TechnicalTermsTranslationSeeder::class,     // Phase 1 - 14 tasks (English↔Arabic terms)
@@ -33,24 +32,25 @@ class DatabaseSeeder extends Seeder
             FrontendIntermediateRoadmapSeeder::class,   // Phase 4 - 13 tasks
             FrontendProjectsSeeder::class,              // Phase 5 - 10 tasks (Apply frontend skills)
 
-            // Backend Track (Phases 6-8)
-            BackendBasicsRoadmapSeeder::class,          // Phase 6 - 8 tasks
-            BackendIntermediateRoadmapSeeder::class,    // Phase 7 - 5 tasks
-            BackendProjectsSeeder::class,               // Phase 8 - 10 tasks (Apply backend skills)
+            // Backend Track
+            BackendBasicsRoadmapSeeder::class,          // 6 - 8 tasks
+            BackendIntermediateRoadmapSeeder::class,    // 7 - 5 tasks
+            BackendProjectsSeeder::class,               // 8 - 10 tasks (Apply backend skills)
 
-            // Full Stack Integration (Phase 9)
-            FullStackProjectSeeder::class,              // Phase 9 - 15 tasks (Complete capstone)
+            // Advanced Skills
+            DevOpsBasicsRoadmapSeeder::class,           // 10 - 6 tasks
+            MidLevelSkillsRoadmapSeeder::class,         // 11 - 13 tasks
+            ProfessionalSkillsRoadmapSeeder::class,     // 12 - 2 tasks
 
-            // Advanced Skills (Phases 10-12)
-            DevOpsBasicsRoadmapSeeder::class,           // Phase 10 - 6 tasks
-            MidLevelSkillsRoadmapSeeder::class,         // Phase 11 - 13 tasks
-            ProfessionalSkillsRoadmapSeeder::class,     // Phase 12 - 2 tasks
+            // System Design & Capstone
+            SystemDesignRoadmapSeeder::class,           // 13 - 20 tasks (System Design)
+            FullStackProjectSeeder::class,              // 14 - 15 tasks (Complete capstone)
 
-            // Algorithms & Data Structures (Phase 13)
-            AlgorithmsDataStructuresRoadmapSeeder::class, // Phase 13 - 30 tasks (Master DSA)
+            // Algorithms & Data Structures
+            AlgorithmsDataStructuresRoadmapSeeder::class, // 15 - 30 tasks (Master DSA)
 
             // Career & Interview Preparation (End)
-            CareerSkillsSeeder::class,                  // Phase 14 - 14 tasks (CV & Interview skills)
+            CareerSkillsSeeder::class,                  // 16 - 14 tasks (CV & Interview skills)
         ]);
     }
 }

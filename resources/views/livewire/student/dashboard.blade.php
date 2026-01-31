@@ -1,30 +1,9 @@
 <div class="py-12">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <!-- First Roadmap Free Notice -->
+        <!-- Welcome Section for First-Time Users -->
         @php
             $totalEnrollments = \App\Models\RoadmapEnrollment::where('student_id', auth()->id())->count();
         @endphp
-        @if($totalEnrollments === 0)
-        <div class="bg-gradient-to-r from-green-500 to-emerald-600 rounded-lg shadow-lg p-6 mb-6 text-white">
-            <div class="flex items-start gap-4">
-                <div class="text-4xl">🎁</div>
-                <div class="flex-1">
-                    <h3 class="text-xl font-bold mb-2">Your First Roadmap is FREE!</h3>
-                    <p class="text-green-100 mb-3">
-                        Start your learning journey at no cost! Your first roadmap enrollment is completely free. Additional roadmaps require a subscription starting at only <span class="font-bold">100 EGP/month</span> or <span class="font-bold">1000 EGP/year</span> for unlimited access to all roadmaps.
-                    </p>
-                    <div class="flex gap-4 items-center">
-                        <a href="{{ route('student.roadmaps') }}" class="inline-block bg-white text-green-600 hover:bg-green-50 px-5 py-2 rounded-lg font-semibold shadow-md transition-colors text-sm">
-                            Browse Roadmaps →
-                        </a>
-                        <span class="text-green-100 text-sm">✓ No credit card required</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        <!-- Welcome Section for First-Time Users -->
         @if($overallProgress == 0 && $totalTasks == 0)
         <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg shadow-lg p-8 mb-6 text-white">
             <div class="flex items-start gap-6">
@@ -52,6 +31,22 @@
                             <p class="text-blue-100 text-sm">Watch your skills grow as you complete each task</p>
                         </div>
                     </div>
+
+                    @if($totalEnrollments === 0)
+                    <!-- First Roadmap Free Notice -->
+                    <div class="bg-white/10 backdrop-blur rounded-lg p-4 mt-6">
+                        <div class="flex items-start gap-3">
+                            <div class="text-3xl">🎁</div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold mb-2">Your First Roadmap is FREE!</h3>
+                                <p class="text-blue-100 text-sm mb-3">
+                                    Start your learning journey at no cost! Your first roadmap enrollment is completely free. Additional roadmaps require a subscription starting at only <span class="font-bold">100 EGP/month</span> or <span class="font-bold">1000 EGP/year</span> for unlimited access to all roadmaps.
+                                </p>
+                                <span class="text-blue-100 text-xs">✓ No credit card required</span>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
 
                     <div class="mt-6">
                         <a href="{{ route('student.roadmaps') }}" class="inline-block bg-white text-blue-600 hover:bg-blue-50 px-6 py-3 rounded-lg font-semibold shadow-md transition-colors">
@@ -93,38 +88,6 @@
         <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mb-6">
             <div class="p-6">
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Student Dashboard</h2>
-
-                <!-- Level & Points Card -->
-                <div class="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-lg p-6 text-white mb-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <div>
-                            <p class="text-indigo-100 text-sm font-medium">Current Level</p>
-                            <p class="text-3xl font-bold mt-1">{{ auth()->user()->current_level }}</p>
-                            <p class="text-indigo-100 text-sm mt-1">{{ auth()->user()->level_title }}</p>
-                        </div>
-                        <div class="text-right">
-                            <p class="text-indigo-100 text-sm font-medium">Total Points</p>
-                            <p class="text-3xl font-bold mt-1">{{ number_format(auth()->user()->total_points) }}</p>
-                            @if($pointsToNextLevel > 0)
-                                <p class="text-indigo-100 text-sm mt-1">{{ number_format($pointsToNextLevel) }} to next level</p>
-                            @else
-                                <p class="text-indigo-100 text-sm mt-1">Max Level!</p>
-                            @endif
-                        </div>
-                    </div>
-                    @if($pointsToNextLevel > 0)
-                        <div class="mt-4">
-                            <div class="flex items-center justify-between text-sm mb-1">
-                                <span class="text-indigo-100">Level Progress</span>
-                                <span class="text-white font-semibold">{{ number_format($levelProgress, 1) }}%</span>
-                            </div>
-                            <div class="w-full bg-indigo-800/50 rounded-full h-3">
-                                <div class="bg-white h-3 rounded-full transition-all duration-500" style="width: {{ $levelProgress }}%"></div>
-                            </div>
-                        </div>
-                    @endif
-                </div>
-
 
                 <!-- Quick Stats Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -187,10 +150,7 @@
                                 </div>
 
                                 <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                                    <a href="{{ route('student.certificates') }}" class="inline-block px-6 py-3 bg-white text-green-600 hover:bg-green-50 font-semibold rounded-lg transition-colors">
-                                        View Certificate 🎓
-                                    </a>
-                                    <a href="{{ route('student.roadmaps') }}" class="inline-block px-6 py-3 bg-green-700 hover:bg-green-800 text-white font-semibold rounded-lg transition-colors">
+                                    <a href="{{ route('student.roadmaps') }}" class="inline-block px-6 py-3 bg-white text-green-600 hover:bg-green-50 font-semibold rounded-lg transition-colors">
                                         Start Next Roadmap →
                                     </a>
                                 </div>
@@ -645,56 +605,6 @@
                         <a href="{{ route('student.jobs') }}" class="inline-block px-6 py-3 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium rounded-lg transition-colors">
                             Browse All {{ \App\Models\JobListing::where('status', 'open')->count() }} Open Positions
                         </a>
-                    </div>
-                </div>
-            </div>
-            @endif
-
-            <!-- Leaderboard Preview -->
-            @php
-                $topLeaders = \App\Models\User::where('role', 'student')
-                    ->where('show_on_leaderboard', true)
-                    ->orderBy('total_points', 'desc')
-                    ->take(5)
-                    ->get();
-            @endphp
-
-            @if($topLeaders->count() > 0)
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg mt-6 mb-6">
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-lg font-semibold text-gray-800 dark:text-gray-200">Top Learners</h3>
-                        <a href="{{ route('student.leaderboard') }}" class="text-sm text-blue-600 dark:text-blue-400 hover:underline">View All</a>
-                    </div>
-
-                    <div class="space-y-3">
-                        @foreach($topLeaders as $leader)
-                        <div class="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg {{ $leader->id === auth()->id() ? 'ring-2 ring-blue-500' : '' }}">
-                            <div class="flex items-center gap-3 min-w-0 flex-1">
-                                <span class="text-lg font-bold text-gray-500 dark:text-gray-400 w-6">{{ $loop->iteration }}</span>
-                                @if($leader->avatar)
-                                    <img src="{{ Storage::url($leader->avatar) }}" alt="{{ $leader->name }}" class="w-8 h-8 rounded-full">
-                                @else
-                                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white text-sm font-bold">
-                                        {{ substr($leader->name, 0, 1) }}
-                                    </div>
-                                @endif
-                                <div class="min-w-0 flex-1">
-                                    <div class="font-medium text-gray-900 dark:text-gray-100 text-sm truncate">
-                                        {{ $leader->leaderboard_display_name ?: $leader->name }}
-                                        @if($leader->id === auth()->id())
-                                            <span class="text-xs text-blue-600 dark:text-blue-400">(You)</span>
-                                        @endif
-                                    </div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400">Level {{ $leader->current_level }}</div>
-                                </div>
-                            </div>
-                            <div class="text-right shrink-0">
-                                <div class="font-bold text-gray-900 dark:text-gray-100">{{ number_format($leader->total_points) }}</div>
-                                <div class="text-xs text-gray-500 dark:text-gray-400">points</div>
-                            </div>
-                        </div>
-                        @endforeach
                     </div>
                 </div>
             </div>

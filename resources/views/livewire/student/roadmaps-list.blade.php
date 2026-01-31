@@ -40,27 +40,6 @@
             </div>
         </div>
 
-        <!-- Learning Path Info -->
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
-            <h3 class="text-lg font-semibold text-blue-900 mb-2">📚 Your Learning Journey</h3>
-            <p class="text-blue-800 text-sm mb-3">
-                Follow these 8 roadmaps in order to go from complete beginner to senior developer in <strong>8-9 months</strong> with flexible daily study.
-            </p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
-                <div class="bg-white rounded p-2 border border-blue-100">
-                    <div class="font-semibold text-blue-900 mb-1">🟢 Light Days (30-60 min)</div>
-                    <div class="text-blue-700">Quick tutorials & articles</div>
-                </div>
-                <div class="bg-white rounded p-2 border border-blue-100">
-                    <div class="font-semibold text-blue-900 mb-1">🟡 Standard Days (1-2 hrs)</div>
-                    <div class="text-blue-700">Video learning & practice</div>
-                </div>
-            </div>
-            <p class="text-blue-600 text-xs mt-2 italic">
-                All tasks are optimized to ≤ 2 hours per day for consistent daily progress
-            </p>
-        </div>
-
         <!-- Roadmaps Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
             @forelse ($roadmaps as $roadmap)
@@ -82,16 +61,6 @@
                                     @endif
                                     <h3 class="text-lg font-semibold text-gray-900">{{ $roadmap->title }}</h3>
                                 </div>
-                            </div>
-                            <div class="flex flex-col gap-1 items-end">
-                                @if ($roadmap->order <= 2)
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-green-100 text-green-800">
-                                        🎁 FREE
-                                    </span>
-                                @endif
-                                @if ($roadmap->is_featured)
-                                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-yellow-100 text-yellow-800">⭐ Start Here</span>
-                                @endif
                             </div>
                         </div>
 
@@ -134,23 +103,6 @@
                             View Details
                         </a>
 
-                        @php
-                            $isLocked = false;
-                            $lockReason = '';
-
-                            // Check if has prerequisite that's not completed or skipped
-                            if ($roadmap->prerequisite_roadmap_id && !in_array($roadmap->prerequisite_roadmap_id, $completedOrSkippedRoadmapIds)) {
-                                $isLocked = true;
-                                $lockReason = 'Complete or skip previous roadmap first';
-                            }
-
-                            // Check if user already has active enrollment
-                            if ($hasActiveEnrollment && !in_array($roadmap->id, $enrolledRoadmapIds)) {
-                                $isLocked = true;
-                                $lockReason = 'Complete active roadmap first';
-                            }
-                        @endphp
-
                         @if (in_array($roadmap->id, $enrolledRoadmapIds))
                             @if(in_array($roadmap->id, $completedRoadmapIds))
                                 <span class="block w-full text-center bg-green-100 text-green-700 px-4 py-2 rounded-lg font-medium mb-2">
@@ -167,20 +119,16 @@
                                     View Tasks
                                 </a>
                             @endif
-                        @elseif ($isLocked)
-                            <button disabled class="block w-full bg-gray-300 text-gray-500 px-4 py-2 rounded-lg font-medium cursor-not-allowed" title="{{ $lockReason }}">
-                                🔒 Locked
-                            </button>
-                            <p class="text-xs text-gray-500 text-center mt-1">{{ $lockReason }}</p>
                         @else
-                            <div class="flex flex-col gap-2">
+                            @if($hasActiveEnrollment)
+                                <button disabled class="block w-full bg-gray-400 cursor-not-allowed text-white px-4 py-2 rounded-lg font-medium">
+                                    Complete Current Roadmap First
+                                </button>
+                            @else
                                 <button wire:click="enroll({{ $roadmap->id }})" class="block w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition duration-150">
                                     Enroll Now
                                 </button>
-                                <button wire:click="skipRoadmap({{ $roadmap->id }})" class="block w-full bg-gray-500 hover:bg-gray-600 text-white px-4 py-1.5 rounded-lg font-medium text-sm transition duration-150">
-                                    Skip
-                                </button>
-                            </div>
+                            @endif
                         @endif
                     </div>
                 </div>

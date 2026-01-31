@@ -93,7 +93,7 @@
                                 <div class="space-y-4">
                                     <div class="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                                         <span class="text-2xl">✅</span>
-                                        <span class="font-semibold">13+ Structured Roadmaps</span>
+                                        <span class="font-semibold">16 Structured Roadmaps</span>
                                     </div>
                                     <div class="flex items-center gap-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                                         <span class="text-2xl">📚</span>
@@ -104,8 +104,8 @@
                                         <span class="font-semibold">Track Your Progress</span>
                                     </div>
                                     <div class="flex items-center gap-3 p-4 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
-                                        <span class="text-2xl">🏆</span>
-                                        <span class="font-semibold">Earn Certificates</span>
+                                        <span class="text-2xl">💼</span>
+                                        <span class="font-semibold">Job Opportunities</span>
                                     </div>
                                 </div>
                             </div>
@@ -155,7 +155,7 @@
                             <div class="text-5xl mb-4">📊</div>
                             <h3 class="text-2xl font-bold mb-3">Progress Tracking</h3>
                             <p class="text-gray-600 dark:text-gray-300">
-                                Monitor your learning journey with detailed analytics, completion rates, and achievement milestones.
+                                Monitor your learning journey with detailed analytics and completion rates to stay on track.
                             </p>
                         </div>
 
@@ -170,10 +170,10 @@
 
                         <!-- Feature 6 -->
                         <div class="bg-gradient-to-br from-indigo-50 to-indigo-100 dark:from-gray-800 dark:to-gray-700 rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow">
-                            <div class="text-5xl mb-4">🏆</div>
-                            <h3 class="text-2xl font-bold mb-3">Certificates & Achievements</h3>
+                            <div class="text-5xl mb-4">💼</div>
+                            <h3 class="text-2xl font-bold mb-3">Job Board Access</h3>
                             <p class="text-gray-600 dark:text-gray-300">
-                                Earn certificates upon completion and build your professional portfolio with verified achievements.
+                                Connect with companies hiring developers and apply for real job opportunities as you progress through your learning journey.
                             </p>
                         </div>
                     </div>
@@ -191,7 +191,7 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <div class="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
                             <div class="text-4xl mb-3">📖</div>
-                            <h3 class="text-xl font-bold mb-2">Phase 1: Foundation</h3>
+                            <h3 class="text-xl font-bold mb-2">Foundation</h3>
                             <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">Master computer fundamentals, programming basics, and internet concepts</p>
                             <div class="flex items-center justify-between">
                                 <span class="text-sm text-gray-500">17 days</span>
@@ -258,8 +258,8 @@
                 </div>
             </section>
 
-            <!-- Pricing Section -->
-            <section class="py-20 bg-white dark:bg-gray-900">
+            {{-- Pricing Section --}}
+            {{-- <section class="py-20 bg-white dark:bg-gray-900">
                 <div class="container mx-auto px-6">
                     <div class="text-center mb-16">
                         <h2 class="text-4xl font-bold mb-4">Simple, Transparent Pricing</h2>
@@ -317,7 +317,7 @@
                                 </li>
                                 <li class="flex items-start gap-2">
                                     <span>✓</span>
-                                    <span>Certificates</span>
+                                    <span>Job board access</span>
                                 </li>
                             </ul>
                             <a href="{{ route('register') }}" class="block text-center px-6 py-3 bg-white text-blue-600 hover:bg-blue-50 rounded-lg font-semibold transition-colors">
@@ -359,7 +359,7 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> --}}
 
             <!-- CTA Section -->
             <section class="py-20 bg-gradient-to-r from-blue-600 to-purple-600">

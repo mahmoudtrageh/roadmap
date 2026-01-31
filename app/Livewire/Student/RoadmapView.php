@@ -161,12 +161,20 @@ class RoadmapView extends Component
             return;
         }
 
-        RoadmapEnrollment::create([
-            'student_id' => Auth::id(),
-            'roadmap_id' => $this->roadmapId,
-            'started_at' => now(),
-            'status' => 'active',
-        ]);
+        // Check if there's a skipped enrollment - if so, update it instead of creating new
+        if ($this->enrollment && $this->enrollment->status === 'skipped') {
+            $this->enrollment->status = 'active';
+            $this->enrollment->started_at = now();
+            $this->enrollment->save();
+        } else {
+            // Create new enrollment
+            RoadmapEnrollment::create([
+                'student_id' => Auth::id(),
+                'roadmap_id' => $this->roadmapId,
+                'started_at' => now(),
+                'status' => 'active',
+            ]);
+        }
 
         session()->flash('message', 'Successfully enrolled! Start your journey now.');
         return redirect()->route('student.tasks');

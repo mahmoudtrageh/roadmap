@@ -50,11 +50,8 @@
                     </div>
                     <p class="text-green-100">You've successfully completed {{ $activeEnrollment->roadmap->title }}</p>
                 </div>
-                <div class="flex gap-3">
-                    <a href="{{ route('student.certificates') }}" class="px-4 py-2 bg-white text-green-600 hover:bg-green-50 font-semibold rounded-lg transition-colors">
-                        View Certificate
-                    </a>
-                    <a href="{{ route('student.roadmaps') }}" class="px-4 py-2 bg-green-700 hover:bg-green-800 text-white font-semibold rounded-lg transition-colors">
+                <div>
+                    <a href="{{ route('student.roadmaps') }}" class="px-4 py-2 bg-white text-green-600 hover:bg-green-50 font-semibold rounded-lg transition-colors">
                         Next Roadmap →
                     </a>
                 </div>
@@ -132,7 +129,7 @@
                 @if(count($tasks) > 0)
                 <div class="space-y-4">
                     @foreach($tasks as $task)
-                    <div class="border rounded-lg p-6 hover:shadow-md transition-shadow
+                    <div id="task-{{ $task['id'] }}" class="border rounded-lg p-6 hover:shadow-md transition-all
                         {{ $task['status'] === 'completed' ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800' : '' }}
                         {{ $task['status'] === 'in_progress' ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800' : '' }}
                         {{ $task['status'] === 'skipped' ? 'bg-gray-100 dark:bg-gray-700 border-gray-300 dark:border-gray-600' : '' }}
@@ -162,7 +159,82 @@
                                 </div>
 
                                 <!-- Task Description -->
+                                @if($task['category'] !== 'Translation')
                                 <p class="text-gray-600 dark:text-gray-300 mb-3">{{ $task['description'] }}</p>
+
+                                <!-- Learning Objectives -->
+                                @if(!empty($task['learning_objectives']))
+                                <div class="mb-3">
+                                    <p class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1">
+                                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        Learning Objectives:
+                                    </p>
+                                    <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                        @foreach($task['learning_objectives'] as $objective)
+                                        <li>{{ $objective }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
+
+                                <!-- Success Criteria -->
+                                @if(!empty($task['success_criteria']) && !$task['is_locked'])
+                                <div class="mb-3">
+                                    <p class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1">
+                                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                                        </svg>
+                                        Success Criteria:
+                                    </p>
+                                    <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1">
+                                        @foreach($task['success_criteria'] as $criteria)
+                                        <li>{{ $criteria }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                                @endif
+
+                                @endif
+
+                                <!-- Task Meta Information -->
+                                <div class="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
+                                    <div class="flex items-center gap-1">
+                                        <span class="font-medium">Type:</span>
+                                        <span class="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 px-2 py-0.5 rounded text-xs">
+                                            {{ ucfirst($task['task_type']) }}
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <span class="font-medium">Category:</span>
+                                        <span class="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300 px-2 py-0.5 rounded text-xs">
+                                            {{ ucfirst($task['category']) }}
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center gap-1">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="font-medium">Estimated:</span>
+                                        @php
+                                            $estMinutes = $task['estimated_time_minutes'];
+                                            if ($estMinutes >= 60) {
+                                                $hours = floor($estMinutes / 60);
+                                                $mins = $estMinutes % 60;
+                                                $estDisplay = $mins > 0 ? "{$hours}h {$mins}m" : "{$hours}h";
+                                            } else {
+                                                $estDisplay = "{$estMinutes}m";
+                                            }
+                                        @endphp
+                                        <span class="{{ $task['estimated_time_minutes'] > 120 ? 'text-orange-600 dark:text-orange-400 font-semibold' : '' }}">
+                                            {{ $estDisplay }}
+                                        </span>
+                                        @if($task['estimated_time_minutes'] > 180)
+                                        <span class="text-xs text-orange-600 dark:text-orange-400">(Long task)</span>
+                                        @endif
+                                    </div>
+                                </div>
 
                                 <!-- Translation Terms Table -->
                                 @if(isset($translationTerms) && $translationTerms)
@@ -228,23 +300,6 @@
                                 </div>
                                 @endif
 
-                                <!-- Learning Objectives -->
-                                @if(!empty($task['learning_objectives']))
-                                <div class="mb-3">
-                                    <p class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1">
-                                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        Learning Objectives:
-                                    </p>
-                                    <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                                        @foreach($task['learning_objectives'] as $objective)
-                                        <li>{{ $objective }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                                @endif
-
                                 <!-- Prerequisites (if any) -->
                                 @if(!empty($task['missing_prerequisites']))
                                 <div class="mb-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-3">
@@ -301,109 +356,6 @@
                                     </ul>
                                 </div>
                                 @endif
-
-                                <!-- Success Criteria -->
-                                @if(!empty($task['success_criteria']) && !$task['is_locked'])
-                                <div class="mb-3">
-                                    <p class="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1 flex items-center gap-1">
-                                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-                                        </svg>
-                                        Success Criteria:
-                                    </p>
-                                    <ul class="list-disc list-inside text-sm text-gray-600 dark:text-gray-400 space-y-1">
-                                        @foreach($task['success_criteria'] as $criteria)
-                                        <li>{{ $criteria }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                                @endif
-
-
-                                <!-- Task Meta Information -->
-                                <div class="flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400 mb-3">
-                                    <div class="flex items-center gap-1">
-                                        <span class="font-medium">Type:</span>
-                                        <span class="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 px-2 py-0.5 rounded text-xs">
-                                            {{ ucfirst($task['task_type']) }}
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center gap-1">
-                                        <span class="font-medium">Category:</span>
-                                        <span class="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-800 dark:text-indigo-300 px-2 py-0.5 rounded text-xs">
-                                            {{ ucfirst($task['category']) }}
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center gap-1">
-                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <span class="font-medium">Estimated:</span>
-                                        @php
-                                            $estMinutes = $task['estimated_time_minutes'];
-                                            if ($estMinutes >= 60) {
-                                                $hours = floor($estMinutes / 60);
-                                                $mins = $estMinutes % 60;
-                                                $estDisplay = $mins > 0 ? "{$hours}h {$mins}m" : "{$hours}h";
-                                            } else {
-                                                $estDisplay = "{$estMinutes}m";
-                                            }
-                                        @endphp
-                                        <span class="{{ $task['estimated_time_minutes'] > 120 ? 'text-orange-600 dark:text-orange-400 font-semibold' : '' }}">
-                                            {{ $estDisplay }}
-                                        </span>
-                                        @if($task['estimated_time_minutes'] > 180)
-                                        <span class="text-xs text-orange-600 dark:text-orange-400">(Long task)</span>
-                                        @endif
-                                    </div>
-                                    @if(isset($task['actual_avg_time_minutes']) && $task['actual_avg_time_minutes'] > 0)
-                                    @php
-                                        $avgMinutes = $task['actual_avg_time_minutes'];
-                                        if ($avgMinutes >= 60) {
-                                            $avgHours = floor($avgMinutes / 60);
-                                            $avgMins = $avgMinutes % 60;
-                                            $avgDisplay = $avgMins > 0 ? "{$avgHours}h {$avgMins}m" : "{$avgHours}h";
-                                        } else {
-                                            $avgDisplay = "{$avgMinutes}m";
-                                        }
-                                    @endphp
-                                    <div class="flex items-center gap-1">
-                                        <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                                        </svg>
-                                        <span class="font-medium">Others completed in:</span>
-                                        <span class="text-blue-600 dark:text-blue-400 font-semibold">{{ $avgDisplay }} avg</span>
-                                        @php
-                                            $diff = $task['actual_avg_time_minutes'] - $task['estimated_time_minutes'];
-                                            $diffPercent = $task['estimated_time_minutes'] > 0 ? round(($diff / $task['estimated_time_minutes']) * 100) : 0;
-                                        @endphp
-                                        @if(abs($diffPercent) > 20)
-                                        <span class="text-xs {{ $diff > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-green-600 dark:text-green-400' }}">
-                                            ({{ $diff > 0 ? '+' : '' }}{{ $diffPercent }}%)
-                                        </span>
-                                        @endif
-                                    </div>
-                                    @endif
-                                    @if($task['time_spent_minutes'])
-                                    @php
-                                        $spentMinutes = $task['time_spent_minutes'];
-                                        if ($spentMinutes >= 60) {
-                                            $spentHours = floor($spentMinutes / 60);
-                                            $spentMins = $spentMinutes % 60;
-                                            $spentDisplay = $spentMins > 0 ? "{$spentHours}h {$spentMins}m" : "{$spentHours}h";
-                                        } else {
-                                            $spentDisplay = "{$spentMinutes}m";
-                                        }
-                                    @endphp
-                                    <div class="flex items-center gap-1">
-                                        <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <span class="font-medium">Your time:</span>
-                                        <span class="text-green-600 dark:text-green-400 font-semibold">{{ $spentDisplay }}</span>
-                                    </div>
-                                    @endif
-                                </div>
 
                                 <!-- Task Quality Ratings -->
                                 @if($task['has_quality_rating'])
@@ -1008,13 +960,6 @@
                                 @endif
 
 
-                                <!-- Self Notes Display -->
-                                @if($task['self_notes'])
-                                <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-                                    <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Notes:</p>
-                                    <p class="text-sm text-gray-600 dark:text-gray-400">{{ $task['self_notes'] }}</p>
-                                </div>
-                                @endif
                             </div>
 
                             <!-- Action Buttons -->
@@ -1178,21 +1123,6 @@
                     </div>
                     @endif
 
-                    <!-- Self Notes -->
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Notes / Reflections
-                        </label>
-                        <textarea
-                            wire:model="selfNotes"
-                            rows="4"
-                            class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="Add your notes, reflections, or key learnings..."></textarea>
-                        @error('selfNotes')
-                        <span class="text-red-500 text-xs">{{ $message }}</span>
-                        @enderror
-                    </div>
-
                     <!-- Buttons -->
                     <div class="flex justify-end gap-3 mt-6">
                         <button
@@ -1234,9 +1164,7 @@
                             </p>
                             <ul class="text-sm text-gray-600 dark:text-gray-400 space-y-1 ml-4 list-disc">
                                 <li>Complete all remaining tasks</li>
-                                <li>Award points for each task</li>
                                 <li>Mark the roadmap as complete</li>
-                                <li>Generate your certificate</li>
                             </ul>
                         </div>
                     </div>
@@ -1266,4 +1194,27 @@
         </div>
     </div>
     @endif
+
+    <script>
+        document.addEventListener('livewire:initialized', () => {
+            Livewire.on('scrollToTask', (event) => {
+                // Try to scroll to task, retry if not found (for day changes)
+                const attemptScroll = (retries = 0) => {
+                    const taskElement = document.getElementById('task-' + event.taskId);
+                    if (taskElement) {
+                        taskElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        taskElement.classList.add('ring-2', 'ring-blue-500', 'ring-offset-2');
+                        setTimeout(() => {
+                            taskElement.classList.remove('ring-2', 'ring-blue-500', 'ring-offset-2');
+                        }, 2000);
+                    } else if (retries < 5) {
+                        // Retry after 200ms if task not found (might be on different day, waiting for DOM update)
+                        setTimeout(() => attemptScroll(retries + 1), 200);
+                    }
+                };
+
+                setTimeout(() => attemptScroll(), 300);
+            });
+        });
+    </script>
 </div>
