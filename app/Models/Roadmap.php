@@ -21,6 +21,7 @@ class Roadmap extends Model
         'difficulty_level',
         'is_published',
         'is_featured',
+        'requires_enrollment',
         'image_path',
         'order',
         'prerequisite_roadmap_id',
@@ -31,6 +32,7 @@ class Roadmap extends Model
     protected $casts = [
         'is_published' => 'boolean',
         'is_featured' => 'boolean',
+        'requires_enrollment' => 'boolean',
         'duration_days' => 'integer',
     ];
 

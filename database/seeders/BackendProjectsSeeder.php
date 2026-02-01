@@ -23,7 +23,7 @@ class BackendProjectsSeeder extends Seeder
             'difficulty_level' => 'intermediate',
             'is_published' => true,
             'is_featured' => false,
-            'order' => 8,
+            'order' => 7,
             'prerequisite_roadmap_id' => $backendIntermediate->id ?? null,
         ]);
 

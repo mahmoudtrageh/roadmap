@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
 class SetupDatabase extends Command
 {
@@ -32,8 +33,35 @@ class SetupDatabase extends Command
         // Step 1: Reset database if --fresh flag is provided
         if ($this->option('fresh')) {
             $this->info('📦 Step 1/5: Resetting database with fresh migration and seeding...');
+
+            // Backup users table
+            $this->info('💾 Backing up users table...');
+            $users = \App\Models\User::all()->map(function ($user) {
+                // Get all attributes including hidden fields like password
+                $attributes = $user->getAttributes();
+                return $attributes;
+            })->toArray();
+            $this->info('✅ Backed up ' . count($users) . ' users');
+
+            // Run fresh migration and seeding
             Artisan::call('migrate:fresh --seed');
             $this->line(Artisan::output());
+
+            // Restore users (but skip if they were re-seeded)
+            if (!empty($users)) {
+                $this->info('♻️  Restoring users...');
+                $restored = 0;
+                foreach ($users as $userData) {
+                    // Check if user already exists (from seeding)
+                    $exists = \App\Models\User::where('email', $userData['email'])->exists();
+                    if (!$exists) {
+                        \DB::table('users')->insert($userData);
+                        $restored++;
+                    }
+                }
+                $this->info('✅ Restored ' . $restored . ' users (skipped duplicates from seeding)');
+            }
+
             $this->info('✅ Database reset complete');
             $this->newLine();
         } else {

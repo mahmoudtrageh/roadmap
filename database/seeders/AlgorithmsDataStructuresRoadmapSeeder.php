@@ -23,7 +23,7 @@ class AlgorithmsDataStructuresRoadmapSeeder extends Seeder
             'difficulty_level' => 'intermediate',
             'is_published' => true,
             'is_featured' => false,
-            'order' => 15,
+            'order' => 13,
             'prerequisite_roadmap_id' => null,
         ]);
 

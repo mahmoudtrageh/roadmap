@@ -20,6 +20,13 @@ class RoadmapsList extends Component
     {
         $user = Auth::user();
 
+        // Check if roadmap requires enrollment
+        $roadmap = Roadmap::find($roadmapId);
+        if ($roadmap && !$roadmap->requires_enrollment) {
+            // Roadmaps that don't require enrollment should be accessed directly
+            return redirect()->route('student.tasks', ['roadmapId' => $roadmapId]);
+        }
+
         // Check if already enrolled
         $existingEnrollment = RoadmapEnrollment::where('student_id', $user->id)
             ->where('roadmap_id', $roadmapId)
@@ -32,21 +39,24 @@ class RoadmapsList extends Component
         }
 
         // Check subscription requirement (first 2 roadmaps are free: Translation + 1 technical, rest require subscription)
-        // Count only non-skipped enrollments
-        $totalEnrollmentsCount = RoadmapEnrollment::where('student_id', $user->id)
-            ->where('status', '!=', 'skipped')
-            ->count();
+        // UNLESS user has lifetime access
+        if (!$user->has_lifetime_access) {
+            // Count only non-skipped enrollments
+            $totalEnrollmentsCount = RoadmapEnrollment::where('student_id', $user->id)
+                ->where('status', '!=', 'skipped')
+                ->count();
 
-        // If user already has 2 or more enrollments, they need an active subscription for additional roadmaps
-        if ($totalEnrollmentsCount >= 2) {
-            $activeSubscription = \App\Models\Subscription::where('student_id', $user->id)
-                ->where('status', 'active')
-                ->where('expires_at', '>', now())
-                ->first();
+            // If user already has 2 or more enrollments, they need an active subscription for additional roadmaps
+            if ($totalEnrollmentsCount >= 2) {
+                $activeSubscription = \App\Models\Subscription::where('student_id', $user->id)
+                    ->where('status', 'active')
+                    ->where('expires_at', '>', now())
+                    ->first();
 
-            if (!$activeSubscription) {
-                session()->flash('error', 'You need an active subscription to enroll in additional roadmaps. The first 2 roadmaps are free (Translation + one technical roadmap)!');
-                return redirect()->route('student.subscription');
+                if (!$activeSubscription) {
+                    session()->flash('error', 'You need an active subscription to enroll in additional roadmaps. The first 2 roadmaps are free (Translation + one technical roadmap)!');
+                    return redirect()->route('student.subscription');
+                }
             }
         }
 

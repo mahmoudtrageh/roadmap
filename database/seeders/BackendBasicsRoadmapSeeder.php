@@ -22,7 +22,7 @@ class BackendBasicsRoadmapSeeder extends Seeder
             'difficulty_level' => 'intermediate',
             'is_published' => true,
             'is_featured' => false,
-            'order' => 6,
+            'order' => 5,
             'prerequisite_roadmap_id' => null,
         ]);
 

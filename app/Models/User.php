@@ -24,6 +24,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'has_lifetime_access',
         'avatar',
         'current_streak',
         'longest_streak',
@@ -53,6 +54,7 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'last_activity_date' => 'date',
+            'has_lifetime_access' => 'boolean',
         ];
     }
 

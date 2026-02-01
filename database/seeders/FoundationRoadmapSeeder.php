@@ -24,7 +24,7 @@ class FoundationRoadmapSeeder extends Seeder
             'difficulty_level' => 'beginner',
             'is_published' => true,
             'is_featured' => false,
-            'order' => 2,
+            'order' => 1,
             'prerequisite_roadmap_id' => null,
         ]);
 

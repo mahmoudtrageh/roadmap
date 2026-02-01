@@ -57,13 +57,29 @@ class TaskList extends Component
             ->get()
             ->toArray();
 
-        // If roadmapId is provided, load that specific enrollment
+        // If roadmapId is provided, load that specific roadmap
         if ($roadmapId) {
-            $this->activeEnrollment = $user->enrollments()
-                ->with('roadmap.tasks')
-                ->where('roadmap_id', $roadmapId)
-                ->whereIn('status', ['active', 'completed'])
-                ->first();
+            $roadmap = \App\Models\Roadmap::with('tasks')->find($roadmapId);
+
+            // Check if roadmap requires enrollment
+            if ($roadmap && !$roadmap->requires_enrollment) {
+                // For roadmaps that don't require enrollment, create a virtual enrollment
+                $this->activeEnrollment = (object) [
+                    'id' => null,
+                    'roadmap_id' => $roadmap->id,
+                    'student_id' => $user->id,
+                    'current_day' => 1,
+                    'status' => 'active',
+                    'roadmap' => $roadmap,
+                ];
+            } else {
+                // For regular roadmaps, get actual enrollment
+                $this->activeEnrollment = $user->enrollments()
+                    ->with('roadmap.tasks')
+                    ->where('roadmap_id', $roadmapId)
+                    ->whereIn('status', ['active', 'completed'])
+                    ->first();
+            }
         }
 
         // Otherwise, get active enrollment first
@@ -111,33 +127,52 @@ class TaskList extends Component
             return;
         }
 
+        // Check if this is a virtual enrollment (for non-enrollment roadmaps)
+        $isVirtualEnrollment = is_object($this->activeEnrollment) &&
+                               !($this->activeEnrollment instanceof \App\Models\RoadmapEnrollment);
+
         // Get tasks for current day
-        $tasksForDay = $this->activeEnrollment->roadmap->tasks()
-            ->where('day_number', $this->currentDay)
-            ->orderBy('order')
-            ->get();
+        if ($isVirtualEnrollment) {
+            $tasksForDay = $this->activeEnrollment->roadmap->tasks
+                ->where('day_number', $this->currentDay)
+                ->sortBy('order')
+                ->values();
+        } else {
+            $tasksForDay = $this->activeEnrollment->roadmap->tasks()
+                ->where('day_number', $this->currentDay)
+                ->orderBy('order')
+                ->get();
+        }
 
-        // Get task completions
-        $completions = $this->activeEnrollment->taskCompletions()
-            ->whereIn('task_id', $tasksForDay->pluck('id'))
-            ->get()
-            ->keyBy('task_id');
+        // For roadmaps that don't require enrollment, skip task completion tracking
+        if ($isVirtualEnrollment || !$this->activeEnrollment->roadmap->requires_enrollment) {
+            $this->taskCompletions = [];
+            $completions = collect();
+            $allCompletedTaskIds = [];
+            $allTasksUpToCurrent = $tasksForDay->pluck('id')->toArray();
+        } else {
+            // Get task completions
+            $completions = $this->activeEnrollment->taskCompletions()
+                ->whereIn('task_id', $tasksForDay->pluck('id'))
+                ->get()
+                ->keyBy('task_id');
 
-        $this->taskCompletions = $completions->toArray();
+            $this->taskCompletions = $completions->toArray();
 
-        // Get all completed task IDs across all days to determine locking
-        $allCompletedTaskIds = $this->activeEnrollment->taskCompletions()
-            ->whereIn('status', ['completed', 'skipped'])
-            ->pluck('task_id')
-            ->toArray();
+            // Get all completed task IDs across all days to determine locking
+            $allCompletedTaskIds = $this->activeEnrollment->taskCompletions()
+                ->whereIn('status', ['completed', 'skipped'])
+                ->pluck('task_id')
+                ->toArray();
 
-        // Get all task IDs up to current day in order
-        $allTasksUpToCurrent = $this->activeEnrollment->roadmap->tasks()
-            ->where('day_number', '<=', $this->currentDay)
-            ->orderBy('day_number')
-            ->orderBy('order')
-            ->pluck('id')
-            ->toArray();
+            // Get all task IDs up to current day in order
+            $allTasksUpToCurrent = $this->activeEnrollment->roadmap->tasks()
+                ->where('day_number', '<=', $this->currentDay)
+                ->orderBy('day_number')
+                ->orderBy('order')
+                ->pluck('id')
+                ->toArray();
+        }
 
         // Get all tasks for prerequisite checking
         $allTasks = $this->activeEnrollment->roadmap->tasks()->get()->keyBy('id');
@@ -411,11 +446,25 @@ class TaskList extends Component
 
     public function completeTask(int $taskId): void
     {
+        // Prevent completion for roadmaps that don't require enrollment
+        if ($this->activeEnrollment &&
+            $this->activeEnrollment->roadmap &&
+            !$this->activeEnrollment->roadmap->requires_enrollment) {
+            return;
+        }
+
         $this->openCompletionModal($taskId, 'completed');
     }
 
     public function skipTask(int $taskId): void
     {
+        // Prevent skipping for roadmaps that don't require enrollment
+        if ($this->activeEnrollment &&
+            $this->activeEnrollment->roadmap &&
+            !$this->activeEnrollment->roadmap->requires_enrollment) {
+            return;
+        }
+
         $this->openCompletionModal($taskId, 'skipped');
     }
 
@@ -455,6 +504,11 @@ class TaskList extends Component
     {
         if (!$this->activeEnrollment) {
             session()->flash('error', 'No active enrollment found.');
+            return;
+        }
+
+        // Prevent for roadmaps that don't require enrollment
+        if (!$this->activeEnrollment->roadmap->requires_enrollment) {
             return;
         }
 
@@ -521,6 +575,10 @@ class TaskList extends Component
         $translationTerms = null;
 
         if ($this->activeEnrollment) {
+            // Check if this is a virtual enrollment
+            $isVirtualEnrollment = is_object($this->activeEnrollment) &&
+                                   !($this->activeEnrollment instanceof \App\Models\RoadmapEnrollment);
+
             // Get translation terms if this is translation roadmap
             if ($this->activeEnrollment->roadmap->slug === 'technical-terms-translation') {
                 $translationTerms = $this->getTranslationTerms($this->currentDay);
@@ -529,6 +587,12 @@ class TaskList extends Component
             for ($day = 1; $day <= $this->activeEnrollment->roadmap->duration_days; $day++) {
                 // All days are accessible for exploration
                 $accessibleDays[$day] = true;
+
+                // Skip completion tracking for virtual enrollments
+                if ($isVirtualEnrollment || !$this->activeEnrollment->roadmap->requires_enrollment) {
+                    $completedDays[$day] = false;
+                    continue;
+                }
 
                 // Check if day is completed (all tasks done/skipped)
                 $dayTaskIds = $this->activeEnrollment->roadmap->tasks()

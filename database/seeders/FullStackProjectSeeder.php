@@ -23,7 +23,7 @@ class FullStackProjectSeeder extends Seeder
             'difficulty_level' => 'advanced',
             'is_published' => true,
             'is_featured' => false,
-            'order' => 14,
+            'order' => 12,
             'prerequisite_roadmap_id' => null,
         ]);
 

@@ -22,7 +22,7 @@ class SystemDesignRoadmapSeeder extends Seeder
             'difficulty_level' => 'advanced',
             'is_published' => true,
             'is_featured' => false,
-            'order' => 13,
+            'order' => 11,
             'prerequisite_roadmap_id' => null,
         ]);
 
@@ -117,7 +117,7 @@ class SystemDesignRoadmapSeeder extends Seeder
                 'estimated_time_minutes' => 100,
                 'task_type' => 'reading',
                 'resources' => [
-                    ['url' => 'https://www.youtube.com/watch?v=S2osJbJY7GI', 'title' => 'Database Replication - ByteByteGo', 'type' => 'video'],
+                    ['url' => 'https://www.youtube.com/watch?v=XP98YCr-iXQ', 'title' => 'Database Sharding Explained', 'type' => 'video'],
                     ['url' => 'https://www.youtube.com/watch?v=5faMjKuB9bc', 'title' => 'Database Sharding - Hussein Nasser', 'type' => 'video'],
                     ['url' => 'https://www.mongodb.com/resources/products/capabilities/database-sharding-explained', 'title' => 'Database Sharding Explained', 'type' => 'article'],
                 ],

@@ -66,6 +66,28 @@
                             @error('role') <span class="text-red-600 text-sm">{{ $message }}</span> @enderror
                         </div>
 
+                        <!-- Lifetime Access (only for students) -->
+                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
+                            <div class="flex items-start">
+                                <div class="flex items-center h-5">
+                                    <input
+                                        type="checkbox"
+                                        wire:model="has_lifetime_access"
+                                        id="has_lifetime_access"
+                                        class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500"
+                                    />
+                                </div>
+                                <div class="ml-3">
+                                    <label for="has_lifetime_access" class="text-sm font-medium text-gray-900">
+                                        🎁 Grant Lifetime Access
+                                    </label>
+                                    <p class="text-xs text-gray-600 mt-1">
+                                        Allow unlimited access to all roadmaps without subscription (Students only)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Actions -->
                         <div class="flex gap-3 pt-4">
                             <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition duration-150">
@@ -197,6 +219,7 @@
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lifetime Access</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Enrollments</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tasks</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code Submissions</th>
@@ -231,6 +254,27 @@
                                             <option value="admin" @if($user->role === 'admin') selected @endif>Admin</option>
                                         </select>
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        @if($user->role === 'student')
+                                            <button
+                                                wire:click="toggleLifetimeAccess({{ $user->id }})"
+                                                class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-colors
+                                                @if($user->has_lifetime_access)
+                                                    bg-green-100 text-green-800 hover:bg-green-200
+                                                @else
+                                                    bg-gray-100 text-gray-600 hover:bg-gray-200
+                                                @endif"
+                                            >
+                                                @if($user->has_lifetime_access)
+                                                    🎁 Enabled
+                                                @else
+                                                    🔒 Disabled
+                                                @endif
+                                            </button>
+                                        @else
+                                            <span class="text-xs text-gray-400">N/A</span>
+                                        @endif
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->enrollments_count }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->task_completions_count }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $user->code_submissions_count }}</td>
@@ -244,7 +288,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="px-6 py-4 text-center text-gray-500">No users found.</td>
+                                    <td colspan="7" class="px-6 py-4 text-center text-gray-500">No users found.</td>
                                 </tr>
                             @endforelse
                         </tbody>

@@ -60,6 +60,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/content-management', App\Livewire\Admin\ContentManagement::class)->name('content-management');
     Route::get('/subscriptions', App\Livewire\Instructor\SubscriptionManagement::class)->name('subscriptions');
     Route::get('/feedback', App\Livewire\Admin\FeedbackManager::class)->name('feedback');
+    Route::post('/grant-lifetime-access', [App\Http\Controllers\Admin\SubscriptionController::class, 'grantLifetime'])->name('grant-lifetime-access');
 });
 
 // Company Routes

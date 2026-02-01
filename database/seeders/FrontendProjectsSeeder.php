@@ -23,7 +23,7 @@ class FrontendProjectsSeeder extends Seeder
             'difficulty_level' => 'intermediate',
             'is_published' => true,
             'is_featured' => false,
-            'order' => 5,
+            'order' => 4,
             'prerequisite_roadmap_id' => $frontendIntermediate->id ?? null,
         ]);
 

@@ -23,7 +23,7 @@ class CareerSkillsSeeder extends Seeder
             'difficulty_level' => 'intermediate',
             'is_published' => true,
             'is_featured' => false,
-            'order' => 16,
+            'order' => 14,
             'prerequisite_roadmap_id' => null,
         ]);
 

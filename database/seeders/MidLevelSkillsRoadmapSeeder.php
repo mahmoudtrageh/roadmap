@@ -23,7 +23,7 @@ class MidLevelSkillsRoadmapSeeder extends Seeder
             'difficulty_level' => 'intermediate',
             'is_published' => true,
             'is_featured' => false,
-            'order' => 11,
+            'order' => 9,
             'prerequisite_roadmap_id' => $phase6->id ?? null,
         ]);
 

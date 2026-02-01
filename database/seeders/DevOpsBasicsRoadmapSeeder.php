@@ -23,7 +23,7 @@ class DevOpsBasicsRoadmapSeeder extends Seeder
             'difficulty_level' => 'intermediate',
             'is_published' => true,
             'is_featured' => false,
-            'order' => 10,
+            'order' => 8,
             'prerequisite_roadmap_id' => $phase5->id ?? null,
         ]);
 

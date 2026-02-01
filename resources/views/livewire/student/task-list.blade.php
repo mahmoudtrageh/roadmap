@@ -73,7 +73,7 @@
                             @endif
                         </p>
                     </div>
-                    @if($activeEnrollment->status !== 'completed')
+                    @if($activeEnrollment->status !== 'completed' && $activeEnrollment->roadmap && $activeEnrollment->roadmap->requires_enrollment)
                     <button
                         wire:click="openCompleteAllModal"
                         class="px-4 py-2 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-lg shadow-md transition-all duration-200 flex items-center gap-2"
@@ -358,7 +358,7 @@
                                 @endif
 
                                 <!-- Task Quality Ratings -->
-                                @if($task['has_quality_rating'])
+                                @if($task['has_quality_rating'] && $activeEnrollment->roadmap && $activeEnrollment->roadmap->requires_enrollment)
                                 <div class="mb-3 bg-gradient-to-r from-yellow-50 to-amber-50 dark:from-yellow-900/20 dark:to-amber-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
                                     <div class="flex items-center justify-between">
                                         <div class="flex-1">
@@ -972,15 +972,16 @@
                                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Complete previous task</p>
                                     </div>
                                 @else
-                                    @if($task['has_code_submission'])
-                                    <a
-                                        href="{{ route('student.code-editor', ['taskId' => $task['id']]) }}"
-                                        class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap text-center">
-                                        💻 Submit
-                                    </a>
-                                    @endif
+                                    @if($activeEnrollment && $activeEnrollment->roadmap && $activeEnrollment->roadmap->requires_enrollment)
+                                        @if($task['has_code_submission'])
+                                        <a
+                                            href="{{ route('student.code-editor', ['taskId' => $task['id']]) }}"
+                                            class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap text-center">
+                                            💻 Submit
+                                        </a>
+                                        @endif
 
-                                    @if($task['status'] === 'skipped')
+                                        @if($task['status'] === 'skipped')
                                     <button
                                         wire:click="completeTask({{ $task['id'] }})"
                                         @if($task['has_code_submission'] && !$task['code_submitted']) disabled @endif
@@ -1031,19 +1032,20 @@
                                     </button>
                                     @endif
 
-                                    @if($task['status'] !== 'skipped' && $task['status'] !== 'completed')
-                                    <button
-                                        wire:click="skipTask({{ $task['id'] }})"
-                                        wire:loading.attr="disabled"
-                                        wire:loading.class="opacity-50 cursor-not-allowed"
-                                        class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
-                                        <span wire:loading.remove wire:target="skipTask({{ $task['id'] }})">
-                                            Skip
-                                        </span>
-                                        <span wire:loading wire:target="skipTask({{ $task['id'] }})">
-                                            Loading...
-                                        </span>
-                                    </button>
+                                        @if($task['status'] !== 'skipped' && $task['status'] !== 'completed')
+                                        <button
+                                            wire:click="skipTask({{ $task['id'] }})"
+                                            wire:loading.attr="disabled"
+                                            wire:loading.class="opacity-50 cursor-not-allowed"
+                                            class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap">
+                                            <span wire:loading.remove wire:target="skipTask({{ $task['id'] }})">
+                                                Skip
+                                            </span>
+                                            <span wire:loading wire:target="skipTask({{ $task['id'] }})">
+                                                Loading...
+                                            </span>
+                                        </button>
+                                        @endif
                                     @endif
                                 @endif
                             </div>

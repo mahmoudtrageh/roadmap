@@ -103,7 +103,17 @@
                             View Details
                         </a>
 
-                        @if (in_array($roadmap->id, $enrolledRoadmapIds))
+                        @if (!$roadmap->requires_enrollment)
+                            <!-- No enrollment required - direct access -->
+                            <div class="mb-2">
+                                <span class="block w-full text-center bg-teal-100 text-teal-700 px-4 py-2 rounded-lg font-medium text-sm">
+                                    📖 Free for All Students
+                                </span>
+                            </div>
+                            <a href="{{ route('student.tasks', ['roadmapId' => $roadmap->id]) }}" class="block w-full text-center bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg font-medium transition duration-150">
+                                Start Learning →
+                            </a>
+                        @elseif (in_array($roadmap->id, $enrolledRoadmapIds))
                             @if(in_array($roadmap->id, $completedRoadmapIds))
                                 <span class="block w-full text-center bg-green-100 text-green-700 px-4 py-2 rounded-lg font-medium mb-2">
                                     ✅ Completed

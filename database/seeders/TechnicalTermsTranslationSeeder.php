@@ -13,18 +13,21 @@ class TechnicalTermsTranslationSeeder extends Seeder
     {
         $admin = User::where('email', 'admin@roadmap.camp')->first();
 
-        $roadmap = Roadmap::create([
-            'creator_id' => $admin->id ?? 1,
-            'title' => 'Technical Terms: English ⟷ Arabic',
-            'description' => 'Master essential English technical terms with Arabic translations. Download PDF files containing term-translation pairs for each topic.',
-            'slug' => 'technical-terms-translation',
-            'duration_days' => 35,
-            'difficulty_level' => 'beginner',
-            'is_published' => true,
-            'is_featured' => false,
-            'order' => 1,
-            'prerequisite_roadmap_id' => null,
-        ]);
+        $roadmap = Roadmap::updateOrCreate(
+            ['slug' => 'technical-terms-translation'],
+            [
+                'creator_id' => $admin->id ?? 1,
+                'title' => 'Technical Terms: English ⟷ Arabic',
+                'description' => 'Master essential English technical terms with Arabic translations. Download PDF files containing term-translation pairs for each topic.',
+                'duration_days' => 35,
+                'difficulty_level' => 'beginner',
+                'is_published' => true,
+                'is_featured' => false,
+                'requires_enrollment' => false,
+                'order' => 0,
+                'prerequisite_roadmap_id' => null,
+            ]
+        );
 
         $this->createTasks($roadmap);
     }

@@ -25,7 +25,7 @@ class FrontendIntermediateRoadmapSeeder extends Seeder
             'difficulty_level' => 'intermediate',
             'is_published' => true,
             'is_featured' => false,
-            'order' => 4,
+            'order' => 3,
             'prerequisite_roadmap_id' => $phase2->id ?? null,
         ]);
 

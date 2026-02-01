@@ -27,6 +27,8 @@ class UserManagement extends Component
     #[Validate('required|in:admin,instructor,student')]
     public $role = 'student';
 
+    public $has_lifetime_access = false;
+
     public $userId = null;
     public $isEditing = false;
     public $showForm = false;
@@ -67,7 +69,7 @@ class UserManagement extends Component
 
     public function createNew(): void
     {
-        $this->reset(['name', 'email', 'password', 'role', 'userId', 'isEditing']);
+        $this->reset(['name', 'email', 'password', 'role', 'has_lifetime_access', 'userId', 'isEditing']);
         $this->showForm = true;
     }
 
@@ -79,6 +81,7 @@ class UserManagement extends Component
         $this->name = $user->name;
         $this->email = $user->email;
         $this->role = $user->role;
+        $this->has_lifetime_access = $user->has_lifetime_access ?? false;
         $this->password = '';
         $this->isEditing = true;
         $this->showForm = true;
@@ -102,6 +105,7 @@ class UserManagement extends Component
                 'name' => $this->name,
                 'email' => $this->email,
                 'role' => $this->role,
+                'has_lifetime_access' => $this->has_lifetime_access,
             ];
 
             if (!empty($this->password)) {
@@ -118,7 +122,7 @@ class UserManagement extends Component
                 session()->flash('message', 'User created successfully.');
             }
 
-            $this->reset(['name', 'email', 'password', 'role', 'userId', 'isEditing', 'showForm']);
+            $this->reset(['name', 'email', 'password', 'role', 'has_lifetime_access', 'userId', 'isEditing', 'showForm']);
             $this->resetPage();
         } catch (\Exception $e) {
             session()->flash('error', 'Error: ' . $e->getMessage());
@@ -127,7 +131,28 @@ class UserManagement extends Component
 
     public function cancelEdit(): void
     {
-        $this->reset(['name', 'email', 'password', 'role', 'userId', 'isEditing', 'showForm']);
+        $this->reset(['name', 'email', 'password', 'role', 'has_lifetime_access', 'userId', 'isEditing', 'showForm']);
+    }
+
+    public function toggleLifetimeAccess($userId): void
+    {
+        try {
+            $user = User::findOrFail($userId);
+
+            // Only students can have lifetime access
+            if ($user->role !== 'student') {
+                session()->flash('error', 'Only students can have lifetime access.');
+                return;
+            }
+
+            $user->has_lifetime_access = !$user->has_lifetime_access;
+            $user->save();
+
+            $status = $user->has_lifetime_access ? 'granted' : 'revoked';
+            session()->flash('message', "Lifetime access {$status} for {$user->name}.");
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error: ' . $e->getMessage());
+        }
     }
 
     public function changeRole($userId, $newRole): void
