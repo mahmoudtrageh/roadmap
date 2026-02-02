@@ -49,6 +49,8 @@ class TaskBuilder extends Component
     public $resourceTitle = '';
     public $resourceLanguage = 'en';
     public $resourceType = 'article';
+    public $editingResourceIndex = null;
+    public $showResourceModal = false;
 
     #[Validate('boolean')]
     public $has_code_submission = false;
@@ -167,6 +169,98 @@ class TaskBuilder extends Component
     {
         unset($this->resources[$index]);
         $this->resources = array_values($this->resources);
+    }
+
+    public function editResource($index): void
+    {
+        if (isset($this->resources[$index])) {
+            $resource = $this->resources[$index];
+            $this->resourceLink = $resource['url'] ?? '';
+            $this->resourceTitle = $resource['title'] ?? '';
+            $this->resourceLanguage = $resource['language'] ?? 'en';
+            $this->resourceType = $resource['type'] ?? 'article';
+            $this->editingResourceIndex = $index;
+            $this->showResourceModal = true;
+        }
+    }
+
+    public function updateResource(): void
+    {
+        if ($this->editingResourceIndex !== null && isset($this->resources[$this->editingResourceIndex])) {
+            $this->resources[$this->editingResourceIndex] = [
+                'url' => $this->resourceLink,
+                'title' => $this->resourceTitle,
+                'language' => $this->resourceLanguage,
+                'type' => $this->resourceType,
+            ];
+
+            $this->closeResourceModal();
+        }
+    }
+
+    public function openResourceModal(): void
+    {
+        $this->resourceLink = '';
+        $this->resourceTitle = '';
+        $this->resourceLanguage = 'en';
+        $this->resourceType = 'article';
+        $this->editingResourceIndex = null;
+        $this->showResourceModal = true;
+    }
+
+    public function closeResourceModal(): void
+    {
+        $this->resourceLink = '';
+        $this->resourceTitle = '';
+        $this->resourceLanguage = 'en';
+        $this->resourceType = 'article';
+        $this->editingResourceIndex = null;
+        $this->showResourceModal = false;
+    }
+
+    public function saveResourceFromModal(): void
+    {
+        if ($this->editingResourceIndex !== null) {
+            $this->updateResource();
+        } else {
+            $this->addResource();
+            $this->closeResourceModal();
+        }
+    }
+
+    public function moveResourceUp($index): void
+    {
+        if ($index > 0 && isset($this->resources[$index])) {
+            $temp = $this->resources[$index];
+            $this->resources[$index] = $this->resources[$index - 1];
+            $this->resources[$index - 1] = $temp;
+        }
+    }
+
+    public function moveResourceDown($index): void
+    {
+        if ($index < count($this->resources) - 1 && isset($this->resources[$index])) {
+            $temp = $this->resources[$index];
+            $this->resources[$index] = $this->resources[$index + 1];
+            $this->resources[$index + 1] = $temp;
+        }
+    }
+
+    public function duplicateResource($index): void
+    {
+        if (isset($this->resources[$index])) {
+            $resource = $this->resources[$index];
+            $resource['title'] = ($resource['title'] ?? '') . ' (Copy)';
+            $this->resources[] = $resource;
+        }
+    }
+
+    public function bulkChangeLanguage($language): void
+    {
+        foreach ($this->resources as &$resource) {
+            $resource['language'] = $language;
+        }
+        session()->flash('message', 'All resources updated to ' . ($language === 'ar' ? 'Arabic' : 'English'));
     }
 
     public function save(): void

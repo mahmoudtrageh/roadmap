@@ -178,9 +178,21 @@ class TaskList extends Component
         $allTasks = $this->activeEnrollment->roadmap->tasks()->get()->keyBy('id');
 
         // Map tasks with their completion status and locked state
-        $this->tasks = $tasksForDay->map(function ($task) use ($completions, $allTasksUpToCurrent, $allCompletedTaskIds, $allTasks) {
+        $this->tasks = $tasksForDay->map(function ($task) use ($completions, $allTasksUpToCurrent, &$allCompletedTaskIds, $allTasks) {
             $completion = $completions->get($task->id);
             $status = $completion?->status ?? 'not_started';
+
+            // Check if task has code submission - if so, consider it completed even if status is not set
+            if ($task->has_code_submission && $completion) {
+                $hasSubmission = \App\Models\CodeSubmission::where('task_completion_id', $completion->id)->exists();
+                if ($hasSubmission) {
+                    $status = 'completed';
+                    // Add to completed task IDs if not already there
+                    if (!in_array($task->id, $allCompletedTaskIds)) {
+                        $allCompletedTaskIds[] = $task->id;
+                    }
+                }
+            }
 
             // Task is locked if any previous task (by global order) is not completed
             $taskIndex = array_search($task->id, $allTasksUpToCurrent);
@@ -236,7 +248,7 @@ class TaskList extends Component
                 }
             }
 
-            // Check if code has been submitted for this task
+            // Check if code has been submitted for this task (status already updated above)
             $codeSubmitted = false;
             if ($task->has_code_submission && $completion) {
                 $codeSubmitted = \App\Models\CodeSubmission::where('task_completion_id', $completion->id)->exists();

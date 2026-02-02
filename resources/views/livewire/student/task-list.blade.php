@@ -924,6 +924,16 @@
                                 @endif
                                 <!-- End All Resources -->
 
+                                <!-- Student-Contributed Resources -->
+                                @if(!$task['is_locked'])
+                                <div class="mb-6">
+                                    <livewire:student.student-resource-box
+                                        :taskId="$task['id']"
+                                        :key="'student-resources-' . $task['id']"
+                                    />
+                                </div>
+                                @endif
+
                                 <!-- Ask Question -->
                                 @if(!$task['is_locked'])
                                     <livewire:student.question-box

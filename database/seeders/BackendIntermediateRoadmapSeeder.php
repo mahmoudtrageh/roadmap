@@ -233,7 +233,7 @@ class BackendIntermediateRoadmapSeeder extends Seeder
                 'success_criteria' => [],
                 'has_code_submission' => true,
                 'resources' => [
-                    ['url' => 'https://www.youtube.com/watch?v=I-V-_9vU7-k', 'title' => 'Laravel Cashier Tutorial - Laravel Daily', 'type' => 'video'],
+                    ['url' => 'https://laracasts.com/series/cashier-2', 'title' => 'Laravel Cashier Series - Laracasts', 'type' => 'course'],
                     ['url' => 'https://laravel.com/docs/11.x/billing', 'title' => 'Laravel Cashier Documentation', 'type' => 'article'],
                     ['url' => 'https://stripe.com/docs/billing/subscriptions/overview', 'title' => 'Stripe Subscriptions Overview', 'type' => 'article'],
                 ],
@@ -250,8 +250,8 @@ class BackendIntermediateRoadmapSeeder extends Seeder
                 'success_criteria' => [],
                 'has_code_submission' => true,
                 'resources' => [
-                    ['url' => 'https://www.youtube.com/watch?v=Psoi36682TA', 'title' => 'Stripe Webhooks Explained - Traversy Media', 'type' => 'video'],
                     ['url' => 'https://stripe.com/docs/webhooks', 'title' => 'Stripe Webhooks Guide', 'type' => 'article'],
+                    ['url' => 'https://stripe.com/docs/webhooks/quickstart', 'title' => 'Webhooks Quick Start - Stripe', 'type' => 'tutorial'],
                     ['url' => 'https://laravel.com/docs/11.x/billing#handling-stripe-webhooks', 'title' => 'Handling Stripe Webhooks - Laravel', 'type' => 'article'],
                 ],
             ],
@@ -267,9 +267,9 @@ class BackendIntermediateRoadmapSeeder extends Seeder
                 'success_criteria' => [],
                 'has_code_submission' => false,
                 'resources' => [
-                    ['url' => 'https://www.youtube.com/watch?v=2e82rWLk5F8', 'title' => 'Payment Security Best Practices', 'type' => 'video'],
                     ['url' => 'https://stripe.com/docs/security/guide', 'title' => 'Stripe Security Guide', 'type' => 'article'],
-                    ['url' => 'https://www.pcisecuritystandards.org/', 'title' => 'PCI Security Standards', 'type' => 'article'],
+                    ['url' => 'https://stripe.com/docs/security', 'title' => 'Security Best Practices - Stripe', 'type' => 'article'],
+                    ['url' => 'https://www.pcisecuritystandards.org/document_library/', 'title' => 'PCI Security Standards Documents', 'type' => 'documentation'],
                 ],
             ],
             [
@@ -284,9 +284,9 @@ class BackendIntermediateRoadmapSeeder extends Seeder
                 'success_criteria' => [],
                 'has_code_submission' => true,
                 'resources' => [
-                    ['url' => 'https://www.youtube.com/watch?v=VfWLbfr_RuY', 'title' => 'Multi-Currency Payments', 'type' => 'video'],
                     ['url' => 'https://stripe.com/docs/currencies', 'title' => 'Multi-Currency Support - Stripe', 'type' => 'article'],
                     ['url' => 'https://stripe.com/docs/payments/payment-methods/overview', 'title' => 'Payment Methods Overview - Stripe', 'type' => 'article'],
+                    ['url' => 'https://stripe.com/docs/connect/currencies', 'title' => 'Currency Conversion - Stripe Connect', 'type' => 'article'],
                 ],
             ],
 
@@ -354,9 +354,9 @@ class BackendIntermediateRoadmapSeeder extends Seeder
                 'success_criteria' => [],
                 'has_code_submission' => true,
                 'resources' => [
-                    ['url' => 'https://www.youtube.com/watch?v=kmW-gFmF6mM', 'title' => 'Advanced Laravel Notifications', 'type' => 'video'],
-                    ['url' => 'https://laravel.com/docs/11.x/notifications#customizing-the-recipient', 'title' => 'Advanced Notifications - Laravel', 'type' => 'article'],
-                    ['url' => 'https://documentation.mailgun.com/en/latest/', 'title' => 'Mailgun Documentation', 'type' => 'article'],
+                    ['url' => 'https://laravel.com/docs/11.x/notifications', 'title' => 'Laravel Notifications Documentation', 'type' => 'article'],
+                    ['url' => 'https://laravel.com/docs/11.x/mail', 'title' => 'Laravel Mail Documentation', 'type' => 'article'],
+                    ['url' => 'https://laracasts.com/series/laravel-8-from-scratch/episodes/62', 'title' => 'Notifications - Laracasts', 'type' => 'video'],
                 ],
             ],
             [

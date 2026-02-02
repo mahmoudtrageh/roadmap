@@ -34,7 +34,7 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::get('/subscription', App\Livewire\Student\Subscription::class)->name('subscription');
     Route::get('/jobs', App\Livewire\Student\JobListings::class)->name('jobs');
     Route::get('/jobs/{jobId}', App\Livewire\Student\JobView::class)->name('job.view');
-    // Route::get('/achievements', App\Livewire\Student\AchievementBoard::class)->name('achievements'); // Removed for MVP simplicity
+    Route::get('/achievements', App\Livewire\Student\AchievementBoard::class)->name('achievements');
     Route::get('/code-editor/{taskId}', App\Livewire\Student\CodeEditor::class)->name('code-editor');
     Route::get('/youtube-channels', App\Livewire\Student\YoutubeChannels::class)->name('youtube-channels');
     Route::get('/programming-blogs', App\Livewire\Student\ProgrammingBlogs::class)->name('programming-blogs');

@@ -39,13 +39,14 @@ class CodeEditor extends Component
             abort(404, 'This task does not require code submission.');
         }
 
-        // Get active enrollment
+        // Get active enrollment for THIS task's roadmap
         $activeEnrollment = Auth::user()->enrollments()
-            ->where('status', 'active')
+            ->where('roadmap_id', $this->task->roadmap_id)
+            ->whereIn('status', ['active', 'completed'])
             ->first();
 
         if (!$activeEnrollment) {
-            abort(403, 'You must be enrolled in a roadmap to submit code.');
+            abort(403, 'You must be enrolled in this roadmap to submit code.');
         }
 
         // Get or create task completion
@@ -71,10 +72,22 @@ class CodeEditor extends Component
         }
     }
 
-    public function submitFile(): void
+    public function submitFile()
     {
         $this->validate([
-            'file' => 'required|file|max:10240|mimes:html,css,js,py,java,php,cpp,cs,rb,go,rs,ts,txt,json,xml,md',
+            'file' => [
+                'required',
+                'file',
+                'max:10240',
+                function ($attribute, $value, $fail) {
+                    $allowedExtensions = ['html', 'htm', 'css', 'js', 'py', 'java', 'php', 'cpp', 'c', 'h', 'cs', 'rb', 'go', 'rs', 'ts', 'tsx', 'jsx', 'txt', 'json', 'xml', 'md', 'yaml', 'yml', 'sql'];
+                    $extension = strtolower($value->getClientOriginalExtension());
+
+                    if (!in_array($extension, $allowedExtensions)) {
+                        $fail('The file must be a code file with one of these extensions: ' . implode(', ', $allowedExtensions));
+                    }
+                },
+            ],
         ]);
 
         try {
@@ -116,13 +129,16 @@ class CodeEditor extends Component
             ]);
 
             $this->file = null;
-            session()->flash('message', 'File submitted successfully! Waiting for instructor review.');
+
+            // Redirect back to tasks with success message
+            session()->flash('message', 'File submitted successfully! Task marked as completed. Waiting for instructor review.');
+            return redirect()->route('student.tasks', ['roadmapId' => $this->task->roadmap_id]);
         } catch (\Exception $e) {
             session()->flash('error', 'Error uploading file: ' . $e->getMessage());
         }
     }
 
-    public function submitZip(): void
+    public function submitZip()
     {
         $this->validate([
             'zipFile' => 'required|file|mimes:zip|max:51200',
@@ -167,7 +183,10 @@ class CodeEditor extends Component
             ]);
 
             $this->zipFile = null;
-            session()->flash('message', 'ZIP file submitted successfully! Waiting for instructor review.');
+
+            // Redirect back to tasks with success message
+            session()->flash('message', 'ZIP file submitted successfully! Task marked as completed. Waiting for instructor review.');
+            return redirect()->route('student.tasks', ['roadmapId' => $this->task->roadmap_id]);
         } catch (\Exception $e) {
             session()->flash('error', 'Error uploading ZIP: ' . $e->getMessage());
         }

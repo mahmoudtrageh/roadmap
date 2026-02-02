@@ -60,9 +60,12 @@ class RoadmapsList extends Component
             }
         }
 
-        // Check if user has any active (incomplete) enrollments
+        // Check if user has any active (incomplete) enrollments (excluding roadmaps that don't require enrollment)
         $hasActiveEnrollment = RoadmapEnrollment::where('student_id', $user->id)
             ->where('status', 'active')
+            ->whereHas('roadmap', function ($query) {
+                $query->where('requires_enrollment', true);
+            })
             ->exists();
 
         if ($hasActiveEnrollment) {
@@ -132,9 +135,12 @@ class RoadmapsList extends Component
             ->pluck('roadmap_id')
             ->toArray();
 
-        // Check if user has active enrollment
+        // Check if user has active enrollment (excluding roadmaps that don't require enrollment)
         $hasActiveEnrollment = RoadmapEnrollment::where('student_id', Auth::id())
             ->where('status', 'active')
+            ->whereHas('roadmap', function ($query) {
+                $query->where('requires_enrollment', true);
+            })
             ->exists();
 
         return view('livewire.student.roadmaps-list', [

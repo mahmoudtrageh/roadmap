@@ -9,7 +9,7 @@
                         <p class="mt-1 text-sm text-gray-600">{{ $task->roadmap->title }} - Day {{ $task->day_number }}</p>
                     </div>
                     <div class="flex gap-2">
-                        <a href="{{ route('student.tasks') }}" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg font-medium transition duration-150">
+                        <a href="{{ route('student.tasks', ['roadmapId' => $task->roadmap_id]) }}" class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-lg font-medium transition duration-150">
                             Back to Tasks
                         </a>
                     </div>

@@ -4,11 +4,13 @@ namespace App\Observers;
 
 use App\Models\TaskCompletion;
 use App\Services\StreakService;
+use App\Services\AchievementService;
 
 class TaskCompletionObserver
 {
     public function __construct(
-        protected StreakService $streakService
+        protected StreakService $streakService,
+        protected AchievementService $achievementService
     ) {
     }
 
@@ -70,6 +72,9 @@ class TaskCompletionObserver
 
         // Update user streak
         $this->streakService->updateUserStreak($user);
+
+        // Check and award achievements
+        $this->achievementService->checkAndAwardAchievements($user);
 
         // Advance roadmap day if all tasks for current day are complete
         $this->advanceRoadmapDayIfComplete($taskCompletion);
