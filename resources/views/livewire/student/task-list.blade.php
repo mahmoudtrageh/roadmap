@@ -991,6 +991,14 @@
                                         </a>
                                         @endif
 
+                                        @if($task['status'] === 'completed')
+                                        <a
+                                            href="{{ route('student.exam', ['taskId' => $task['id']]) }}"
+                                            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap text-center">
+                                            📝 Take Exam
+                                        </a>
+                                        @endif
+
                                         @if($task['status'] === 'skipped')
                                     <button
                                         wire:click="completeTask({{ $task['id'] }})"

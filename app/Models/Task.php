@@ -188,6 +188,14 @@ class Task extends Model
     }
 
     /**
+     * Get the exam for this task.
+     */
+    public function exam()
+    {
+        return $this->hasOne(TaskExam::class);
+    }
+
+    /**
      * Get the parent task if this is a split task.
      */
     public function parentTask(): BelongsTo

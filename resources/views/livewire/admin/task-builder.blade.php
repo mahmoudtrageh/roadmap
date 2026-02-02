@@ -305,6 +305,7 @@
                                             <button wire:click="moveUp({{ $task->id }})" class="text-gray-600 hover:text-gray-900" title="Move Up">↑</button>
                                             <button wire:click="moveDown({{ $task->id }})" class="text-gray-600 hover:text-gray-900" title="Move Down">↓</button>
                                             <button wire:click="edit({{ $task->id }})" class="text-blue-600 hover:text-blue-900">Edit</button>
+                                            <a href="{{ route('admin.exam', ['taskId' => $task->id]) }}" class="text-purple-600 hover:text-purple-900">Exam</a>
                                             <button wire:click="duplicate({{ $task->id }})" class="text-green-600 hover:text-green-900">Dup</button>
                                             <button wire:click="delete({{ $task->id }})" onclick="return confirm('Are you sure?')" class="text-red-600 hover:text-red-900">Del</button>
                                         </div>

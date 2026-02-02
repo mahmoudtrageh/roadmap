@@ -45,6 +45,9 @@ class AchievementBoard extends Component
                 // - 100 points per completed roadmap
                 $points = ($completedTasks * 10) + ($completedRoadmaps * 100);
 
+                // Get average exam grade
+                $averageGrade = $student->getAverageExamGrade();
+
                 return [
                     'id' => $student->id,
                     'name' => $student->name,
@@ -52,6 +55,7 @@ class AchievementBoard extends Component
                     'completed_tasks' => $completedTasks,
                     'completed_roadmaps' => $completedRoadmaps,
                     'points' => $points,
+                    'average_grade' => $averageGrade,
                     'is_me' => $student->id === Auth::id(),
                 ];
             })

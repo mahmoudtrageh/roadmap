@@ -26,6 +26,9 @@
                         <x-nav-link :href="route('student.achievements')" :active="request()->routeIs('student.achievements')">
                             {{ __('Leaderboard') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('student.community')" :active="request()->routeIs('student.community*')">
+                            {{ __('Community') }}
+                        </x-nav-link>
 
                         <!-- Resources Dropdown -->
                         <div class="relative inline-flex items-center" x-data="{ open: false }">
@@ -183,6 +186,9 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('student.achievements')" :active="request()->routeIs('student.achievements')">
                     {{ __('Leaderboard') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('student.community')" :active="request()->routeIs('student.community*')">
+                    {{ __('Community') }}
                 </x-responsive-nav-link>
 
                 <!-- Resources Section -->

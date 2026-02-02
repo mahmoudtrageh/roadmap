@@ -35,7 +35,10 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::get('/jobs', App\Livewire\Student\JobListings::class)->name('jobs');
     Route::get('/jobs/{jobId}', App\Livewire\Student\JobView::class)->name('job.view');
     Route::get('/achievements', App\Livewire\Student\AchievementBoard::class)->name('achievements');
+    Route::get('/community', App\Livewire\Student\Community::class)->name('community');
+    Route::get('/community/{postId}', App\Livewire\Student\CommunityPostView::class)->name('community.post');
     Route::get('/code-editor/{taskId}', App\Livewire\Student\CodeEditor::class)->name('code-editor');
+    Route::get('/exam/{taskId}', App\Livewire\Student\TakeExam::class)->name('exam');
     Route::get('/youtube-channels', App\Livewire\Student\YoutubeChannels::class)->name('youtube-channels');
     Route::get('/programming-blogs', App\Livewire\Student\ProgrammingBlogs::class)->name('programming-blogs');
     Route::get('/podcasts', App\Livewire\Student\Podcasts::class)->name('podcasts');
@@ -56,6 +59,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/dashboard', function () { return view('admin.dashboard'); })->name('dashboard');
     Route::get('/roadmaps', App\Livewire\Admin\RoadmapBuilder::class)->name('roadmaps');
     Route::get('/roadmaps/{roadmapId}/tasks', App\Livewire\Admin\TaskBuilder::class)->name('tasks');
+    Route::get('/tasks/{taskId}/exam', App\Livewire\Admin\ExamManager::class)->name('exam');
     Route::get('/users', App\Livewire\Admin\UserManagement::class)->name('users');
     Route::get('/content-management', App\Livewire\Admin\ContentManagement::class)->name('content-management');
     Route::get('/subscriptions', App\Livewire\Instructor\SubscriptionManagement::class)->name('subscriptions');

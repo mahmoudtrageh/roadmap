@@ -12,7 +12,7 @@
             <div class="flex items-center justify-between">
                 <div>
                     <h2 class="text-xl font-semibold mb-2">Your Stats</h2>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                         <div>
                             <p class="text-blue-100 text-sm">Rank</p>
                             <p class="text-3xl font-bold">#{!! $myRank !!}</p>
@@ -24,6 +24,10 @@
                         <div>
                             <p class="text-blue-100 text-sm">Tasks</p>
                             <p class="text-3xl font-bold">{{ $myStats['completed_tasks'] }}</p>
+                        </div>
+                        <div>
+                            <p class="text-blue-100 text-sm">Avg. Grade</p>
+                            <p class="text-3xl font-bold">{{ number_format($myStats['average_grade'], 1) }}%</p>
                         </div>
                     </div>
                 </div>
@@ -71,6 +75,9 @@
                             </th>
                             <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
                                 Roadmaps
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                                Avg. Grade
                             </th>
                         </tr>
                     </thead>
@@ -133,6 +140,14 @@
                                     {{ $student['completed_roadmaps'] }}
                                 </div>
                                 <div class="text-xs text-gray-500 dark:text-gray-400">completed</div>
+                            </td>
+
+                            <!-- Average Grade -->
+                            <td class="px-6 py-4 whitespace-nowrap text-center">
+                                <div class="text-sm font-semibold text-gray-900 dark:text-white">
+                                    {{ number_format($student['average_grade'], 1) }}%
+                                </div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">exam avg</div>
                             </td>
                         </tr>
                         @endforeach
